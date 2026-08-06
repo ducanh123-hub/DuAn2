@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Context docBase="C:\Users\ad\Downloads\apache-tomcat-10.1.55-windows-x64\apache-tomcat-10.1.55\New folder\deploy">
-  <Resources cacheMaxSize="10240">
-    <PreResources base="C:/Users/ad/OneDrive/Desktop/Sammer2026/lab1/target/classes" className="org.apache.catalina.webresources.DirResourceSet" webAppMount="/WEB-INF/classes"/>
-  </Resources>
-</Context>
