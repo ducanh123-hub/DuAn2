@@ -11,7 +11,7 @@ public class DBConnect {
     private static final String PASSWORD = "123456"; // Đổi mật khẩu SQL Server
 
     private static final String URL =
-            "jdbc:sqlserver://" + SERVER +
+            "jdbc:sqlserver://localhost:11433;" + SERVER +
                     ";databaseName=" + DATABASE +
                     ";encrypt=true;" +
                     ";trustServerCertificate=true";
