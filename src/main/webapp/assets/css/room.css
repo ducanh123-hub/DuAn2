@@ -1,25 +1,89 @@
-.card{
-
-    transition:.3s;
-
+/* Room Grid & Cards */
+.room-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-.card:hover{
-
-    transform:translateY(-10px);
-
+.room-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(12, 26, 48, 0.15);
 }
 
-.card img{
-
-    height:250px;
-
-    object-fit:cover;
-
+.room-card img {
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
 }
 
-body{
+.room-card:hover img {
+    transform: scale(1.05);
+}
 
-    background:#f7f7f7;
+/* Room Details Layout */
+.room-detail-container {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
 
+.room-price-tag {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #d4af37;
+    margin: 15px 0;
+}
+
+.room-meta-item {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 20px;
+    font-size: 0.95rem;
+    color: #4a5568;
+    background: #f7fafc;
+    padding: 8px 16px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.room-meta-item i {
+    color: #d4af37;
+    margin-right: 8px;
+    font-size: 1.1rem;
+}
+
+/* Amenity Icons */
+.amenities-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.amenity-card {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #edf2f7;
+    font-weight: 500;
+}
+
+.amenity-card i {
+    font-size: 1.3rem;
+    color: #d4af37;
+    margin-right: 10px;
+}
+
+/* Form Styles for Add/Update Room */
+.room-form-card {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }

@@ -253,5 +253,4 @@ public class UserDAO implements BaseDAO<User> {
 
         return null;
     }
-
 }
