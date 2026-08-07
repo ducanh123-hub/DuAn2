@@ -1,1 +1,59 @@
+/* Admin Layout & Sidebar */
+.admin-header {
+    background: #0c1a30;
+    color: #ffffff;
+    border-bottom: 3px solid #d4af37;
+    padding: 20px;
+    border-radius: 12px 12px 0 0;
+}
 
+/* Admin Dashboard Cards */
+.admin-stat-card {
+    border-radius: 12px;
+    border-left: 5px solid #d4af37 !important;
+    transition: all 0.3s ease;
+}
+
+.admin-stat-card:hover {
+    transform: translateX(4px);
+}
+
+/* Admin Table Custom Styling */
+.admin-table {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.admin-table thead {
+    background-color: #0c1a30;
+    color: #ffffff;
+}
+
+/* Badges for Status */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.status-active, .status-available, .status-paid {
+    background-color: rgba(45, 106, 79, 0.15);
+    color: #2d6a4f;
+    border: 1px solid rgba(45, 106, 79, 0.3);
+}
+
+.status-maintenance, .status-pending, .status-unpaid {
+    background-color: rgba(212, 175, 55, 0.15);
+    color: #b8901c;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.status-inactive, .status-cancelled {
+    background-color: rgba(229, 62, 62, 0.15);
+    color: #e53e3e;
+    border: 1px solid rgba(229, 62, 62, 0.3);
+}

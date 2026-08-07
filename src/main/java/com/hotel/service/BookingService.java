@@ -31,4 +31,12 @@ public class BookingService {
         return bookingDAO.delete(id);
     }
 
+    public List<Booking> getBookingsByUserId(int userId) {
+        return bookingDAO.getByUserId(userId);
+    }
+
+    public boolean isRoomAvailable(int roomId, java.sql.Date checkIn, java.sql.Date checkOut) {
+        return bookingDAO.isRoomAvailable(roomId, checkIn, checkOut);
+    }
+
 }

@@ -14,6 +14,7 @@ public class Contact {
     private Timestamp createdAt;
 
     public Contact() {
+
     }
 
     public Contact(int contactID, String fullName, String email,
@@ -102,5 +103,8 @@ public class Contact {
                 ", email='" + email + '\'' +
                 ", status='" + status + '\'' +
                 '}';
+    }
+
+    public void setUserID(int userID) {
     }
 }

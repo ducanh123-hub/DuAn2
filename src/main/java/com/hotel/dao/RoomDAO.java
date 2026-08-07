@@ -205,7 +205,7 @@ public class RoomDAO implements BaseDAO<Room> {
 
         List<Room> list = new ArrayList<>();
 
-        String sql = "SELECT * FROM Room WHERE RoomName LIKE ?";
+        String sql = "SELECT * FROM Room WHERE RoomName LIKE ? OR RoomNumber LIKE ?";
 
         try (
                 Connection con = DBConnect.getConnection();
@@ -213,6 +213,7 @@ public class RoomDAO implements BaseDAO<Room> {
         ) {
 
             ps.setString(1, "%" + keyword + "%");
+            ps.setString(2, "%" + keyword + "%");
 
             ResultSet rs = ps.executeQuery();
 
@@ -225,7 +226,13 @@ public class RoomDAO implements BaseDAO<Room> {
                 room.setRoomNumber(rs.getString("RoomNumber"));
                 room.setRoomName(rs.getString("RoomName"));
                 room.setPrice(rs.getBigDecimal("Price"));
+                room.setAcreage(rs.getBigDecimal("Acreage"));
+                room.setBed(rs.getInt("Bed"));
+                room.setArea(rs.getString("Area"));
+                room.setDescription(rs.getString("Description"));
                 room.setStatus(rs.getString("Status"));
+                room.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                room.setUpdatedAt(rs.getTimestamp("UpdatedAt"));
 
                 list.add(room);
             }
