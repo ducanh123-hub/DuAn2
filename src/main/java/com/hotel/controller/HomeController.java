@@ -5,12 +5,14 @@ import com.hotel.service.RoomService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/home")
+@WebServlet({"/", "/home"})
 public class HomeController extends HttpServlet {
 
     private final RoomService roomService = new RoomService();
@@ -20,14 +22,14 @@ public class HomeController extends HttpServlet {
                          HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Lấy tất cả phòng
+        // Lấy danh sách phòng từ database
         List<Room> roomList = roomService.getAllRooms();
 
+        // Đưa danh sách phòng sang JSP
         request.setAttribute("roomList", roomList);
 
+        // Hiển thị trang chủ
         request.getRequestDispatcher("/views/home/index.jsp")
                 .forward(request, response);
-
     }
-
 }
