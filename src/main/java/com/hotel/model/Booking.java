@@ -6,208 +6,121 @@ import java.sql.Timestamp;
 
 public class Booking {
 
+    // Khớp đúng DB
     private int bookingID;
     private int userID;
-    private int roomID;
-    private Integer voucherID; // Có thể null
+    private Integer voucherID;
     private String bookingCode;
+    private Timestamp bookingDate;
     private Date checkInDate;
     private Date checkOutDate;
-    private int adults;
-    private int children;
-    private BigDecimal roomPrice;
-    private BigDecimal servicePrice;
-    private BigDecimal discountAmount;
+    private int guestCount;
     private BigDecimal totalAmount;
-    private String bookingStatus;
-    private String paymentStatus;
+    private BigDecimal discountAmount;
+    private BigDecimal finalAmount;
+    private String cancelReason;
+    private Timestamp cancelDate;
+    private String status;
     private String note;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
-    public Booking() {
-    }
+    // Field phụ — KHÔNG lưu DB, dùng để hiển thị JSP
+    // Lấy từ JOIN với Booking_Detail và Room
+    private int roomID;
+    private String roomName;
+    private String roomNumber;
+    private BigDecimal roomPrice;
 
-    public Booking(int bookingID, int userID, int roomID, Integer voucherID,
-                   String bookingCode, Date checkInDate, Date checkOutDate,
-                   int adults, int children, BigDecimal roomPrice,
-                   BigDecimal servicePrice, BigDecimal discountAmount,
-                   BigDecimal totalAmount, String bookingStatus,
-                   String paymentStatus, String note,
-                   Timestamp createdAt, Timestamp updatedAt) {
-        this.bookingID = bookingID;
-        this.userID = userID;
-        this.roomID = roomID;
-        this.voucherID = voucherID;
-        this.bookingCode = bookingCode;
-        this.checkInDate = checkInDate;
-        this.checkOutDate = checkOutDate;
-        this.adults = adults;
-        this.children = children;
-        this.roomPrice = roomPrice;
-        this.servicePrice = servicePrice;
-        this.discountAmount = discountAmount;
-        this.totalAmount = totalAmount;
-        this.bookingStatus = bookingStatus;
-        this.paymentStatus = paymentStatus;
-        this.note = note;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
+    // Field phụ — lấy từ JOIN với User
+    private String customerName;
+    private String customerPhone;
+    private String customerEmail;
 
-    public int getBookingID() {
-        return bookingID;
-    }
+    public Booking() {}
 
-    public void setBookingID(int bookingID) {
-        this.bookingID = bookingID;
-    }
+    // Getters & Setters — DB fields
 
-    public int getUserID() {
-        return userID;
-    }
+    public int getBookingID() { return bookingID; }
+    public void setBookingID(int bookingID) { this.bookingID = bookingID; }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
+    public int getUserID() { return userID; }
+    public void setUserID(int userID) { this.userID = userID; }
 
-    public int getRoomID() {
-        return roomID;
-    }
+    public Integer getVoucherID() { return voucherID; }
+    public void setVoucherID(Integer voucherID) { this.voucherID = voucherID; }
 
-    public void setRoomID(int roomID) {
-        this.roomID = roomID;
-    }
+    public String getBookingCode() { return bookingCode; }
+    public void setBookingCode(String bookingCode) { this.bookingCode = bookingCode; }
 
-    public Integer getVoucherID() {
-        return voucherID;
-    }
+    public Timestamp getBookingDate() { return bookingDate; }
+    public void setBookingDate(Timestamp bookingDate) { this.bookingDate = bookingDate; }
 
-    public void setVoucherID(Integer voucherID) {
-        this.voucherID = voucherID;
-    }
+    public Date getCheckInDate() { return checkInDate; }
+    public void setCheckInDate(Date checkInDate) { this.checkInDate = checkInDate; }
 
-    public String getBookingCode() {
-        return bookingCode;
-    }
+    public Date getCheckOutDate() { return checkOutDate; }
+    public void setCheckOutDate(Date checkOutDate) { this.checkOutDate = checkOutDate; }
 
-    public void setBookingCode(String bookingCode) {
-        this.bookingCode = bookingCode;
-    }
+    public int getGuestCount() { return guestCount; }
+    public void setGuestCount(int guestCount) { this.guestCount = guestCount; }
 
-    public Date getCheckInDate() {
-        return checkInDate;
-    }
+    public BigDecimal getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
 
-    public void setCheckInDate(Date checkInDate) {
-        this.checkInDate = checkInDate;
-    }
+    public BigDecimal getDiscountAmount() { return discountAmount; }
+    public void setDiscountAmount(BigDecimal discountAmount) { this.discountAmount = discountAmount; }
 
-    public Date getCheckOutDate() {
-        return checkOutDate;
-    }
+    public BigDecimal getFinalAmount() { return finalAmount; }
+    public void setFinalAmount(BigDecimal finalAmount) { this.finalAmount = finalAmount; }
 
-    public void setCheckOutDate(Date checkOutDate) {
-        this.checkOutDate = checkOutDate;
-    }
+    public String getCancelReason() { return cancelReason; }
+    public void setCancelReason(String cancelReason) { this.cancelReason = cancelReason; }
 
-    public int getAdults() {
-        return adults;
-    }
+    public Timestamp getCancelDate() { return cancelDate; }
+    public void setCancelDate(Timestamp cancelDate) { this.cancelDate = cancelDate; }
 
-    public void setAdults(int adults) {
-        this.adults = adults;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public int getChildren() {
-        return children;
-    }
+    public String getNote() { return note; }
+    public void setNote(String note) { this.note = note; }
 
-    public void setChildren(int children) {
-        this.children = children;
-    }
+    public Timestamp getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
 
-    public BigDecimal getRoomPrice() {
-        return roomPrice;
-    }
+    public Timestamp getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(Timestamp updatedAt) { this.updatedAt = updatedAt; }
 
-    public void setRoomPrice(BigDecimal roomPrice) {
-        this.roomPrice = roomPrice;
-    }
+    // Getters & Setters — field phụ (JSP display)
 
-    public BigDecimal getServicePrice() {
-        return servicePrice;
-    }
+    public int getRoomID() { return roomID; }
+    public void setRoomID(int roomID) { this.roomID = roomID; }
 
-    public void setServicePrice(BigDecimal servicePrice) {
-        this.servicePrice = servicePrice;
-    }
+    public String getRoomName() { return roomName; }
+    public void setRoomName(String roomName) { this.roomName = roomName; }
 
-    public BigDecimal getDiscountAmount() {
-        return discountAmount;
-    }
+    public String getRoomNumber() { return roomNumber; }
+    public void setRoomNumber(String roomNumber) { this.roomNumber = roomNumber; }
 
-    public void setDiscountAmount(BigDecimal discountAmount) {
-        this.discountAmount = discountAmount;
-    }
+    public BigDecimal getRoomPrice() { return roomPrice; }
+    public void setRoomPrice(BigDecimal roomPrice) { this.roomPrice = roomPrice; }
 
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
-    }
+    public String getCustomerName() { return customerName; }
+    public void setCustomerName(String customerName) { this.customerName = customerName; }
 
-    public void setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
-    }
+    public String getCustomerPhone() { return customerPhone; }
+    public void setCustomerPhone(String customerPhone) { this.customerPhone = customerPhone; }
 
-    public String getBookingStatus() {
-        return bookingStatus;
-    }
-
-    public void setBookingStatus(String bookingStatus) {
-        this.bookingStatus = bookingStatus;
-    }
-
-    public String getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+    public String getCustomerEmail() { return customerEmail; }
+    public void setCustomerEmail(String customerEmail) { this.customerEmail = customerEmail; }
 
     @Override
     public String toString() {
-        return "Booking{" +
-                "bookingID=" + bookingID +
-                ", bookingCode='" + bookingCode + '\'' +
-                ", userID=" + userID +
-                ", roomID=" + roomID +
-                ", totalAmount=" + totalAmount +
-                ", bookingStatus='" + bookingStatus + '\'' +
-                '}';
+        return "Booking{bookingID=" + bookingID
+                + ", bookingCode='" + bookingCode + "'"
+                + ", userID=" + userID
+                + ", status='" + status + "'"
+                + ", finalAmount=" + finalAmount + "}";
     }
 }
