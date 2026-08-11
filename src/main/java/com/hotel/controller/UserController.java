@@ -59,15 +59,14 @@ public class UserController extends HttpServlet {
 
                 java.math.BigDecimal totalRevenue = java.math.BigDecimal.ZERO;
                 for (com.hotel.model.Booking b : bookingService.getAllBookings()) {
-                    if ("Paid".equals(b.getPaymentStatus()) || "CheckedOut".equals(b.getBookingStatus())) {
-                        totalRevenue = totalRevenue.add(b.getTotalAmount());
+                    if ("Đã trả phòng".equals(b.getStatus())) {
+                        totalRevenue = totalRevenue.add(b.getFinalAmount());
                     }
                 }
                 request.setAttribute("totalRevenue", totalRevenue);
 
                 request.getRequestDispatcher("/views/admin/dashboard.jsp").forward(request, response);
                 break;
-
             case "list":
             default:
                 if (currentUser == null || currentUser.getRoleID() != 1) {

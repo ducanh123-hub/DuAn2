@@ -4,84 +4,59 @@ import java.math.BigDecimal;
 
 public class BookingDetail {
 
-    private int bookingDetailID;
+    // Khớp đúng DB: Booking_Detail
+    private int detailID;        // DB: DetailID
     private int bookingID;
     private int roomID;
-    private BigDecimal roomPrice;
-    private int numberOfNights;
-    private BigDecimal subtotal;
+    private BigDecimal price;    // DB: Price (giá/đêm)
+    private int quantity;        // DB: Quantity (số đêm)
+    private BigDecimal discount; // DB: Discount
+    private BigDecimal totalPrice; // DB: TotalPrice
 
-    public BookingDetail() {
-    }
+    // Field phụ — JOIN với Room để hiển thị
+    private String roomName;
+    private String roomNumber;
 
-    public BookingDetail(int bookingDetailID, int bookingID, int roomID,
-                         BigDecimal roomPrice, int numberOfNights,
-                         BigDecimal subtotal) {
-        this.bookingDetailID = bookingDetailID;
-        this.bookingID = bookingID;
-        this.roomID = roomID;
-        this.roomPrice = roomPrice;
-        this.numberOfNights = numberOfNights;
-        this.subtotal = subtotal;
-    }
+    public BookingDetail() {}
 
-    public int getBookingDetailID() {
-        return bookingDetailID;
-    }
+    // Getters & Setters — DB fields
 
-    public void setBookingDetailID(int bookingDetailID) {
-        this.bookingDetailID = bookingDetailID;
-    }
+    public int getDetailID() { return detailID; }
+    public void setDetailID(int detailID) { this.detailID = detailID; }
 
-    public int getBookingID() {
-        return bookingID;
-    }
+    public int getBookingID() { return bookingID; }
+    public void setBookingID(int bookingID) { this.bookingID = bookingID; }
 
-    public void setBookingID(int bookingID) {
-        this.bookingID = bookingID;
-    }
+    public int getRoomID() { return roomID; }
+    public void setRoomID(int roomID) { this.roomID = roomID; }
 
-    public int getRoomID() {
-        return roomID;
-    }
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
 
-    public void setRoomID(int roomID) {
-        this.roomID = roomID;
-    }
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
 
-    public BigDecimal getRoomPrice() {
-        return roomPrice;
-    }
+    public BigDecimal getDiscount() { return discount; }
+    public void setDiscount(BigDecimal discount) { this.discount = discount; }
 
-    public void setRoomPrice(BigDecimal roomPrice) {
-        this.roomPrice = roomPrice;
-    }
+    public BigDecimal getTotalPrice() { return totalPrice; }
+    public void setTotalPrice(BigDecimal totalPrice) { this.totalPrice = totalPrice; }
 
-    public int getNumberOfNights() {
-        return numberOfNights;
-    }
+    // Getters & Setters — field phụ
 
-    public void setNumberOfNights(int numberOfNights) {
-        this.numberOfNights = numberOfNights;
-    }
+    public String getRoomName() { return roomName; }
+    public void setRoomName(String roomName) { this.roomName = roomName; }
 
-    public BigDecimal getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(BigDecimal subtotal) {
-        this.subtotal = subtotal;
-    }
+    public String getRoomNumber() { return roomNumber; }
+    public void setRoomNumber(String roomNumber) { this.roomNumber = roomNumber; }
 
     @Override
     public String toString() {
-        return "BookingDetail{" +
-                "bookingDetailID=" + bookingDetailID +
-                ", bookingID=" + bookingID +
-                ", roomID=" + roomID +
-                ", roomPrice=" + roomPrice +
-                ", numberOfNights=" + numberOfNights +
-                ", subtotal=" + subtotal +
-                '}';
+        return "BookingDetail{detailID=" + detailID
+                + ", bookingID=" + bookingID
+                + ", roomID=" + roomID
+                + ", price=" + price
+                + ", quantity=" + quantity
+                + ", totalPrice=" + totalPrice + "}";
     }
 }
