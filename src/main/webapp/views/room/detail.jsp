@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -11,9 +13,15 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/room.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/css/style.css">
+
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/css/room.css">
 
 </head>
 
@@ -27,7 +35,10 @@
 
         <div class="card-header bg-dark text-white">
 
-            <h3 class="mb-0"><i class="fa-solid fa-circle-info me-2"></i> Chi tiết phòng</h3>
+            <h3 class="mb-0">
+                <i class="fa-solid fa-circle-info me-2"></i>
+                Chi tiết phòng
+            </h3>
 
         </div>
 
@@ -68,9 +79,16 @@
                             <td>${room.categoryID}</td>
                         </tr>
 
+                        <!-- GIÁ PHÒNG -->
                         <tr>
                             <th>Giá</th>
-                            <td class="text-danger fw-bold">${room.price} VNĐ</td>
+                            <td class="text-danger fw-bold">
+                                <fmt:formatNumber
+                                        value="${room.price}"
+                                        type="number"
+                                        groupingUsed="true"
+                                        maxFractionDigits="0"/> VNĐ
+                            </td>
                         </tr>
 
                         <tr>
@@ -115,22 +133,35 @@
                     </table>
 
                     <div class="mt-4">
+
                         <a href="${pageContext.request.contextPath}/room"
                            class="btn btn-secondary me-2">
-                            <i class="fa-solid fa-arrow-left me-1"></i> Quay lại
+
+                            <i class="fa-solid fa-arrow-left me-1"></i>
+                            Quay lại
+
                         </a>
 
                         <a href="${pageContext.request.contextPath}/booking?roomId=${room.roomID}"
                            class="btn btn-success me-2">
-                            <i class="fa-solid fa-calendar-check me-1"></i> Đặt phòng ngay
+
+                            <i class="fa-solid fa-calendar-check me-1"></i>
+                            Đặt phòng ngay
+
                         </a>
 
                         <c:if test="${sessionScope.user != null && sessionScope.user.roleID == 1}">
+
                             <a href="${pageContext.request.contextPath}/room?action=edit&id=${room.roomID}"
                                class="btn btn-warning">
-                                <i class="fa-solid fa-pen-to-square me-1"></i> Chỉnh sửa
+
+                                <i class="fa-solid fa-pen-to-square me-1"></i>
+                                Chỉnh sửa
+
                             </a>
+
                         </c:if>
+
                     </div>
 
                 </div>

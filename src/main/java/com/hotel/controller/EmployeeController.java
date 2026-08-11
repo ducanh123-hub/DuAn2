@@ -1,5 +1,4 @@
 package com.hotel.controller;
 
-public class EmployeeController
-{
+public class EmployeeController {
 }
