@@ -1,27 +1,38 @@
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+
+<fmt:setLocale value="vi_VN"/>
 
 <!DOCTYPE html>
-<html>
+<html lang="vi">
+
 <head>
 
     <meta charset="UTF-8">
 
     <title>Đặt phòng - Luxury Hotel</title>
 
+    <!-- Bootstrap -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
 
+    <!-- Font Awesome -->
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
+    <!-- CSS chung -->
     <link
         rel="stylesheet"
         href="${pageContext.request.contextPath}/assets/css/style.css">
 
     <style>
+
+        /* =====================================================
+           THÔNG BÁO
+           ===================================================== */
 
         .success-box {
             border-left: 5px solid #198754;
@@ -32,18 +43,63 @@
             border-left: 5px solid #dc3545;
         }
 
+
+        /* =====================================================
+           GIÁ PHÒNG
+           ===================================================== */
+
+        .room-price {
+            color: #dc3545;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           TỔNG TIỀN
+           ===================================================== */
+
         #totalDisplay {
             min-width: 220px;
             text-align: right;
+            color: #dc3545;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           CARD
+           ===================================================== */
+
+        .card {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+
+        /* =====================================================
+           BUTTON
+           ===================================================== */
+
+        #submitButton {
+            min-width: 200px;
         }
 
     </style>
 
 </head>
 
+
 <body class="bg-light">
 
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
 <jsp:include page="../layout/header.jsp"/>
+
 
 <div class="container mt-5 mb-5">
 
@@ -53,7 +109,11 @@
 
             <div class="card shadow border-0">
 
-                <!-- HEADER -->
+
+                <!-- =================================================
+                     HEADER CARD
+                     ================================================= -->
+
                 <div class="card-header bg-dark text-white py-3">
 
                     <h4 class="mb-0">
@@ -66,11 +126,13 @@
 
                 </div>
 
+
                 <div class="card-body p-4">
 
-                    <!-- ================================================= -->
-                    <!-- THÔNG BÁO ĐẶT PHÒNG THÀNH CÔNG -->
-                    <!-- ================================================= -->
+
+                    <!-- =================================================
+                         THÔNG BÁO THÀNH CÔNG
+                         ================================================= -->
 
                     <c:if test="${success != null}">
 
@@ -86,15 +148,22 @@
 
                                 </div>
 
+
                                 <div>
 
                                     <h5 class="fw-bold mb-1">
+
                                         Đặt phòng thành công!
+
                                     </h5>
 
+
                                     <div>
+
                                         ${success}
+
                                     </div>
+
 
                                     <div class="mt-2">
 
@@ -102,7 +171,9 @@
                                             href="${pageContext.request.contextPath}/booking?action=history"
                                             class="btn btn-success btn-sm">
 
-                                            <i class="fa-solid fa-clock-rotate-left me-1"></i>
+                                            <i
+                                                class="fa-solid fa-clock-rotate-left me-1">
+                                            </i>
 
                                             Xem lịch sử đặt phòng
 
@@ -119,9 +190,9 @@
                     </c:if>
 
 
-                    <!-- ================================================= -->
-                    <!-- THÔNG BÁO LỖI -->
-                    <!-- ================================================= -->
+                    <!-- =================================================
+                         THÔNG BÁO LỖI
+                         ================================================= -->
 
                     <c:if test="${error != null}">
 
@@ -138,32 +209,39 @@
                     </c:if>
 
 
-                    <!-- ================================================= -->
-                    <!-- FORM ĐẶT PHÒNG -->
-                    <!-- ================================================= -->
+                    <!-- =================================================
+                         FORM ĐẶT PHÒNG
+                         ================================================= -->
 
                     <form
                         method="post"
                         action="${pageContext.request.contextPath}/booking"
                         id="bookingForm">
 
-                        <!-- Room ID -->
+
+                        <!-- ROOM ID -->
+
                         <input
                             type="hidden"
                             name="roomId"
                             value="${room.roomID}">
 
 
-                        <!-- ================================================= -->
-                        <!-- THÔNG TIN PHÒNG -->
-                        <!-- ================================================= -->
+                        <!-- =================================================
+                             THÔNG TIN PHÒNG
+                             ================================================= -->
 
                         <div class="row">
+
+
+                            <!-- TÊN PHÒNG -->
 
                             <div class="col-md-6 mb-3">
 
                                 <label class="form-label fw-bold">
+
                                     Tên phòng
+
                                 </label>
 
                                 <input
@@ -175,27 +253,43 @@
                             </div>
 
 
+                            <!-- GIÁ PHÒNG -->
+
                             <div class="col-md-6 mb-3">
 
                                 <label class="form-label fw-bold">
+
                                     Giá phòng / Đêm
+
                                 </label>
 
-                                <input
-                                    type="text"
-                                    id="roomPriceDisplay"
-                                    class="form-control bg-light text-danger fw-bold"
-                                    value="${room.price} VNĐ"
-                                    readonly>
+
+                                <div
+                                    class="form-control bg-light">
+
+                                    <span class="room-price">
+
+                                        <fmt:formatNumber
+                                            value="${room.price}"
+                                            type="number"
+                                            groupingUsed="true"
+                                            minFractionDigits="0"
+                                            maxFractionDigits="0"/>
+
+                                        VNĐ
+
+                                    </span>
+
+                                </div>
 
                             </div>
 
                         </div>
 
 
-                        <!-- ================================================= -->
-                        <!-- THÔNG TIN NGƯỜI ĐẶT -->
-                        <!-- ================================================= -->
+                        <!-- =================================================
+                             THÔNG TIN NGƯỜI ĐẶT
+                             ================================================= -->
 
                         <h5
                             class="fw-bold text-primary mt-3 mb-3 border-bottom pb-2">
@@ -209,10 +303,15 @@
 
                         <div class="row">
 
+
+                            <!-- HỌ TÊN -->
+
                             <div class="col-md-4 mb-3">
 
                                 <label class="form-label fw-bold">
+
                                     Họ và tên
+
                                 </label>
 
                                 <input
@@ -224,10 +323,14 @@
                             </div>
 
 
+                            <!-- SỐ ĐIỆN THOẠI -->
+
                             <div class="col-md-4 mb-3">
 
                                 <label class="form-label fw-bold">
+
                                     Số điện thoại
+
                                 </label>
 
                                 <input
@@ -239,10 +342,14 @@
                             </div>
 
 
+                            <!-- EMAIL -->
+
                             <div class="col-md-4 mb-3">
 
                                 <label class="form-label fw-bold">
+
                                     Email
+
                                 </label>
 
                                 <input
@@ -256,9 +363,9 @@
                         </div>
 
 
-                        <!-- ================================================= -->
-                        <!-- ĐẶT PHÒNG HỘ -->
-                        <!-- ================================================= -->
+                        <!-- =================================================
+                             ĐẶT PHÒNG HỘ
+                             ================================================= -->
 
                         <div class="form-check mb-4 mt-2">
 
@@ -269,11 +376,14 @@
                                 id="isBookingForOthers"
                                 onchange="toggleGuestFields()">
 
+
                             <label
                                 class="form-check-label fw-bold text-secondary"
                                 for="isBookingForOthers">
 
-                                <i class="fa-solid fa-user-friends me-1"></i>
+                                <i
+                                    class="fa-solid fa-user-friends me-1">
+                                </i>
 
                                 Tôi đặt phòng hộ cho người khác
 
@@ -282,13 +392,14 @@
                         </div>
 
 
-                        <!-- ================================================= -->
-                        <!-- THÔNG TIN KHÁCH LƯU TRÚ -->
-                        <!-- ================================================= -->
+                        <!-- =================================================
+                             THÔNG TIN KHÁCH LƯU TRÚ
+                             ================================================= -->
 
                         <div
                             id="guestFields"
                             class="p-3 bg-light border rounded mb-4 d-none">
+
 
                             <h6 class="fw-bold text-dark mb-3">
 
@@ -300,6 +411,9 @@
 
 
                             <div class="row">
+
+
+                                <!-- TÊN -->
 
                                 <div class="col-md-4 mb-2">
 
@@ -320,6 +434,8 @@
                                 </div>
 
 
+                                <!-- SĐT -->
+
                                 <div class="col-md-4 mb-2">
 
                                     <label
@@ -338,6 +454,8 @@
 
                                 </div>
 
+
+                                <!-- EMAIL -->
 
                                 <div class="col-md-4 mb-2">
 
@@ -362,9 +480,9 @@
                         </div>
 
 
-                        <!-- ================================================= -->
-                        <!-- NGÀY NHẬN / TRẢ -->
-                        <!-- ================================================= -->
+                        <!-- =================================================
+                             THỜI GIAN LƯU TRÚ
+                             ================================================= -->
 
                         <h5
                             class="fw-bold text-primary mt-3 mb-3 border-bottom pb-2">
@@ -378,10 +496,15 @@
 
                         <div class="row">
 
+
+                            <!-- CHECK IN -->
+
                             <div class="col-md-6 mb-3">
 
                                 <label class="form-label fw-bold">
+
                                     Ngày nhận phòng
+
                                 </label>
 
                                 <input
@@ -394,10 +517,14 @@
                             </div>
 
 
+                            <!-- CHECK OUT -->
+
                             <div class="col-md-6 mb-3">
 
                                 <label class="form-label fw-bold">
+
                                     Ngày trả phòng
+
                                 </label>
 
                                 <input
@@ -412,16 +539,21 @@
                         </div>
 
 
-                        <!-- ================================================= -->
-                        <!-- SỐ KHÁCH -->
-                        <!-- ================================================= -->
+                        <!-- =================================================
+                             SỐ KHÁCH
+                             ================================================= -->
 
                         <div class="row">
+
+
+                            <!-- NGƯỜI LỚN -->
 
                             <div class="col-md-6 mb-3">
 
                                 <label class="form-label fw-bold">
+
                                     Số lượng Người lớn
+
                                 </label>
 
                                 <input
@@ -437,10 +569,14 @@
                             </div>
 
 
+                            <!-- TRẺ EM -->
+
                             <div class="col-md-6 mb-3">
 
                                 <label class="form-label fw-bold">
+
                                     Số lượng Trẻ em
+
                                 </label>
 
                                 <input
@@ -458,9 +594,9 @@
                         </div>
 
 
-                        <!-- ================================================= -->
-                        <!-- GHI CHÚ -->
-                        <!-- ================================================= -->
+                        <!-- =================================================
+                             GHI CHÚ
+                             ================================================= -->
 
                         <div class="mb-4">
 
@@ -479,9 +615,9 @@
                         </div>
 
 
-                        <!-- ================================================= -->
-                        <!-- CHÍNH SÁCH -->
-                        <!-- ================================================= -->
+                        <!-- =================================================
+                             CHÍNH SÁCH
+                             ================================================= -->
 
                         <div class="alert alert-secondary p-3 small mb-4">
 
@@ -495,11 +631,15 @@
 
                             </h6>
 
+
                             <ul class="mb-0 ps-3 text-muted">
+
 
                                 <li>
 
-                                    <strong>Chính sách hủy phòng:</strong>
+                                    <strong>
+                                        Chính sách hủy phòng:
+                                    </strong>
 
                                     Hủy phòng miễn phí trước 24 giờ kể từ
                                     thời điểm nhận phòng.
@@ -508,18 +648,25 @@
 
                                 </li>
 
+
                                 <li>
 
-                                    <strong>Thời gian Check-in/out:</strong>
+                                    <strong>
+                                        Thời gian Check-in/out:
+                                    </strong>
 
                                     Nhận phòng sau 14:00 |
+
                                     Trả phòng trước 12:00 trưa hôm sau.
 
                                 </li>
 
+
                                 <li>
 
-                                    <strong>Quy định:</strong>
+                                    <strong>
+                                        Quy định:
+                                    </strong>
 
                                     Quý khách vui lòng xuất trình CCCD
                                     hoặc Hộ chiếu khi làm thủ tục nhận
@@ -532,12 +679,13 @@
                         </div>
 
 
-                        <!-- ================================================= -->
-                        <!-- TỔNG TIỀN -->
-                        <!-- ================================================= -->
+                        <!-- =================================================
+                             TỔNG TIỀN
+                             ================================================= -->
 
                         <div
                             class="p-3 rounded bg-danger bg-opacity-10 border border-danger border-opacity-20 d-flex justify-content-between align-items-center mb-4">
+
 
                             <h5 class="fw-bold text-danger mb-0">
 
@@ -546,47 +694,62 @@
                             </h5>
 
 
-                            <span
-                                id="totalDisplay"
-                                class="text-danger fw-bold fs-4">
+                            <span id="totalDisplay">
 
-                                ${room.price} VNĐ
+                                <fmt:formatNumber
+                                    value="${room.price}"
+                                    type="number"
+                                    groupingUsed="true"
+                                    minFractionDigits="0"
+                                    maxFractionDigits="0"/>
+
+                                VNĐ
 
                             </span>
 
                         </div>
 
 
-                        <!-- ================================================= -->
-                        <!-- NÚT -->
-                        <!-- ================================================= -->
+                        <!-- =================================================
+                             NÚT
+                             ================================================= -->
 
                         <div
                             class="d-flex justify-content-between mt-4">
+
+
+                            <!-- QUAY LẠI -->
 
                             <a
                                 href="${pageContext.request.contextPath}/room?action=detail&id=${room.roomID}"
                                 class="btn btn-secondary">
 
-                                <i class="fa-solid fa-arrow-left me-1"></i>
+                                <i
+                                    class="fa-solid fa-arrow-left me-1">
+                                </i>
 
                                 Quay lại
 
                             </a>
 
 
+                            <!-- XÁC NHẬN -->
+
                             <button
                                 type="submit"
                                 id="submitButton"
                                 class="btn btn-success px-4 fw-bold">
 
-                                <i class="fa-solid fa-circle-check me-1"></i>
+                                <i
+                                    class="fa-solid fa-circle-check me-1">
+                                </i>
 
                                 Xác nhận đặt phòng
 
                             </button>
 
                         </div>
+
 
                     </form>
 
@@ -601,51 +764,70 @@
 </div>
 
 
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
 <jsp:include page="../layout/footer.jsp"/>
 
 
 <script>
 
+/* ============================================================
+   XỬ LÝ FORM ĐẶT PHÒNG
+   ============================================================ */
+
 document.addEventListener("DOMContentLoaded", function () {
+
 
     const checkInInput =
         document.getElementById("checkIn");
 
+
     const checkOutInput =
         document.getElementById("checkOut");
+
 
     const totalDisplay =
         document.getElementById("totalDisplay");
 
+
     const bookingForm =
         document.getElementById("bookingForm");
+
 
     const submitButton =
         document.getElementById("submitButton");
 
 
-    // ============================================================
-    // GIÁ PHÒNG
-    // ============================================================
+    /* ========================================================
+       GIÁ PHÒNG GỐC
+       ======================================================== */
 
     const basePrice =
         Number("${room.price}");
 
 
-    // ============================================================
-    // NGÀY HÔM NAY
-    // ============================================================
+    /* ========================================================
+       NGÀY HÔM NAY
+       ======================================================== */
 
     const now = new Date();
+
 
     const year =
         now.getFullYear();
 
+
     const month =
-        String(now.getMonth() + 1).padStart(2, "0");
+        String(now.getMonth() + 1)
+            .padStart(2, "0");
+
 
     const day =
-        String(now.getDate()).padStart(2, "0");
+        String(now.getDate())
+            .padStart(2, "0");
+
 
     const today =
         year + "-" + month + "-" + day;
@@ -654,9 +836,9 @@ document.addEventListener("DOMContentLoaded", function () {
     checkInInput.min = today;
 
 
-    // ============================================================
-    // FORMAT TIỀN
-    // ============================================================
+    /* ========================================================
+       FORMAT TIỀN
+       ======================================================== */
 
     function formatMoney(amount) {
 
@@ -666,16 +848,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // ============================================================
-    // TÍNH TỔNG TIỀN - CHỈ DÙNG ĐỂ HIỂN THỊ
-    //
-    // Server vẫn tự tính lại khi submit.
-    // ============================================================
+    /* ========================================================
+       TÍNH TỔNG TIỀN
+       ======================================================== */
 
     function calculateTotal() {
 
-        if (!checkInInput.value
-                || !checkOutInput.value) {
+
+        if (
+            !checkInInput.value ||
+            !checkOutInput.value
+        ) {
 
             totalDisplay.textContent =
                 formatMoney(basePrice);
@@ -690,6 +873,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 checkInInput.value + "T00:00:00"
             );
 
+
         const checkOutDate =
             new Date(
                 checkOutInput.value + "T00:00:00"
@@ -703,11 +887,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const nights =
             Math.round(
-                timeDiff / (1000 * 60 * 60 * 24)
+                timeDiff /
+                (1000 * 60 * 60 * 24)
             );
 
 
         if (nights > 0) {
+
 
             const totalAmount =
                 nights * basePrice;
@@ -716,7 +902,9 @@ document.addEventListener("DOMContentLoaded", function () {
             totalDisplay.textContent =
                 formatMoney(totalAmount);
 
+
         } else {
+
 
             totalDisplay.textContent =
                 formatMoney(basePrice);
@@ -726,15 +914,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // ============================================================
-    // CHỌN NGÀY NHẬN
-    // ============================================================
+    /* ========================================================
+       CHỌN NGÀY NHẬN
+       ======================================================== */
 
     checkInInput.addEventListener(
         "change",
         function () {
 
+
             if (checkInInput.value) {
+
 
                 const nextDay =
                     new Date(
@@ -751,10 +941,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 const nextYear =
                     nextDay.getFullYear();
 
+
                 const nextMonth =
                     String(
                         nextDay.getMonth() + 1
                     ).padStart(2, "0");
+
 
                 const nextDate =
                     String(
@@ -770,10 +962,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     + nextDate;
 
 
-                // Nếu ngày trả hiện tại nhỏ hơn ngày nhận
-                if (checkOutInput.value
-                        && checkOutInput.value
-                        <= checkInInput.value) {
+                /* --------------------------------------------
+                   Nếu ngày trả không hợp lệ thì xóa
+                   -------------------------------------------- */
+
+                if (
+                    checkOutInput.value &&
+                    checkOutInput.value
+                    <= checkInInput.value
+                ) {
 
                     checkOutInput.value = "";
 
@@ -788,22 +985,27 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
-    // ============================================================
-    // CHỌN NGÀY TRẢ
-    // ============================================================
+    /* ========================================================
+       CHỌN NGÀY TRẢ
+       ======================================================== */
 
     checkOutInput.addEventListener(
         "change",
         function () {
 
-            if (checkInInput.value
-                    && checkOutInput.value) {
+
+            if (
+                checkInInput.value &&
+                checkOutInput.value
+            ) {
+
 
                 const checkInDate =
                     new Date(
                         checkInInput.value
                         + "T00:00:00"
                     );
+
 
                 const checkOutDate =
                     new Date(
@@ -812,15 +1014,21 @@ document.addEventListener("DOMContentLoaded", function () {
                     );
 
 
-                if (checkOutDate <= checkInDate) {
+                if (
+                    checkOutDate <= checkInDate
+                ) {
+
 
                     alert(
                         "Ngày trả phòng phải sau ngày nhận phòng ít nhất 1 ngày!"
                     );
 
+
                     checkOutInput.value = "";
 
+
                     calculateTotal();
+
 
                     return;
 
@@ -835,15 +1043,17 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
-    // ============================================================
-    // CHỐNG BẤM NÚT 2 LẦN
-    // ============================================================
+    /* ========================================================
+       CHỐNG BẤM NÚT 2 LẦN
+       ======================================================== */
 
     bookingForm.addEventListener(
         "submit",
         function () {
 
+
             submitButton.disabled = true;
+
 
             submitButton.innerHTML =
                 '<i class="fa-solid fa-spinner fa-spin me-1"></i>'
@@ -853,17 +1063,21 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
-    // Hiển thị tổng tiền ban đầu
+    /* ========================================================
+       HIỂN THỊ TỔNG TIỀN BAN ĐẦU
+       ======================================================== */
+
     calculateTotal();
 
 });
 
 
-// ================================================================
-// ĐẶT PHÒNG HỘ
-// ================================================================
+/* ================================================================
+   ĐẶT PHÒNG HỘ
+   ================================================================ */
 
 function toggleGuestFields() {
+
 
     const checkbox =
         document.getElementById(
@@ -897,6 +1111,7 @@ function toggleGuestFields() {
 
     if (checkbox.checked) {
 
+
         guestFields.classList.remove(
             "d-none"
         );
@@ -904,9 +1119,12 @@ function toggleGuestFields() {
 
         guestName.required = true;
 
+
         guestPhone.required = true;
 
+
     } else {
+
 
         guestFields.classList.add(
             "d-none"
@@ -915,12 +1133,15 @@ function toggleGuestFields() {
 
         guestName.required = false;
 
+
         guestPhone.required = false;
 
 
         guestName.value = "";
 
+
         guestPhone.value = "";
+
 
         guestEmail.value = "";
 
@@ -930,5 +1151,7 @@ function toggleGuestFields() {
 
 </script>
 
+
 </body>
+
 </html>

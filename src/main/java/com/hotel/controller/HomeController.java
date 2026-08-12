@@ -17,19 +17,153 @@ public class HomeController extends HttpServlet {
 
     private final RoomService roomService = new RoomService();
 
+
+    // =====================================================
+    // CẤU HÌNH PHÂN TRANG
+    // =====================================================
+
+    private static final int ROOMS_PER_PAGE = 7;
+
+
+    // =====================================================
+    // DO GET
+    // =====================================================
+
     @Override
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws ServletException, IOException {
 
-        // Lấy danh sách phòng từ database
-        List<Room> roomList = roomService.getAllRooms();
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
 
-        // Đưa danh sách phòng sang JSP
-        request.setAttribute("roomList", roomList);
 
-        // Hiển thị trang chủ
-        request.getRequestDispatcher("/views/home/index.jsp")
-                .forward(request, response);
+        // =================================================
+        // LẤY PAGE
+        // =================================================
+
+        int currentPage = 1;
+
+        String pageParam =
+                request.getParameter("page");
+
+
+        if (pageParam != null
+                && !pageParam.trim().isEmpty()) {
+
+            try {
+
+                currentPage =
+                        Integer.parseInt(
+                                pageParam.trim()
+                        );
+
+            } catch (NumberFormatException e) {
+
+                currentPage = 1;
+            }
+        }
+
+
+        // Không cho page < 1
+
+        if (currentPage < 1) {
+
+            currentPage = 1;
+        }
+
+
+        // =================================================
+        // ĐẾM PHÒNG CÒN TRỐNG
+        // =================================================
+
+        int totalRooms =
+                roomService.countAvailableRooms();
+
+
+        // =================================================
+        // TÍNH TỔNG SỐ TRANG
+        // =================================================
+
+        int totalPages;
+
+        if (totalRooms == 0) {
+
+            totalPages = 1;
+
+        } else {
+
+            totalPages =
+                    (int) Math.ceil(
+                            (double) totalRooms
+                                    / ROOMS_PER_PAGE
+                    );
+        }
+
+
+        // =================================================
+        // PAGE KHÔNG ĐƯỢC VƯỢT QUÁ TOTAL PAGE
+        // =================================================
+
+        if (currentPage > totalPages) {
+
+            currentPage = totalPages;
+        }
+
+
+        // =================================================
+        // LẤY PHÒNG CỦA TRANG HIỆN TẠI
+        //
+        // MỖI TRANG 7 PHÒNG
+        // =================================================
+
+        List<Room> roomList =
+                roomService.getAvailableRooms(
+                        currentPage,
+                        ROOMS_PER_PAGE
+                );
+
+
+        // =================================================
+        // GỬI SANG JSP
+        // =================================================
+
+        request.setAttribute(
+                "roomList",
+                roomList
+        );
+
+        request.setAttribute(
+                "currentPage",
+                currentPage
+        );
+
+        request.setAttribute(
+                "totalPages",
+                totalPages
+        );
+
+        request.setAttribute(
+                "totalRooms",
+                totalRooms
+        );
+
+        request.setAttribute(
+                "roomsPerPage",
+                ROOMS_PER_PAGE
+        );
+
+
+        // =================================================
+        // HIỂN THỊ HOME
+        // =================================================
+
+        request.getRequestDispatcher(
+                "/views/home/index.jsp"
+        ).forward(
+                request,
+                response
+        );
     }
 }

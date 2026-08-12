@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,19 @@ public class RoomDAO implements BaseDAO<Room> {
         List<Room> list = new ArrayList<>();
 
         String sql = """
-                SELECT *
+                SELECT
+                    RoomID,
+                    CategoryID,
+                    RoomNumber,
+                    RoomName,
+                    Price,
+                    Acreage,
+                    Bed,
+                    Area,
+                    Description,
+                    Status,
+                    CreatedAt,
+                    UpdatedAt
                 FROM Room
                 ORDER BY RoomID DESC
                 """;
@@ -34,20 +47,15 @@ public class RoomDAO implements BaseDAO<Room> {
         ) {
 
             while (rs.next()) {
-
                 list.add(mapRoom(rs));
-
             }
 
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
 
         return list;
     }
-
 
     // =========================================================
     // GET BY ID
@@ -57,7 +65,19 @@ public class RoomDAO implements BaseDAO<Room> {
     public Room getById(int id) {
 
         String sql = """
-                SELECT *
+                SELECT
+                    RoomID,
+                    CategoryID,
+                    RoomNumber,
+                    RoomName,
+                    Price,
+                    Acreage,
+                    Bed,
+                    Area,
+                    Description,
+                    Status,
+                    CreatedAt,
+                    UpdatedAt
                 FROM Room
                 WHERE RoomID = ?
                 """;
@@ -72,22 +92,16 @@ public class RoomDAO implements BaseDAO<Room> {
             try (ResultSet rs = ps.executeQuery()) {
 
                 if (rs.next()) {
-
                     return mapRoom(rs);
-
                 }
-
             }
 
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
 
         return null;
     }
-
 
     // =========================================================
     // INSERT
@@ -95,6 +109,10 @@ public class RoomDAO implements BaseDAO<Room> {
 
     @Override
     public boolean insert(Room room) {
+
+        if (room == null) {
+            return false;
+        }
 
         String sql = """
                 INSERT INTO Room
@@ -130,14 +148,11 @@ public class RoomDAO implements BaseDAO<Room> {
             return ps.executeUpdate() > 0;
 
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
 
         return false;
     }
-
 
     // =========================================================
     // UPDATE
@@ -145,6 +160,10 @@ public class RoomDAO implements BaseDAO<Room> {
 
     @Override
     public boolean update(Room room) {
+
+        if (room == null) {
+            return false;
+        }
 
         String sql = """
                 UPDATE Room
@@ -181,14 +200,11 @@ public class RoomDAO implements BaseDAO<Room> {
             return ps.executeUpdate() > 0;
 
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
 
         return false;
     }
-
 
     // =========================================================
     // DELETE
@@ -212,14 +228,11 @@ public class RoomDAO implements BaseDAO<Room> {
             return ps.executeUpdate() > 0;
 
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
 
         return false;
     }
-
 
     // =========================================================
     // SEARCH CŨ
@@ -229,8 +242,26 @@ public class RoomDAO implements BaseDAO<Room> {
 
         List<Room> list = new ArrayList<>();
 
+        if (keyword == null) {
+            keyword = "";
+        }
+
+        keyword = keyword.trim();
+
         String sql = """
-                SELECT r.*
+                SELECT
+                    r.RoomID,
+                    r.CategoryID,
+                    r.RoomNumber,
+                    r.RoomName,
+                    r.Price,
+                    r.Acreage,
+                    r.Bed,
+                    r.Area,
+                    r.Description,
+                    r.Status,
+                    r.CreatedAt,
+                    r.UpdatedAt
                 FROM Room r
                 INNER JOIN Room_Category rc
                     ON r.CategoryID = rc.CategoryID
@@ -241,12 +272,12 @@ public class RoomDAO implements BaseDAO<Room> {
                 ORDER BY r.RoomID DESC
                 """;
 
+        String search = "%" + keyword + "%";
+
         try (
                 Connection con = DBConnect.getConnection();
                 PreparedStatement ps = con.prepareStatement(sql)
         ) {
-
-            String search = "%" + keyword + "%";
 
             ps.setString(1, search);
             ps.setString(2, search);
@@ -255,31 +286,20 @@ public class RoomDAO implements BaseDAO<Room> {
             try (ResultSet rs = ps.executeQuery()) {
 
                 while (rs.next()) {
-
                     list.add(mapRoom(rs));
-
                 }
-
             }
 
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
 
         return list;
     }
 
-
     // =========================================================
     // SEARCH + FILTER
-    //
-    // keyword
-    // minPrice
-    // maxPrice
-    // people
-    // sortPrice
+    // CÓ PHÂN TRANG
     // =========================================================
 
     public List<Room> searchRooms(
@@ -287,25 +307,47 @@ public class RoomDAO implements BaseDAO<Room> {
             BigDecimal minPrice,
             BigDecimal maxPrice,
             Integer people,
-            String sortPrice
+            String sortPrice,
+            int page,
+            int pageSize
     ) {
 
         List<Room> list = new ArrayList<>();
 
+        if (page < 1) {
+            page = 1;
+        }
+
+        if (pageSize <= 0) {
+            pageSize = 6;
+        }
+
+        int offset = (page - 1) * pageSize;
+
         StringBuilder sql = new StringBuilder("""
-                SELECT r.*
+                SELECT
+                    r.RoomID,
+                    r.CategoryID,
+                    r.RoomNumber,
+                    r.RoomName,
+                    r.Price,
+                    r.Acreage,
+                    r.Bed,
+                    r.Area,
+                    r.Description,
+                    r.Status,
+                    r.CreatedAt,
+                    r.UpdatedAt
                 FROM Room r
                 INNER JOIN Room_Category rc
                     ON r.CategoryID = rc.CategoryID
                 WHERE 1 = 1
                 """);
 
-
         List<Object> params = new ArrayList<>();
 
-
         // =====================================================
-        // TỪ KHÓA
+        // KEYWORD
         // =====================================================
 
         if (keyword != null && !keyword.trim().isEmpty()) {
@@ -325,12 +367,12 @@ public class RoomDAO implements BaseDAO<Room> {
             params.add(search);
         }
 
-
         // =====================================================
-        // GIÁ TỪ
+        // MIN PRICE
         // =====================================================
 
-        if (minPrice != null) {
+        if (minPrice != null
+                && minPrice.compareTo(BigDecimal.ZERO) >= 0) {
 
             sql.append("""
                     AND r.Price >= ?
@@ -339,12 +381,12 @@ public class RoomDAO implements BaseDAO<Room> {
             params.add(minPrice);
         }
 
-
         // =====================================================
-        // GIÁ ĐẾN
+        // MAX PRICE
         // =====================================================
 
-        if (maxPrice != null) {
+        if (maxPrice != null
+                && maxPrice.compareTo(BigDecimal.ZERO) >= 0) {
 
             sql.append("""
                     AND r.Price <= ?
@@ -353,14 +395,8 @@ public class RoomDAO implements BaseDAO<Room> {
             params.add(maxPrice);
         }
 
-
         // =====================================================
-        // SỐ NGƯỜI
-        //
-        // Ví dụ:
-        // people = 2
-        //
-        // → lấy phòng có MaxPeople >= 2
+        // PEOPLE
         // =====================================================
 
         if (people != null && people > 0) {
@@ -372,7 +408,6 @@ public class RoomDAO implements BaseDAO<Room> {
             params.add(people);
         }
 
-
         // =====================================================
         // CHỈ LẤY PHÒNG CÒN TRỐNG
         // =====================================================
@@ -381,21 +416,20 @@ public class RoomDAO implements BaseDAO<Room> {
                 AND r.Status = N'Còn trống'
                 """);
 
-
         // =====================================================
-        // SẮP XẾP GIÁ
+        // SORT
         // =====================================================
 
         if ("asc".equalsIgnoreCase(sortPrice)) {
 
             sql.append("""
-                    ORDER BY r.Price ASC
+                    ORDER BY r.Price ASC, r.RoomID DESC
                     """);
 
         } else if ("desc".equalsIgnoreCase(sortPrice)) {
 
             sql.append("""
-                    ORDER BY r.Price DESC
+                    ORDER BY r.Price DESC, r.RoomID DESC
                     """);
 
         } else {
@@ -405,14 +439,17 @@ public class RoomDAO implements BaseDAO<Room> {
                     """);
         }
 
-
         // =====================================================
-        // DEBUG SQL
+        // PAGINATION
         // =====================================================
 
-        System.out.println("SEARCH SQL:");
-        System.out.println(sql);
+        sql.append("""
+                OFFSET ? ROWS
+                FETCH NEXT ? ROWS ONLY
+                """);
 
+        params.add(offset);
+        params.add(pageSize);
 
         // =====================================================
         // EXECUTE
@@ -424,7 +461,6 @@ public class RoomDAO implements BaseDAO<Room> {
                         con.prepareStatement(sql.toString())
         ) {
 
-            // Gán parameter
             for (int i = 0; i < params.size(); i++) {
 
                 Object value = params.get(i);
@@ -452,26 +488,147 @@ public class RoomDAO implements BaseDAO<Room> {
                 }
             }
 
-
             try (ResultSet rs = ps.executeQuery()) {
 
                 while (rs.next()) {
-
                     list.add(mapRoom(rs));
-
                 }
-
             }
 
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
 
         return list;
     }
 
+    // =========================================================
+    // COUNT SEARCH + FILTER
+    // =========================================================
+
+    public int countSearchRooms(
+            String keyword,
+            BigDecimal minPrice,
+            BigDecimal maxPrice,
+            Integer people
+    ) {
+
+        StringBuilder sql = new StringBuilder("""
+                SELECT COUNT(*)
+                FROM Room r
+                INNER JOIN Room_Category rc
+                    ON r.CategoryID = rc.CategoryID
+                WHERE 1 = 1
+                """);
+
+        List<Object> params = new ArrayList<>();
+
+        // KEYWORD
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+
+            sql.append("""
+                    AND (
+                        r.RoomName LIKE ?
+                        OR r.RoomNumber LIKE ?
+                        OR rc.CategoryName LIKE ?
+                    )
+                    """);
+
+            String search = "%" + keyword.trim() + "%";
+
+            params.add(search);
+            params.add(search);
+            params.add(search);
+        }
+
+        // MIN PRICE
+
+        if (minPrice != null
+                && minPrice.compareTo(BigDecimal.ZERO) >= 0) {
+
+            sql.append("""
+                    AND r.Price >= ?
+                    """);
+
+            params.add(minPrice);
+        }
+
+        // MAX PRICE
+
+        if (maxPrice != null
+                && maxPrice.compareTo(BigDecimal.ZERO) >= 0) {
+
+            sql.append("""
+                    AND r.Price <= ?
+                    """);
+
+            params.add(maxPrice);
+        }
+
+        // PEOPLE
+
+        if (people != null && people > 0) {
+
+            sql.append("""
+                    AND rc.MaxPeople >= ?
+                    """);
+
+            params.add(people);
+        }
+
+        // AVAILABLE
+
+        sql.append("""
+                AND r.Status = N'Còn trống'
+                """);
+
+        try (
+                Connection con = DBConnect.getConnection();
+                PreparedStatement ps =
+                        con.prepareStatement(sql.toString())
+        ) {
+
+            for (int i = 0; i < params.size(); i++) {
+
+                Object value = params.get(i);
+
+                if (value instanceof BigDecimal) {
+
+                    ps.setBigDecimal(
+                            i + 1,
+                            (BigDecimal) value
+                    );
+
+                } else if (value instanceof Integer) {
+
+                    ps.setInt(
+                            i + 1,
+                            (Integer) value
+                    );
+
+                } else {
+
+                    ps.setString(
+                            i + 1,
+                            String.valueOf(value)
+                    );
+                }
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
 
     // =========================================================
     // GET BY CATEGORY
@@ -482,7 +639,19 @@ public class RoomDAO implements BaseDAO<Room> {
         List<Room> list = new ArrayList<>();
 
         String sql = """
-                SELECT *
+                SELECT
+                    RoomID,
+                    CategoryID,
+                    RoomNumber,
+                    RoomName,
+                    Price,
+                    Acreage,
+                    Bed,
+                    Area,
+                    Description,
+                    Status,
+                    CreatedAt,
+                    UpdatedAt
                 FROM Room
                 WHERE CategoryID = ?
                 ORDER BY RoomID DESC
@@ -498,22 +667,16 @@ public class RoomDAO implements BaseDAO<Room> {
             try (ResultSet rs = ps.executeQuery()) {
 
                 while (rs.next()) {
-
                     list.add(mapRoom(rs));
-
                 }
-
             }
 
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
 
         return list;
     }
-
 
     // =========================================================
     // GET AVAILABLE ROOMS
@@ -524,7 +687,19 @@ public class RoomDAO implements BaseDAO<Room> {
         List<Room> list = new ArrayList<>();
 
         String sql = """
-                SELECT *
+                SELECT
+                    RoomID,
+                    CategoryID,
+                    RoomNumber,
+                    RoomName,
+                    Price,
+                    Acreage,
+                    Bed,
+                    Area,
+                    Description,
+                    Status,
+                    CreatedAt,
+                    UpdatedAt
                 FROM Room
                 WHERE Status = N'Còn trống'
                 ORDER BY RoomID DESC
@@ -537,23 +712,82 @@ public class RoomDAO implements BaseDAO<Room> {
         ) {
 
             while (rs.next()) {
-
                 list.add(mapRoom(rs));
-
             }
 
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
 
         return list;
     }
 
+    // =========================================================
+    // GET AVAILABLE ROOMS - PAGINATION
+    // =========================================================
+
+    public List<Room> getAvailableRooms(
+            int page,
+            int pageSize
+    ) {
+
+        List<Room> list = new ArrayList<>();
+
+        if (page < 1) {
+            page = 1;
+        }
+
+        if (pageSize <= 0) {
+            pageSize = 6;
+        }
+
+        int offset = (page - 1) * pageSize;
+
+        String sql = """
+                SELECT
+                    RoomID,
+                    CategoryID,
+                    RoomNumber,
+                    RoomName,
+                    Price,
+                    Acreage,
+                    Bed,
+                    Area,
+                    Description,
+                    Status,
+                    CreatedAt,
+                    UpdatedAt
+                FROM Room
+                WHERE Status = N'Còn trống'
+                ORDER BY RoomID DESC
+                OFFSET ? ROWS
+                FETCH NEXT ? ROWS ONLY
+                """;
+
+        try (
+                Connection con = DBConnect.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+
+            ps.setInt(1, offset);
+            ps.setInt(2, pageSize);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+                    list.add(mapRoom(rs));
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
 
     // =========================================================
-    // COUNT ROOM
+    // COUNT ALL ROOMS
     // =========================================================
 
     public int countRoom() {
@@ -570,20 +804,44 @@ public class RoomDAO implements BaseDAO<Room> {
         ) {
 
             if (rs.next()) {
-
                 return rs.getInt(1);
-
             }
 
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
 
         return 0;
     }
 
+    // =========================================================
+    // COUNT AVAILABLE ROOMS
+    // =========================================================
+
+    public int countAvailableRooms() {
+
+        String sql = """
+                SELECT COUNT(*)
+                FROM Room
+                WHERE Status = N'Còn trống'
+                """;
+
+        try (
+                Connection con = DBConnect.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()
+        ) {
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
 
     // =========================================================
     // FIND BY ROOM NUMBER
@@ -591,8 +849,26 @@ public class RoomDAO implements BaseDAO<Room> {
 
     public Room findByRoomNumber(String roomNumber) {
 
+        if (roomNumber == null
+                || roomNumber.trim().isEmpty()) {
+
+            return null;
+        }
+
         String sql = """
-                SELECT *
+                SELECT
+                    RoomID,
+                    CategoryID,
+                    RoomNumber,
+                    RoomName,
+                    Price,
+                    Acreage,
+                    Bed,
+                    Area,
+                    Description,
+                    Status,
+                    CreatedAt,
+                    UpdatedAt
                 FROM Room
                 WHERE RoomNumber = ?
                 """;
@@ -602,33 +878,30 @@ public class RoomDAO implements BaseDAO<Room> {
                 PreparedStatement ps = con.prepareStatement(sql)
         ) {
 
-            ps.setString(1, roomNumber);
+            ps.setString(
+                    1,
+                    roomNumber.trim()
+            );
 
             try (ResultSet rs = ps.executeQuery()) {
 
                 if (rs.next()) {
-
                     return mapRoom(rs);
-
                 }
-
             }
 
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
 
         return null;
     }
 
-
     // =========================================================
     // MAP RESULTSET -> ROOM
     // =========================================================
 
-    private Room mapRoom(ResultSet rs) throws Exception {
+    private Room mapRoom(ResultSet rs) throws SQLException {
 
         Room room = new Room();
 

@@ -1,102 +1,698 @@
-/* Hero Banner Section */
+/* =====================================================
+   HOME PAGE - LUXURY HOTEL
+===================================================== */
+
+
+/* =====================================================
+   HERO BANNER
+===================================================== */
+
 .hero-banner {
     position: relative;
-    background: linear-gradient(rgba(12, 26, 48, 0.7), rgba(22, 42, 74, 0.7)), 
-                url('../images/hero-bg.jpg') no-repeat center center;
+
+    background:
+            linear-gradient(
+                    rgba(12, 26, 48, 0.70),
+                    rgba(22, 42, 74, 0.70)
+            );
+
     background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+
     height: 70vh;
+    min-height: 450px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     color: #ffffff;
     text-align: center;
+
     margin-bottom: 50px;
+
+    overflow: hidden;
 }
+
+
+/* =====================================================
+   HERO TITLE
+===================================================== */
 
 .hero-title {
     font-size: 3.5rem;
+
     font-weight: 800;
+
     text-transform: uppercase;
+
     letter-spacing: 2px;
+
     margin-bottom: 20px;
-    text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+
+    text-shadow:
+            0 4px 10px rgba(0, 0, 0, 0.3);
 }
+
+
+/* =====================================================
+   HERO SUBTITLE
+===================================================== */
 
 .hero-subtitle {
     font-size: 1.5rem;
+
     color: #d4af37;
+
     font-weight: 500;
+
     margin-bottom: 30px;
-    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+
+    text-shadow:
+            0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* Home Page Search Filters Card */
+
+/* =====================================================
+   SEARCH FILTER BOX
+===================================================== */
+
 .search-filter-box {
     background: #ffffff;
+
     border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(12, 26, 48, 0.08);
+
+    box-shadow:
+            0 10px 30px rgba(12, 26, 48, 0.08);
+
     padding: 30px;
+
     margin-top: -80px;
+
     position: relative;
+
     z-index: 10;
+
     border-top: 5px solid #d4af37;
 }
 
-/* Featured Rooms Section */
+
+/* =====================================================
+   SECTION TITLE
+===================================================== */
+
 .section-title {
     font-weight: 800;
+
     color: #0c1a30;
+
     text-transform: uppercase;
+
     letter-spacing: 1px;
+
     margin-bottom: 35px;
+
     position: relative;
 }
 
+
 .section-title::after {
     content: '';
+
     display: block;
+
     width: 60px;
+
     height: 4px;
+
     background: #d4af37;
+
     margin-top: 10px;
+
     border-radius: 2px;
 }
 
-/* General Card override on Home */
+
+/* =====================================================
+   HOME ROOM LIST
+===================================================== */
+
+.home-room-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+
+    margin-top: 25px;
+}
+
+
+/* =====================================================
+   ROOM CARD
+===================================================== */
+
+.home-room-card {
+    display: flex;
+
+    width: 100%;
+
+    min-height: 280px;
+
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    border: 1px solid #eeeeee;
+
+    box-shadow:
+            0 2px 8px rgba(0, 0, 0, 0.10);
+
+    transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease;
+}
+
+
+.home-room-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+            0 8px 20px rgba(0, 0, 0, 0.16);
+}
+
+
+/* =====================================================
+   ROOM IMAGE BOX
+===================================================== */
+
+.home-room-image-box {
+    width: 285px;
+
+    min-width: 285px;
+
+    height: 280px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background: #eeeeee;
+}
+
+
+/* =====================================================
+   ROOM IMAGE
+===================================================== */
+
+.home-room-image {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    object-position: center;
+
+    display: block;
+
+    transition:
+            transform 0.4s ease;
+}
+
+
+/* Hiệu ứng khi rê chuột vào phòng */
+
+.home-room-card:hover .home-room-image {
+    transform: scale(1.04);
+}
+
+
+/* =====================================================
+   ROOM STATUS
+===================================================== */
+
+.home-room-status {
+    position: absolute;
+
+    top: 15px;
+
+    right: 15px;
+
+    padding: 9px 15px;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    box-shadow:
+            0 2px 6px rgba(0, 0, 0, 0.25);
+
+    z-index: 2;
+}
+
+
+/* Còn trống */
+
+.home-room-status.available {
+    background: #212529;
+
+    color: #ffc107;
+}
+
+
+/* Đang có khách */
+
+.home-room-status.occupied {
+    background: #dc3545;
+
+    color: #ffffff;
+}
+
+
+/* Bảo trì */
+
+.home-room-status.maintenance {
+    background: #ffc107;
+
+    color: #212529;
+}
+
+
+/* =====================================================
+   ROOM CONTENT
+===================================================== */
+
+.home-room-content {
+    flex: 1;
+
+    padding: 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+
+/* =====================================================
+   ROOM TITLE
+===================================================== */
+
+.home-room-title {
+    font-size: 21px;
+
+    font-weight: 700;
+
+    color: #0d6efd;
+
+    margin-bottom: 8px;
+}
+
+
+/* =====================================================
+   ROOM DESCRIPTION
+===================================================== */
+
+.home-room-description {
+    color: #777777;
+
+    font-size: 14px;
+
+    margin-bottom: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   ROOM INFORMATION
+===================================================== */
+
+.home-room-info {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-bottom: 12px;
+}
+
+
+.home-room-info span {
+    background: #f5f6f7;
+
+    border: 1px solid #e4e7ea;
+
+    border-radius: 5px;
+
+    padding: 5px 9px;
+
+    font-size: 13px;
+
+    color: #333333;
+
+    font-weight: 600;
+}
+
+
+.home-room-info i {
+    margin-right: 4px;
+
+    color: #343a40;
+}
+
+
+/* =====================================================
+   ROOM LINE
+===================================================== */
+
+.home-room-line {
+    height: 1px;
+
+    background: #e5e5e5;
+
+    margin-top: auto;
+
+    margin-bottom: 15px;
+}
+
+
+/* =====================================================
+   ROOM PRICE + BUTTON
+===================================================== */
+
+.home-room-bottom {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+
+.home-room-price small {
+    display: block;
+
+    color: #777777;
+
+    font-size: 14px;
+
+    margin-bottom: 3px;
+}
+
+
+.home-room-price strong {
+    display: block;
+
+    color: #f44336;
+
+    font-size: 19px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* =====================================================
+   BOOK BUTTON
+===================================================== */
+
+.home-btn-book {
+    background: #0d9bea;
+
+    color: #ffffff;
+
+    border: none;
+
+    border-radius: 25px;
+
+    padding: 11px 25px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition: all 0.2s ease;
+}
+
+
+.home-btn-book:hover {
+    background: #087fc2;
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   CARD HOME - NẾU TRANG KHÁC ĐANG DÙNG
+===================================================== */
+
 .card-home {
     border-radius: 12px;
+
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    box-shadow:
+            0 4px 15px rgba(0, 0, 0, 0.04);
+
+    transition:
+            all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 
 .card-home:hover {
     transform: translateY(-8px);
-    box-shadow: 0 15px 30px rgba(12, 26, 48, 0.12);
+
+    box-shadow:
+            0 15px 30px rgba(12, 26, 48, 0.12);
 }
+
 
 .card-home img {
+    width: 100%;
+
     height: 220px;
+
     object-fit: cover;
+
+    display: block;
 }
 
-/* Features Block */
+
+/* =====================================================
+   FEATURES
+===================================================== */
+
 .feature-item {
     text-align: center;
+
     padding: 30px;
+
     background: #ffffff;
+
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-    transition: all 0.3s ease;
+
+    box-shadow:
+            0 4px 15px rgba(0, 0, 0, 0.03);
+
+    transition:
+            all 0.3s ease;
 }
+
 
 .feature-item:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(12, 26, 48, 0.08);
+
+    box-shadow:
+            0 8px 25px rgba(12, 26, 48, 0.08);
 }
+
 
 .feature-icon {
     font-size: 3rem;
+
     color: #d4af37;
+
     margin-bottom: 20px;
+}
+
+
+/* =====================================================
+   RESPONSIVE - TABLET
+===================================================== */
+
+@media (max-width: 991px) {
+
+    .home-room-image-box {
+        width: 240px;
+
+        min-width: 240px;
+
+        height: 280px;
+    }
+
+    .home-room-content {
+        padding: 18px;
+    }
+
+    .hero-title {
+        font-size: 2.8rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+    }
+}
+
+
+/* =====================================================
+   RESPONSIVE - MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+
+    .hero-banner {
+        height: 55vh;
+
+        min-height: 400px;
+    }
+
+
+    .hero-title {
+        font-size: 2.3rem;
+
+        letter-spacing: 1px;
+    }
+
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+
+
+    .search-filter-box {
+        margin-top: -40px;
+
+        padding: 20px;
+    }
+
+
+    /* Card phòng chuyển thành dọc */
+
+    .home-room-card {
+        flex-direction: column;
+
+        min-height: auto;
+    }
+
+
+    /* Ảnh phòng full chiều ngang */
+
+    .home-room-image-box {
+        width: 100%;
+
+        min-width: 100%;
+
+        height: 230px;
+    }
+
+
+    .home-room-content {
+        padding: 18px;
+    }
+
+
+    .home-room-bottom {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 15px;
+    }
+
+
+    .home-btn-book {
+        display: block;
+
+        width: 100%;
+
+        text-align: center;
+    }
+}
+
+
+/* =====================================================
+   RESPONSIVE - SMALL MOBILE
+===================================================== */
+
+@media (max-width: 576px) {
+
+    .hero-banner {
+        height: 50vh;
+
+        min-height: 350px;
+    }
+
+
+    .hero-title {
+        font-size: 1.8rem;
+
+        letter-spacing: 1px;
+    }
+
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+
+    .home-room-image-box {
+        height: 210px;
+    }
+
+
+    .home-room-title {
+        font-size: 19px;
+    }
+
+
+    .home-room-description {
+        font-size: 13px;
+    }
+
+
+    .home-room-info span {
+        font-size: 12px;
+
+        padding: 4px 7px;
+    }
+
+
+    .home-room-price strong {
+        font-size: 17px;
+    }
+
+
+    .home-room-status {
+        top: 10px;
+
+        right: 10px;
+
+        padding: 7px 11px;
+
+        font-size: 12px;
+    }
 }

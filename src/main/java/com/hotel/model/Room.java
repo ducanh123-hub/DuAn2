@@ -21,10 +21,20 @@ public class Room {
     public Room() {
     }
 
-    public Room(int roomID, int categoryID, String roomNumber, String roomName,
-                BigDecimal price, BigDecimal acreage, int bed,
-                String area, String description, String status,
-                Timestamp createdAt, Timestamp updatedAt) {
+    public Room(
+            int roomID,
+            int categoryID,
+            String roomNumber,
+            String roomName,
+            BigDecimal price,
+            BigDecimal acreage,
+            int bed,
+            String area,
+            String description,
+            String status,
+            Timestamp createdAt,
+            Timestamp updatedAt
+    ) {
         this.roomID = roomID;
         this.categoryID = categoryID;
         this.roomNumber = roomNumber;

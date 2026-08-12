@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <!DOCTYPE html>
 
@@ -9,20 +10,34 @@
 
     <meta charset="UTF-8">
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>
         Kết quả tìm kiếm phòng - Luxury Hotel
     </title>
 
+
+    <!-- =====================================================
+         BOOTSTRAP
+    ====================================================== -->
 
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
             rel="stylesheet">
 
 
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
+
+    <!-- =====================================================
+         CSS CHUNG
+    ====================================================== -->
 
     <link
             rel="stylesheet"
@@ -34,7 +49,20 @@
             href="${pageContext.request.contextPath}/assets/css/room.css">
 
 
+    <!-- =====================================================
+         CSS RIÊNG SEARCH
+    ====================================================== -->
+
     <style>
+
+        body {
+            background: #f8f9fa;
+        }
+
+
+        /* =====================================================
+           HERO
+        ====================================================== */
 
         .search-hero {
 
@@ -57,6 +85,10 @@
         }
 
 
+        /* =====================================================
+           FILTER
+        ====================================================== */
+
         .filter-card {
 
             background: white;
@@ -66,9 +98,32 @@
             padding: 25px;
 
             box-shadow:
-                    0 5px 20px rgba(0,0,0,0.08);
+                    0 5px 20px rgba(0, 0, 0, 0.08);
         }
 
+
+        .filter-card .form-control,
+        .filter-card .form-select {
+
+            min-height: 42px;
+
+            border-radius: 8px;
+        }
+
+
+        .filter-card .form-control:focus,
+        .filter-card .form-select:focus {
+
+            border-color: #ffc107;
+
+            box-shadow:
+                    0 0 0 0.2rem rgba(255, 193, 7, 0.20);
+        }
+
+
+        /* =====================================================
+           ROOM CARD
+        ====================================================== */
 
         .room-card {
 
@@ -79,6 +134,8 @@
             overflow: hidden;
 
             transition: 0.3s;
+
+            background: white;
         }
 
 
@@ -87,17 +144,23 @@
             transform: translateY(-5px);
 
             box-shadow:
-                    0 10px 30px rgba(0,0,0,0.15);
+                    0 10px 30px rgba(0, 0, 0, 0.15) !important;
         }
 
 
         .room-image {
+
+            width: 100%;
 
             height: 240px;
 
             object-fit: cover;
         }
 
+
+        /* =====================================================
+           PRICE
+        ====================================================== */
 
         .price {
 
@@ -106,6 +169,125 @@
             font-weight: bold;
 
             font-size: 20px;
+
+            white-space: nowrap;
+        }
+
+
+        /* =====================================================
+           PAGINATION
+        ====================================================== */
+
+        .room-pagination {
+
+            margin-top: 35px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .room-pagination .page-link {
+
+            width: 42px;
+
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin: 0 3px;
+
+            border-radius: 8px !important;
+
+            border: 1px solid #dee2e6;
+
+            color: #0d6efd;
+
+            font-weight: 500;
+
+            background: white;
+
+            transition: 0.2s;
+        }
+
+
+        .room-pagination .page-link:hover {
+
+            background: #e9f2ff;
+
+            border-color: #0d6efd;
+        }
+
+
+        .room-pagination .page-item.active .page-link {
+
+            background: #0d6efd;
+
+            border-color: #0d6efd;
+
+            color: white;
+
+            font-weight: bold;
+        }
+
+
+        .room-pagination .page-item.disabled .page-link {
+
+            background: #e9ecef;
+
+            border-color: #dee2e6;
+
+            color: #6c757d;
+
+            cursor: not-allowed;
+        }
+
+
+        /* =====================================================
+           BADGE
+        ====================================================== */
+
+        .room-spec {
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 768px) {
+
+            .search-hero {
+
+                padding: 35px 0;
+            }
+
+
+            .room-image {
+
+                height: 220px;
+            }
+
+
+            .price {
+
+                font-size: 18px;
+            }
+
+
+            .room-pagination .page-link {
+
+                width: 38px;
+
+                height: 38px;
+
+                margin: 0 2px;
+            }
         }
 
     </style>
@@ -113,8 +295,12 @@
 </head>
 
 
-<body class="bg-light">
+<body>
 
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
 
 <jsp:include page="../layout/header.jsp"/>
 
@@ -129,14 +315,14 @@
 
         <div class="text-center">
 
-            <h2 class="fw-bold">
+            <h2 class="fw-bold mb-2">
 
                 KẾT QUẢ TÌM KIẾM PHÒNG
 
             </h2>
 
 
-            <p class="text-warning">
+            <p class="text-warning mb-0">
 
                 Tìm thấy những lựa chọn phù hợp với yêu cầu của bạn
 
@@ -148,6 +334,10 @@
 
 </div>
 
+
+<!-- =====================================================
+     MAIN
+====================================================== -->
 
 <div class="container my-5">
 
@@ -164,16 +354,31 @@
                 method="get">
 
 
+            <!-- Action -->
+
             <input
                     type="hidden"
                     name="action"
                     value="search">
 
 
+            <!-- =================================================
+                 QUAN TRỌNG:
+                 Khi tìm kiếm mới luôn quay về page = 1
+            ================================================== -->
+
+            <input
+                    type="hidden"
+                    name="page"
+                    value="1">
+
+
             <div class="row g-3">
 
 
-                <!-- KEYWORD -->
+                <!-- =================================================
+                     KEYWORD
+                ================================================== -->
 
                 <div class="col-md-12">
 
@@ -203,8 +408,10 @@
                         </small>
 
 
+                        <!-- STANDARD -->
+
                         <a
-                                href="${pageContext.request.contextPath}/room?action=search&keyword=Standard"
+                                href="${pageContext.request.contextPath}/room?action=search&page=1&keyword=Standard"
                                 class="badge bg-light text-dark border text-decoration-none">
 
                             Standard
@@ -212,8 +419,10 @@
                         </a>
 
 
+                        <!-- DELUXE -->
+
                         <a
-                                href="${pageContext.request.contextPath}/room?action=search&keyword=Deluxe"
+                                href="${pageContext.request.contextPath}/room?action=search&page=1&keyword=Deluxe"
                                 class="badge bg-light text-dark border text-decoration-none">
 
                             Deluxe
@@ -221,8 +430,10 @@
                         </a>
 
 
+                        <!-- SUITE -->
+
                         <a
-                                href="${pageContext.request.contextPath}/room?action=search&keyword=Suite"
+                                href="${pageContext.request.contextPath}/room?action=search&page=1&keyword=Suite"
                                 class="badge bg-light text-dark border text-decoration-none">
 
                             Suite
@@ -230,8 +441,10 @@
                         </a>
 
 
+                        <!-- FAMILY -->
+
                         <a
-                                href="${pageContext.request.contextPath}/room?action=search&keyword=Family"
+                                href="${pageContext.request.contextPath}/room?action=search&page=1&keyword=Family"
                                 class="badge bg-light text-dark border text-decoration-none">
 
                             Family
@@ -243,11 +456,15 @@
                 </div>
 
 
-                <!-- MIN PRICE -->
+                <!-- =================================================
+                     MIN PRICE
+                ================================================== -->
 
                 <div class="col-md-3">
 
                     <label class="form-label fw-bold">
+
+                        <i class="fa-solid fa-money-bill-wave me-1"></i>
 
                         Giá từ
 
@@ -266,11 +483,15 @@
                 </div>
 
 
-                <!-- MAX PRICE -->
+                <!-- =================================================
+                     MAX PRICE
+                ================================================== -->
 
                 <div class="col-md-3">
 
                     <label class="form-label fw-bold">
+
+                        <i class="fa-solid fa-money-bill-wave me-1"></i>
 
                         Giá đến
 
@@ -289,11 +510,15 @@
                 </div>
 
 
-                <!-- PEOPLE -->
+                <!-- =================================================
+                     PEOPLE
+                ================================================== -->
 
                 <div class="col-md-3">
 
                     <label class="form-label fw-bold">
+
+                        <i class="fa-solid fa-users me-1"></i>
 
                         Số người
 
@@ -306,7 +531,9 @@
 
 
                         <option value="">
+
                             Tất cả
+
                         </option>
 
 
@@ -368,11 +595,15 @@
                 </div>
 
 
-                <!-- SORT -->
+                <!-- =================================================
+                     SORT
+                ================================================== -->
 
                 <div class="col-md-3">
 
                     <label class="form-label fw-bold">
+
+                        <i class="fa-solid fa-arrow-down-wide-short me-1"></i>
 
                         Sắp xếp giá
 
@@ -415,7 +646,9 @@
                 </div>
 
 
-                <!-- BUTTON -->
+                <!-- =================================================
+                     BUTTON
+                ================================================== -->
 
                 <div class="col-12">
 
@@ -423,9 +656,9 @@
                             type="submit"
                             class="btn btn-warning fw-bold px-4">
 
-                        <i class="fa-solid fa-filter me-2"></i>
+                        <i class="fa-solid fa-magnifying-glass me-2"></i>
 
-                        Áp dụng bộ lọc
+                        Tìm phòng
 
                     </button>
 
@@ -450,10 +683,12 @@
 
 
     <!-- =================================================
-         RESULT
+         RESULT HEADER
     ================================================== -->
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div
+            class="d-flex justify-content-between align-items-center mb-4">
+
 
         <div>
 
@@ -469,7 +704,9 @@
                 Tìm thấy
 
                 <strong>
+
                     ${list.size()}
+
                 </strong>
 
                 phòng phù hợp
@@ -477,6 +714,7 @@
             </span>
 
         </div>
+
 
     </div>
 
@@ -493,13 +731,15 @@
                 var="room">
 
 
-            <div class="col-md-4 mb-4">
+            <div class="col-lg-4 col-md-6 mb-4">
 
 
                 <div class="card room-card h-100 shadow-sm">
 
 
-                    <!-- IMAGE -->
+                    <!-- =================================================
+                         IMAGE
+                    ================================================== -->
 
                     <div class="position-relative">
 
@@ -510,20 +750,25 @@
                                 alt="${room.roomName}">
 
 
+                        <!-- STATUS -->
+
                         <span
                                 class="position-absolute top-0 end-0 bg-dark text-warning fw-bold px-3 py-2 m-3 rounded">
 
 
                             <c:choose>
 
-                                <c:when test="${room.status == 'Còn trống'}">
+
+                                <c:when
+                                        test="${room.status == 'Còn trống'}">
 
                                     Còn trống
 
                                 </c:when>
 
 
-                                <c:when test="${room.status == 'Đang ở'}">
+                                <c:when
+                                        test="${room.status == 'Đang ở'}">
 
                                     Đang ở
 
@@ -536,6 +781,7 @@
 
                                 </c:otherwise>
 
+
                             </c:choose>
 
 
@@ -544,50 +790,76 @@
                     </div>
 
 
-                    <!-- BODY -->
+                    <!-- =================================================
+                         BODY
+                    ================================================== -->
 
                     <div class="card-body p-4">
 
+
+                        <!-- ROOM NAME + NUMBER -->
 
                         <div
                                 class="d-flex justify-content-between align-items-start">
 
 
                             <h5
-                                    class="card-title fw-bold text-primary">
+                                    class="card-title fw-bold text-primary mb-2">
 
                                 ${room.roomName}
 
                             </h5>
 
 
-                            <span class="badge bg-secondary">
+                            <span
+                                    class="badge bg-secondary">
+
 
                                 P. ${room.roomNumber}
+
 
                             </span>
 
                         </div>
 
 
-                        <p
-                                class="text-muted small">
+                        <!-- DESCRIPTION -->
+
+                        <p class="text-muted small">
 
 
-                            ${room.description != null
-                                    ? room.description
-                                    : 'Phòng đầy đủ tiện nghi hiện đại.'}
+                            <c:choose>
+
+                                <c:when test="${not empty room.description}">
+
+                                    ${room.description}
+
+                                </c:when>
+
+                                <c:otherwise>
+
+                                    Phòng đầy đủ tiện nghi hiện đại.
+
+                                </c:otherwise>
+
+                            </c:choose>
+
 
                         </p>
 
 
-                        <!-- SPECS -->
+                        <!-- =================================================
+                             ROOM SPECS
+                        ================================================== -->
 
-                        <div class="d-flex gap-2 flex-wrap mb-3">
+                        <div
+                                class="d-flex gap-2 flex-wrap mb-3">
 
+
+                            <!-- ACREAGE -->
 
                             <span
-                                    class="badge bg-light text-dark border">
+                                    class="badge bg-light text-dark border room-spec">
 
 
                                 <i
@@ -595,14 +867,22 @@
                                 </i>
 
 
-                                ${room.acreage} m²
+                                <fmt:formatNumber
+                                        value="${room.acreage}"
+                                        type="number"
+                                        maxFractionDigits="2"
+                                        groupingUsed="true"/>
+
+                                m²
 
 
                             </span>
 
 
+                            <!-- BED -->
+
                             <span
-                                    class="badge bg-light text-dark border">
+                                    class="badge bg-light text-dark border room-spec">
 
 
                                 <i
@@ -610,14 +890,18 @@
                                 </i>
 
 
-                                ${room.bed} Giường
+                                ${room.bed}
+
+                                Giường
 
 
                             </span>
 
 
+                            <!-- AREA -->
+
                             <span
-                                    class="badge bg-light text-dark border">
+                                    class="badge bg-light text-dark border room-spec">
 
 
                                 <i
@@ -636,11 +920,15 @@
                         <hr>
 
 
-                        <!-- PRICE + BUTTON -->
+                        <!-- =================================================
+                             PRICE + BUTTON
+                        ================================================== -->
 
                         <div
                                 class="d-flex justify-content-between align-items-center">
 
+
+                            <!-- PRICE -->
 
                             <div>
 
@@ -654,15 +942,28 @@
 
                                 <span class="price">
 
-                                    ${room.price} VNĐ
+
+                                    <fmt:formatNumber
+                                            value="${room.price}"
+                                            type="number"
+                                            groupingUsed="true"
+                                            maxFractionDigits="0"/>
+
+
+                                    VNĐ
+
 
                                 </span>
 
                             </div>
 
 
+                            <!-- BUTTONS -->
+
                             <div>
 
+
+                                <!-- DETAIL -->
 
                                 <a
                                         href="${pageContext.request.contextPath}/room?action=detail&id=${room.roomID}"
@@ -673,12 +974,17 @@
                                             class="fa-solid fa-eye me-1">
                                     </i>
 
+
                                     Chi tiết
+
 
                                 </a>
 
 
-                                <c:if test="${room.status == 'Còn trống'}">
+                                <!-- BOOK -->
+
+                                <c:if
+                                        test="${room.status == 'Còn trống'}">
 
 
                                     <a
@@ -688,10 +994,12 @@
 
                                         Đặt ngay
 
+
                                     </a>
 
 
                                 </c:if>
+
 
                             </div>
 
@@ -702,6 +1010,7 @@
                 </div>
 
             </div>
+
 
         </c:forEach>
 
@@ -748,7 +1057,9 @@
                                 class="fa-solid fa-list me-1">
                         </i>
 
+
                         Xem tất cả phòng
+
 
                     </a>
 
@@ -758,13 +1069,404 @@
 
         </c:if>
 
+
     </div>
+
+
+    <!-- =====================================================
+         PAGINATION
+
+         KHÔNG CÓ:
+         "Trang 1 / 5 — Hiển thị 4 phòng"
+
+         CHỈ CÓ:
+         < 1 2 3 4 5 >
+    ====================================================== -->
+
+    <c:if test="${totalPages > 1}">
+
+
+        <nav
+                aria-label="Phân trang phòng"
+                class="room-pagination">
+
+
+            <ul
+                    class="pagination justify-content-center mb-0">
+
+
+                <!-- =================================================
+                     PREVIOUS
+                ================================================== -->
+
+                <c:choose>
+
+
+                    <c:when test="${currentPage > 1}">
+
+
+                        <li class="page-item">
+
+
+                            <c:url
+                                    var="previousUrl"
+                                    value="/room">
+
+
+                                <c:param
+                                        name="action"
+                                        value="search"/>
+
+
+                                <c:param
+                                        name="page"
+                                        value="${currentPage - 1}"/>
+
+
+                                <c:if test="${not empty keyword}">
+
+                                    <c:param
+                                            name="keyword"
+                                            value="${keyword}"/>
+
+                                </c:if>
+
+
+                                <c:if test="${not empty minPrice}">
+
+                                    <c:param
+                                            name="minPrice"
+                                            value="${minPrice}"/>
+
+                                </c:if>
+
+
+                                <c:if test="${not empty maxPrice}">
+
+                                    <c:param
+                                            name="maxPrice"
+                                            value="${maxPrice}"/>
+
+                                </c:if>
+
+
+                                <c:if test="${not empty people}">
+
+                                    <c:param
+                                            name="people"
+                                            value="${people}"/>
+
+                                </c:if>
+
+
+                                <c:if test="${not empty sortPrice}">
+
+                                    <c:param
+                                            name="sortPrice"
+                                            value="${sortPrice}"/>
+
+                                </c:if>
+
+
+                            </c:url>
+
+
+                            <a
+                                    class="page-link"
+                                    href="${previousUrl}"
+                                    aria-label="Trang trước">
+
+
+                                <i class="fa-solid fa-chevron-left"></i>
+
+
+                            </a>
+
+
+                        </li>
+
+
+                    </c:when>
+
+
+                    <c:otherwise>
+
+
+                        <li class="page-item disabled">
+
+
+                            <span class="page-link">
+
+
+                                <i class="fa-solid fa-chevron-left"></i>
+
+
+                            </span>
+
+
+                        </li>
+
+
+                    </c:otherwise>
+
+
+                </c:choose>
+
+
+                <!-- =================================================
+                     PAGE NUMBERS
+                ================================================== -->
+
+                <c:forEach
+                        begin="1"
+                        end="${totalPages}"
+                        var="pageNumber">
+
+
+                    <c:url
+                            var="pageUrl"
+                            value="/room">
+
+
+                        <c:param
+                                name="action"
+                                value="search"/>
+
+
+                        <c:param
+                                name="page"
+                                value="${pageNumber}"/>
+
+
+                        <!-- KEYWORD -->
+
+                        <c:if test="${not empty keyword}">
+
+                            <c:param
+                                    name="keyword"
+                                    value="${keyword}"/>
+
+                        </c:if>
+
+
+                        <!-- MIN PRICE -->
+
+                        <c:if test="${not empty minPrice}">
+
+                            <c:param
+                                    name="minPrice"
+                                    value="${minPrice}"/>
+
+                        </c:if>
+
+
+                        <!-- MAX PRICE -->
+
+                        <c:if test="${not empty maxPrice}">
+
+                            <c:param
+                                    name="maxPrice"
+                                    value="${maxPrice}"/>
+
+                        </c:if>
+
+
+                        <!-- PEOPLE -->
+
+                        <c:if test="${not empty people}">
+
+                            <c:param
+                                    name="people"
+                                    value="${people}"/>
+
+                        </c:if>
+
+
+                        <!-- SORT -->
+
+                        <c:if test="${not empty sortPrice}">
+
+                            <c:param
+                                    name="sortPrice"
+                                    value="${sortPrice}"/>
+
+                        </c:if>
+
+
+                    </c:url>
+
+
+                    <li
+                            class="page-item ${pageNumber == currentPage ? 'active' : ''}">
+
+
+                        <a
+                                class="page-link"
+                                href="${pageUrl}">
+
+
+                            ${pageNumber}
+
+
+                        </a>
+
+
+                    </li>
+
+
+                </c:forEach>
+
+
+                <!-- =================================================
+                     NEXT
+                ================================================== -->
+
+                <c:choose>
+
+
+                    <c:when test="${currentPage < totalPages}">
+
+
+                        <li class="page-item">
+
+
+                            <c:url
+                                    var="nextUrl"
+                                    value="/room">
+
+
+                                <c:param
+                                        name="action"
+                                        value="search"/>
+
+
+                                <c:param
+                                        name="page"
+                                        value="${currentPage + 1}"/>
+
+
+                                <!-- KEYWORD -->
+
+                                <c:if test="${not empty keyword}">
+
+                                    <c:param
+                                            name="keyword"
+                                            value="${keyword}"/>
+
+                                </c:if>
+
+
+                                <!-- MIN PRICE -->
+
+                                <c:if test="${not empty minPrice}">
+
+                                    <c:param
+                                            name="minPrice"
+                                            value="${minPrice}"/>
+
+                                </c:if>
+
+
+                                <!-- MAX PRICE -->
+
+                                <c:if test="${not empty maxPrice}">
+
+                                    <c:param
+                                            name="maxPrice"
+                                            value="${maxPrice}"/>
+
+                                </c:if>
+
+
+                                <!-- PEOPLE -->
+
+                                <c:if test="${not empty people}">
+
+                                    <c:param
+                                            name="people"
+                                            value="${people}"/>
+
+                                </c:if>
+
+
+                                <!-- SORT -->
+
+                                <c:if test="${not empty sortPrice}">
+
+                                    <c:param
+                                            name="sortPrice"
+                                            value="${sortPrice}"/>
+
+                                </c:if>
+
+
+                            </c:url>
+
+
+                            <a
+                                    class="page-link"
+                                    href="${nextUrl}"
+                                    aria-label="Trang sau">
+
+
+                                <i class="fa-solid fa-chevron-right"></i>
+
+
+                            </a>
+
+
+                        </li>
+
+
+                    </c:when>
+
+
+                    <c:otherwise>
+
+
+                        <li class="page-item disabled">
+
+
+                            <span class="page-link">
+
+
+                                <i class="fa-solid fa-chevron-right"></i>
+
+
+                            </span>
+
+
+                        </li>
+
+
+                    </c:otherwise>
+
+
+                </c:choose>
+
+
+            </ul>
+
+
+        </nav>
+
+
+    </c:if>
+
 
 </div>
 
 
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
 <jsp:include page="../layout/footer.jsp"/>
 
+
+<!-- =====================================================
+     BOOTSTRAP JS
+====================================================== -->
 
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">

@@ -1,6 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+
+<fmt:setLocale value="vi_VN"/>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -10,58 +12,39 @@
 
     <title>Luxury Hotel - Đặt phòng khách sạn</title>
 
-    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
 
-    <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <!-- CSS chung -->
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/assets/css/style.css">
 
-    <!-- CSS trang Home -->
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/assets/css/home.css">
 
     <style>
-
-        /* =====================================================
-           HERO - BACKGROUND KIỂU TRAVELOKA
-        ===================================================== */
-
         .hotel-hero {
             min-height: 560px;
-
             background:
                 linear-gradient(
                     rgba(0, 45, 80, 0.68),
                     rgba(0, 35, 65, 0.75)
                 ),
                 url("https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1800&q=85");
-
             background-size: cover;
             background-position: center;
-
             color: white;
-
             position: relative;
-
             display: flex;
             align-items: center;
         }
 
-        /* =====================================================
-           HERO CONTENT
-        ===================================================== */
-
         .hero-content {
             width: 100%;
             text-align: center;
-            padding-top: 20px;
-            padding-bottom: 30px;
+            padding: 20px 0 30px;
         }
 
         .hero-content h1 {
@@ -76,10 +59,6 @@
             margin-bottom: 30px;
             text-shadow: 0 2px 5px rgba(0,0,0,0.4);
         }
-
-        /* =====================================================
-           NÚT KHÁM PHÁ
-        ===================================================== */
 
         .hero-button {
             background: #ffc107;
@@ -98,56 +77,15 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.25);
         }
 
-        /* =====================================================
-           GỢI Ý
-        ===================================================== */
-
-        .search-suggestions {
-            margin-top: 28px;
-            text-align: center;
-        }
-
-        .search-suggestions span {
-            font-size: 14px;
-            margin-right: 8px;
-            color: white;
-        }
-
-        .suggestion {
-            display: inline-block;
-            padding: 6px 14px;
-            margin: 4px;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.18);
-            color: white;
-            text-decoration: none;
-            border: 1px solid rgba(255,255,255,0.35);
-            transition: all 0.2s;
-        }
-
-        .suggestion:hover {
-            background: white;
-            color: #0879d1;
-            transform: translateY(-2px);
-        }
-
-        /* =====================================================
-           PHẦN PHÒNG
-        ===================================================== */
-
         .room-section {
             padding: 55px 0;
         }
-
-        /* Bộ lọc bên trái */
 
         .filter-sidebar {
             position: sticky;
             top: 20px;
             border-radius: 12px;
         }
-
-        /* Card phòng */
 
         .room-card {
             border: none;
@@ -168,20 +106,40 @@
             object-fit: cover;
         }
 
-        /* Giá phòng */
-
         .room-price {
             color: #e53935;
             font-weight: 700;
             font-size: 17px;
         }
 
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
+        .room-name {
+            min-height: 30px;
+        }
+
+        .room-description {
+            min-height: 42px;
+        }
+
+        .pagination {
+            margin-bottom: 0;
+        }
+
+        .pagination .page-link {
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            color: white;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            pointer-events: none;
+        }
 
         @media (max-width: 991px) {
-
             .hotel-hero {
                 min-height: 480px;
             }
@@ -200,7 +158,6 @@
         }
 
         @media (max-width: 576px) {
-
             .hotel-hero {
                 min-height: 430px;
             }
@@ -213,33 +170,18 @@
                 font-size: 15px;
             }
 
-            .suggestion {
-                padding: 5px 10px;
-                font-size: 13px;
+            .room-card img {
+                height: 200px;
             }
         }
-
     </style>
-
 </head>
-
 
 <body class="bg-light">
 
-
-<!-- =========================================================
-     HEADER
-========================================================= -->
-
 <jsp:include page="../layout/header.jsp"/>
 
-
-<!-- =========================================================
-     HERO BACKGROUND
-========================================================= -->
-
 <section class="hotel-hero">
-
     <div class="container hero-content">
 
         <h1>
@@ -260,13 +202,7 @@
         </a>
 
     </div>
-
 </section>
-
-
-<!-- =========================================================
-     PHẦN LỌC + DANH SÁCH PHÒNG
-========================================================= -->
 
 <section class="room-section bg-light"
          id="featured-rooms">
@@ -274,11 +210,6 @@
     <div class="container">
 
         <div class="row g-4">
-
-
-            <!-- =================================================
-                 BỘ LỌC BÊN TRÁI
-            ================================================= -->
 
             <div class="col-lg-3">
 
@@ -295,11 +226,8 @@
                         </h5>
 
                         <p class="small text-muted mb-4">
-
                             Lọc phòng theo nhu cầu của bạn
-
                         </p>
-
 
                         <form action="${pageContext.request.contextPath}/room"
                               method="get">
@@ -308,8 +236,9 @@
                                    name="action"
                                    value="search">
 
-
-                            <!-- TỪ KHÓA -->
+                            <input type="hidden"
+                                   name="page"
+                                   value="1">
 
                             <div class="mb-3">
 
@@ -329,9 +258,6 @@
 
                             </div>
 
-
-                            <!-- GỢI Ý -->
-
                             <div class="mb-4">
 
                                 <small class="text-muted">
@@ -340,22 +266,22 @@
 
                                 <div class="mt-2">
 
-                                    <a href="${pageContext.request.contextPath}/room?action=search&keyword=Standard"
+                                    <a href="${pageContext.request.contextPath}/room?action=search&keyword=Standard&page=1"
                                        class="badge bg-light text-dark border text-decoration-none me-1 mb-1">
                                         Standard
                                     </a>
 
-                                    <a href="${pageContext.request.contextPath}/room?action=search&keyword=Deluxe"
+                                    <a href="${pageContext.request.contextPath}/room?action=search&keyword=Deluxe&page=1"
                                        class="badge bg-light text-dark border text-decoration-none me-1 mb-1">
                                         Deluxe
                                     </a>
 
-                                    <a href="${pageContext.request.contextPath}/room?action=search&keyword=Suite"
+                                    <a href="${pageContext.request.contextPath}/room?action=search&keyword=Suite&page=1"
                                        class="badge bg-light text-dark border text-decoration-none me-1 mb-1">
                                         Suite
                                     </a>
 
-                                    <a href="${pageContext.request.contextPath}/room?action=search&keyword=Family"
+                                    <a href="${pageContext.request.contextPath}/room?action=search&keyword=Family&page=1"
                                        class="badge bg-light text-dark border text-decoration-none me-1 mb-1">
                                         Family
                                     </a>
@@ -363,9 +289,6 @@
                                 </div>
 
                             </div>
-
-
-                            <!-- GIÁ TỪ -->
 
                             <div class="mb-3">
 
@@ -394,9 +317,6 @@
 
                             </div>
 
-
-                            <!-- GIÁ ĐẾN -->
-
                             <div class="mb-3">
 
                                 <label class="form-label fw-bold">
@@ -423,9 +343,6 @@
                                 </div>
 
                             </div>
-
-
-                            <!-- SỐ NGƯỜI -->
 
                             <div class="mb-3">
 
@@ -478,9 +395,6 @@
 
                             </div>
 
-
-                            <!-- SẮP XẾP GIÁ -->
-
                             <div class="mb-4">
 
                                 <label class="form-label fw-bold">
@@ -512,9 +426,6 @@
 
                             </div>
 
-
-                            <!-- BUTTON -->
-
                             <button type="submit"
                                     class="btn btn-warning w-100 fw-bold">
 
@@ -532,11 +443,6 @@
 
             </div>
 
-
-            <!-- =================================================
-                 DANH SÁCH PHÒNG
-            ================================================= -->
-
             <div class="col-lg-9">
 
                 <div class="mb-4">
@@ -551,9 +457,6 @@
 
                 </div>
 
-
-                <!-- ROOM LIST -->
-
                 <div class="row">
 
                     <c:forEach items="${roomList}" var="room">
@@ -562,16 +465,11 @@
 
                             <div class="card room-card shadow-sm">
 
-
-                                <!-- ẢNH PHÒNG -->
-
                                 <div class="position-relative">
 
                                     <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=600&q=80"
                                          alt="${room.roomName}"
-                                         onerror="this.src='https://placehold.co/600x400?text=Luxury+Room';">
-
-                                    <!-- TRẠNG THÁI -->
+                                         onerror="this.onerror=null;this.src='https://placehold.co/600x400?text=Luxury+Room';">
 
                                     <span class="position-absolute top-0 end-0 bg-dark text-warning fw-bold px-3 py-2 m-3 rounded">
 
@@ -581,25 +479,29 @@
 
                                 </div>
 
-
-                                <!-- THÔNG TIN PHÒNG -->
-
                                 <div class="card-body p-3">
 
-                                    <h5 class="fw-bold text-primary">
+                                    <h5 class="fw-bold text-primary room-name">
+
                                         ${room.roomName}
+
                                     </h5>
 
-                                    <p class="text-muted small">
+                                    <p class="text-muted small room-description">
 
-                                        ${room.description != null
-                                            ? room.description
-                                            : 'Phòng đầy đủ tiện nghi, không gian thoải mái.'}
+                                        <c:choose>
+
+                                            <c:when test="${not empty room.description}">
+                                                ${room.description}
+                                            </c:when>
+
+                                            <c:otherwise>
+                                                Phòng đầy đủ tiện nghi, không gian thoải mái.
+                                            </c:otherwise>
+
+                                        </c:choose>
 
                                     </p>
-
-
-                                    <!-- THÔNG SỐ -->
 
                                     <div class="d-flex gap-2 mb-3 flex-wrap">
 
@@ -615,7 +517,14 @@
 
                                             <i class="fa-solid fa-expand me-1"></i>
 
-                                            ${room.acreage} m²
+                                            <fmt:formatNumber
+                                                value="${room.acreage}"
+                                                type="number"
+                                                groupingUsed="true"
+                                                minFractionDigits="0"
+                                                maxFractionDigits="2"/>
+
+                                            m²
 
                                         </span>
 
@@ -629,29 +538,23 @@
 
                                     </div>
 
-
-                                    <!-- GIÁ + CHI TIẾT -->
-
                                     <div class="border-top pt-3 d-flex justify-content-between align-items-center">
 
                                         <div>
 
                                             <small class="text-muted d-block">
-                                                Giá / đêm
+                                                Giá phòng / đêm
                                             </small>
-
-                                            <!--
-                                                SỬA GIÁ Ở ĐÂY
-                                                Ví dụ:
-                                                500000.00 -> 500,000
-                                                800000.00 -> 800,000
-                                            -->
 
                                             <div class="room-price">
 
                                                 <fmt:formatNumber
-                                                        value="${room.price}"
-                                                        pattern="#,##0"/>
+                                                    value="${room.price}"
+                                                    type="number"
+                                                    groupingUsed="true"
+                                                    minFractionDigits="0"
+                                                    maxFractionDigits="0"
+                                                    pattern="#,##0"/>
 
                                                 VNĐ
 
@@ -659,15 +562,25 @@
 
                                         </div>
 
+                                        <div class="d-flex gap-2">
 
-                                        <a href="${pageContext.request.contextPath}/room?action=detail&id=${room.roomID}"
-                                           class="btn btn-primary btn-sm">
+                                            <a href="${pageContext.request.contextPath}/room?action=detail&id=${room.roomID}"
+                                               class="btn btn-outline-primary btn-sm">
 
-                                            <i class="fa-solid fa-eye me-1"></i>
+                                                <i class="fa-solid fa-eye me-1"></i>
 
-                                            Chi tiết
+                                                Chi tiết
 
-                                        </a>
+                                            </a>
+
+                                            <a href="${pageContext.request.contextPath}/booking?roomId=${room.roomID}"
+                                               class="btn btn-success btn-sm">
+
+                                                Đặt ngay
+
+                                            </a>
+
+                                        </div>
 
                                     </div>
 
@@ -678,9 +591,6 @@
                         </div>
 
                     </c:forEach>
-
-
-                    <!-- KHÔNG CÓ PHÒNG -->
 
                     <c:if test="${empty roomList}">
 
@@ -706,6 +616,90 @@
 
                 </div>
 
+                <c:if test="${totalPages > 1}">
+
+                    <nav aria-label="Phân trang phòng"
+                         class="mt-2 mb-4">
+
+                        <ul class="pagination justify-content-center">
+
+                            <li class="page-item ${currentPage <= 1 ? 'disabled' : ''}">
+
+                                <c:choose>
+
+                                    <c:when test="${currentPage > 1}">
+
+                                        <a class="page-link"
+                                           href="${pageContext.request.contextPath}/room?action=search&page=${currentPage - 1}&keyword=${param.keyword}&minPrice=${param.minPrice}&maxPrice=${param.maxPrice}&people=${param.people}&sortPrice=${param.sortPrice}">
+
+                                            <i class="fa-solid fa-chevron-left"></i>
+
+                                        </a>
+
+                                    </c:when>
+
+                                    <c:otherwise>
+
+                                        <span class="page-link">
+                                            <i class="fa-solid fa-chevron-left"></i>
+                                        </span>
+
+                                    </c:otherwise>
+
+                                </c:choose>
+
+                            </li>
+
+                            <c:forEach begin="1"
+                                       end="${totalPages}"
+                                       var="pageNumber">
+
+                                <li class="page-item ${pageNumber == currentPage ? 'active' : ''}">
+
+                                    <a class="page-link"
+                                       href="${pageContext.request.contextPath}/room?action=search&page=${pageNumber}&keyword=${param.keyword}&minPrice=${param.minPrice}&maxPrice=${param.maxPrice}&people=${param.people}&sortPrice=${param.sortPrice}">
+
+                                        ${pageNumber}
+
+                                    </a>
+
+                                </li>
+
+                            </c:forEach>
+
+                            <li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}">
+
+                                <c:choose>
+
+                                    <c:when test="${currentPage < totalPages}">
+
+                                        <a class="page-link"
+                                           href="${pageContext.request.contextPath}/room?action=search&page=${currentPage + 1}&keyword=${param.keyword}&minPrice=${param.minPrice}&maxPrice=${param.maxPrice}&people=${param.people}&sortPrice=${param.sortPrice}">
+
+                                            <i class="fa-solid fa-chevron-right"></i>
+
+                                        </a>
+
+                                    </c:when>
+
+                                    <c:otherwise>
+
+                                        <span class="page-link">
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        </span>
+
+                                    </c:otherwise>
+
+                                </c:choose>
+
+                            </li>
+
+                        </ul>
+
+                    </nav>
+
+                </c:if>
+
             </div>
 
         </div>
@@ -713,11 +707,6 @@
     </div>
 
 </section>
-
-
-<!-- =========================================================
-     DỊCH VỤ & TIỆN ÍCH
-========================================================= -->
 
 <section class="bg-white py-5 border-top">
 
@@ -735,11 +724,7 @@
 
         </div>
 
-
         <div class="row text-center g-4">
-
-
-            <!-- WIFI -->
 
             <div class="col-md-3">
 
@@ -759,9 +744,6 @@
 
             </div>
 
-
-            <!-- NHÀ HÀNG -->
-
             <div class="col-md-3">
 
                 <div class="p-4 shadow-sm border rounded h-100">
@@ -780,9 +762,6 @@
 
             </div>
 
-
-            <!-- SPA -->
-
             <div class="col-md-3">
 
                 <div class="p-4 shadow-sm border rounded h-100">
@@ -800,9 +779,6 @@
                 </div>
 
             </div>
-
-
-            <!-- 24/7 -->
 
             <div class="col-md-3">
 
@@ -828,18 +804,9 @@
 
 </section>
 
-
-<!-- =========================================================
-     FOOTER
-========================================================= -->
-
 <jsp:include page="../layout/footer.jsp"/>
 
-
-<!-- Bootstrap JS -->
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

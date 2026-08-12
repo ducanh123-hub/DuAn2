@@ -13,32 +13,35 @@
 
     <title>Trang chủ khách hàng - Luxury Hotel</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <!-- CSS chung -->
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/css/style.css">
+    <link
+        rel="stylesheet"
+        href="${pageContext.request.contextPath}/assets/css/style.css">
 
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/css/home.css">
+    <link
+        rel="stylesheet"
+        href="${pageContext.request.contextPath}/assets/css/home.css">
+
 
     <style>
 
         /* =====================================================
            WELCOME HERO
-           ===================================================== */
+        ===================================================== */
 
         .welcome-hero {
+
             background: linear-gradient(
-                    135deg,
-                    var(--primary-color),
-                    var(--primary-light)
+                135deg,
+                var(--primary-color),
+                var(--primary-light)
             );
 
             color: white;
@@ -70,9 +73,9 @@
             height: 800px;
 
             background: radial-gradient(
-                    circle,
-                    rgba(212,175,55,0.1) 0%,
-                    rgba(255,255,255,0) 70%
+                circle,
+                rgba(212,175,55,0.1) 0%,
+                rgba(255,255,255,0) 70%
             );
 
             border-radius: 50%;
@@ -80,8 +83,8 @@
 
 
         /* =====================================================
-           DANH SÁCH PHÒNG TRANG HOME
-           ===================================================== */
+           DANH SÁCH PHÒNG
+        ===================================================== */
 
         .home-room-list {
 
@@ -97,7 +100,7 @@
 
         /* =====================================================
            CARD PHÒNG
-           ===================================================== */
+        ===================================================== */
 
         .home-room-card {
 
@@ -131,7 +134,7 @@
 
         /* =====================================================
            ẢNH PHÒNG
-           ===================================================== */
+        ===================================================== */
 
         .home-room-image-box {
 
@@ -144,6 +147,8 @@
             position: relative;
 
             overflow: hidden;
+
+            background: #eeeeee;
         }
 
 
@@ -156,12 +161,20 @@
             object-fit: cover;
 
             display: block;
+
+            transition: transform 0.4s ease;
+        }
+
+
+        .home-room-card:hover .home-room-image {
+
+            transform: scale(1.03);
         }
 
 
         /* =====================================================
-           TRẠNG THÁI PHÒNG
-           ===================================================== */
+           TRẠNG THÁI
+        ===================================================== */
 
         .home-room-status {
 
@@ -180,6 +193,8 @@
             font-weight: 700;
 
             box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+
+            z-index: 2;
         }
 
 
@@ -209,7 +224,7 @@
 
         /* =====================================================
            NỘI DUNG PHÒNG
-           ===================================================== */
+        ===================================================== */
 
         .home-room-content {
 
@@ -225,7 +240,9 @@
         }
 
 
-        /* TÊN PHÒNG */
+        /* =====================================================
+           TÊN PHÒNG
+        ===================================================== */
 
         .home-room-title {
 
@@ -239,7 +256,9 @@
         }
 
 
-        /* MÔ TẢ */
+        /* =====================================================
+           MÔ TẢ
+        ===================================================== */
 
         .home-room-description {
 
@@ -254,8 +273,8 @@
 
 
         /* =====================================================
-           THÔNG TIN PHÒNG
-           ===================================================== */
+           THÔNG TIN
+        ===================================================== */
 
         .home-room-info {
 
@@ -297,7 +316,7 @@
 
         /* =====================================================
            ĐƯỜNG KẺ
-           ===================================================== */
+        ===================================================== */
 
         .home-room-line {
 
@@ -313,7 +332,7 @@
 
         /* =====================================================
            GIÁ + BUTTON
-           ===================================================== */
+        ===================================================== */
 
         .home-room-bottom {
 
@@ -354,8 +373,8 @@
 
 
         /* =====================================================
-           NÚT CHỌN PHÒNG
-           ===================================================== */
+           BUTTON CHỌN PHÒNG
+        ===================================================== */
 
         .home-btn-book {
 
@@ -384,8 +403,140 @@
 
 
         /* =====================================================
+           PHÂN TRANG
+        ===================================================== */
+
+        .home-pagination-wrapper {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            margin-top: 35px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .home-pagination {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 6px;
+        }
+
+
+        .home-page-btn {
+
+            min-width: 42px;
+
+            height: 40px;
+
+            padding: 0 13px;
+
+            border: 1px solid #dee2e6;
+
+            background: #ffffff;
+
+            color: #333;
+
+            border-radius: 6px;
+
+            font-weight: 600;
+
+            transition: all 0.2s ease;
+        }
+
+
+        .home-page-btn:hover {
+
+            background: #0d6efd;
+
+            border-color: #0d6efd;
+
+            color: #ffffff;
+        }
+
+
+        .home-page-btn.active {
+
+            background: #0d6efd;
+
+            border-color: #0d6efd;
+
+            color: #ffffff;
+        }
+
+
+        .home-page-btn:disabled {
+
+            background: #f1f1f1;
+
+            color: #999;
+
+            cursor: not-allowed;
+
+            border-color: #ddd;
+        }
+
+
+        /* =====================================================
+           THÔNG TIN PHÂN TRANG
+        ===================================================== */
+
+        .home-pagination-info {
+
+            text-align: center;
+
+            color: #6c757d;
+
+            font-size: 14px;
+
+            margin-top: 10px;
+        }
+
+
+        /* =====================================================
+           KHÔNG CÓ PHÒNG
+        ===================================================== */
+
+        .home-no-room {
+
+            display: none;
+
+            padding: 60px 20px;
+
+            text-align: center;
+
+            background: #ffffff;
+
+            border-radius: 10px;
+
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+
+        .home-no-room i {
+
+            font-size: 55px;
+
+            color: #ffc107;
+
+            margin-bottom: 20px;
+        }
+
+
+        /* =====================================================
            MOBILE
-           ===================================================== */
+        ===================================================== */
 
         @media (max-width: 768px) {
 
@@ -430,6 +581,22 @@
                 text-align: center;
             }
 
+
+            .home-pagination {
+
+                gap: 4px;
+            }
+
+
+            .home-page-btn {
+
+                min-width: 38px;
+
+                height: 38px;
+
+                padding: 0 9px;
+            }
+
         }
 
     </style>
@@ -442,35 +609,43 @@
 
 <!-- =====================================================
      HEADER
-     ===================================================== -->
+===================================================== -->
 
 <jsp:include page="../layout/header.jsp"/>
 
 
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
 
 
-    <!-- =================================================
-         WELCOME BANNER
-         ================================================= -->
+    <!-- =====================================================
+         WELCOME
+    ===================================================== -->
 
     <div class="welcome-hero shadow-sm p-5 text-center text-md-start">
 
-        <div class="row align-items-center position-relative z-index-1">
+        <div class="row align-items-center position-relative">
 
             <div class="col-md-8">
 
                 <span class="badge bg-warning text-dark mb-3 px-3 py-2 fw-bold text-uppercase">
+
                     Khách hàng thân thiết
+
                 </span>
 
+
                 <h1 class="display-5 fw-bold mb-2">
+
                     Xin chào, ${sessionScope.user.fullName}!
+
                 </h1>
 
+
                 <p class="fs-5 text-white-50 mb-0">
+
                     Chào mừng bạn quay trở lại với Luxury Hotel.
                     Hãy khám phá và đặt phòng cho kỳ nghỉ sắp tới của bạn.
+
                 </p>
 
             </div>
@@ -478,8 +653,9 @@
 
             <div class="col-md-4 text-center text-md-end mt-4 mt-md-0">
 
-                <a href="${pageContext.request.contextPath}/room"
-                   class="btn btn-warning btn-lg text-dark fw-bold px-4 py-3 shadow">
+                <a
+                    href="${pageContext.request.contextPath}/room"
+                    class="btn btn-warning btn-lg text-dark fw-bold px-4 py-3 shadow">
 
                     <i class="fa-solid fa-calendar-days me-1"></i>
 
@@ -494,59 +670,137 @@
     </div>
 
 
-    <!-- =================================================
-         PHÒNG NỔI BẬT
-         ================================================= -->
+    <!-- =====================================================
+         TIÊU ĐỀ PHÒNG
+    ===================================================== -->
 
     <div class="text-center mb-4">
 
         <h2 class="fw-bold text-primary">
+
             Phòng nổi bật
+
         </h2>
 
+
         <p class="text-muted">
+
             Lựa chọn những căn phòng tốt nhất cho chuyến hành trình của bạn
+
         </p>
 
     </div>
 
 
-    <!-- =================================================
-         DANH SÁCH PHÒNG DẠNG NGANG
-         ================================================= -->
+    <!-- =====================================================
+         DANH SÁCH PHÒNG
+    ===================================================== -->
 
-    <div class="home-room-list">
-
-
-        <c:forEach items="${roomList}" var="room">
-
-
-            <!-- ============================
-                 CARD PHÒNG
-                 ============================ -->
-
-            <div class="home-room-card">
+    <div
+        id="homeRoomList"
+        class="home-room-list">
 
 
-                <!-- =========================
+        <c:forEach
+            items="${roomList}"
+            var="room"
+            varStatus="roomStatus">
+
+
+            <div
+                class="home-room-card"
+                data-status="${room.status}"
+                data-room-id="${room.roomID}">
+
+
+                <!-- =================================================
                      ẢNH PHÒNG
-                     ========================= -->
+                ================================================= -->
 
                 <div class="home-room-image-box">
 
 
-                    <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=700&q=80"
-                         class="home-room-image"
-                         alt="${room.roomName}"
-                         onerror="this.src='https://placehold.co/700x500?text=Luxury+Room';">
-
-
-                    <!-- TRẠNG THÁI -->
-
                     <c:choose>
 
+                        <c:when test="${roomStatus.index % 6 == 0}">
 
-                        <!-- CÒN TRỐNG -->
+                            <img
+                                src="https://afamilycdn.com/150157425591193600/2021/3/11/1062858034042480538125986431819415599970436o-16154470201552029786375.jpg"
+                                class="home-room-image"
+                                alt="${room.roomName}"
+                                loading="lazy"
+                                onerror="this.onerror=null;this.src='https://placehold.co/700x500?text=Luxury+Room';">
+
+                        </c:when>
+
+
+                        <c:when test="${roomStatus.index % 6 == 1}">
+
+                            <img
+                                src="https://afamilycdn.com/150157425591193600/2021/3/11/10553894514379389399271122382919384101112162o-16154411369911131972254.jpg"
+                                class="home-room-image"
+                                alt="${room.roomName}"
+                                loading="lazy"
+                                onerror="this.onerror=null;this.src='https://placehold.co/700x500?text=Luxury+Room';">
+
+                        </c:when>
+
+
+                        <c:when test="${roomStatus.index % 6 == 2}">
+
+                            <img
+                                src="https://afamilycdn.com/150157425591193600/2021/3/11/1062555694042506571456714788935087102328241o-16154470202451995436386.jpg"
+                                class="home-room-image"
+                                alt="${room.roomName}"
+                                loading="lazy"
+                                onerror="this.onerror=null;this.src='https://placehold.co/700x500?text=Luxury+Room';">
+
+                        </c:when>
+
+
+                        <c:when test="${roomStatus.index % 6 == 3}">
+
+                            <img
+                                src="https://kientructrangkim.com/wp-content/uploads/2014/08/biet-thu-bien-14-e1597921045415.jpg"
+                                class="home-room-image"
+                                alt="${room.roomName}"
+                                loading="lazy"
+                                onerror="this.onerror=null;this.src='https://placehold.co/700x500?text=Luxury+Room';">
+
+                        </c:when>
+
+
+                        <c:when test="${roomStatus.index % 6 == 4}">
+
+                            <img
+                                src="https://file4.batdongsan.com.vn/2022/05/25/PHJN6Zw0/20220525111935-fb0b.jpg"
+                                class="home-room-image"
+                                alt="${room.roomName}"
+                                loading="lazy"
+                                onerror="this.onerror=null;this.src='https://placehold.co/700x500?text=Luxury+Room';">
+
+                        </c:when>
+
+
+                        <c:otherwise>
+
+                            <img
+                                src="https://cms.lichngaytot.com/medias/original/2019/7/30/5-kieng-ki-phong-thuy-cho-nha-o-gan-bai-bien.jpg"
+                                class="home-room-image"
+                                alt="${room.roomName}"
+                                loading="lazy"
+                                onerror="this.onerror=null;this.src='https://placehold.co/700x500?text=Luxury+Room';">
+
+                        </c:otherwise>
+
+                    </c:choose>
+
+
+                    <!-- =================================================
+                         TRẠNG THÁI
+                    ================================================= -->
+
+                    <c:choose>
 
                         <c:when test="${room.status == 'Available'}">
 
@@ -561,8 +815,6 @@
                         </c:when>
 
 
-                        <!-- ĐANG CÓ KHÁCH -->
-
                         <c:when test="${room.status == 'Occupied'}">
 
                             <span class="home-room-status occupied">
@@ -576,8 +828,6 @@
                         </c:when>
 
 
-                        <!-- BẢO TRÌ -->
-
                         <c:otherwise>
 
                             <span class="home-room-status maintenance">
@@ -590,22 +840,18 @@
 
                         </c:otherwise>
 
-
                     </c:choose>
 
 
                 </div>
 
 
-
-                <!-- =========================
+                <!-- =================================================
                      THÔNG TIN PHÒNG
-                     ========================= -->
+                ================================================= -->
 
                 <div class="home-room-content">
 
-
-                    <!-- TÊN PHÒNG -->
 
                     <h4 class="home-room-title">
 
@@ -613,9 +859,6 @@
 
                     </h4>
 
-
-
-                    <!-- MÔ TẢ -->
 
                     <p class="home-room-description">
 
@@ -638,11 +881,6 @@
 
                     </p>
 
-
-
-                    <!-- =========================
-                         THÔNG TIN
-                         ========================= -->
 
                     <div class="home-room-info">
 
@@ -677,36 +915,33 @@
                     </div>
 
 
-
-                    <!-- ĐƯỜNG KẺ -->
-
                     <div class="home-room-line"></div>
 
 
-
-                    <!-- =========================
-                         GIÁ + CHỌN PHÒNG
-                         ========================= -->
+                    <!-- =================================================
+                         GIÁ
+                    ================================================= -->
 
                     <div class="home-room-bottom">
 
 
-                        <!-- GIÁ -->
-
                         <div class="home-room-price">
 
                             <small>
+
                                 Giá / đêm
+
                             </small>
+
 
                             <strong>
 
                                 <fmt:formatNumber
-                                        value="${room.price}"
-                                        type="number"
-                                        groupingUsed="true"
-                                        minFractionDigits="0"
-                                        maxFractionDigits="0"/>
+                                    value="${room.price}"
+                                    type="number"
+                                    groupingUsed="true"
+                                    minFractionDigits="0"
+                                    maxFractionDigits="0"/>
 
                                 VNĐ
 
@@ -715,18 +950,17 @@
                         </div>
 
 
-
-                        <!-- BUTTON -->
+                        <!-- =================================================
+                             NÚT CHỌN PHÒNG
+                        ================================================= -->
 
                         <div>
 
-
-                            <!-- PHÒNG CÒN TRỐNG -->
-
                             <c:if test="${room.status == 'Available'}">
 
-                                <a href="${pageContext.request.contextPath}/booking?roomId=${room.roomID}"
-                                   class="btn home-btn-book">
+                                <a
+                                    href="${pageContext.request.contextPath}/booking?roomId=${room.roomID}"
+                                    class="btn home-btn-book">
 
                                     <i class="fa-solid fa-calendar-check me-1"></i>
 
@@ -737,14 +971,12 @@
                             </c:if>
 
 
-
-                            <!-- PHÒNG KHÔNG CÒN TRỐNG -->
-
                             <c:if test="${room.status != 'Available'}">
 
-                                <button type="button"
-                                        class="btn btn-secondary"
-                                        disabled>
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    disabled>
 
                                     <i class="fa-solid fa-lock me-1"></i>
 
@@ -754,15 +986,12 @@
 
                             </c:if>
 
-
                         </div>
 
 
                     </div>
 
-
                 </div>
-
 
             </div>
 
@@ -770,41 +999,62 @@
         </c:forEach>
 
 
+    </div>
 
-        <!-- =================================================
-             KHÔNG CÓ PHÒNG
-             ================================================= -->
 
-        <c:if test="${empty roomList}">
+    <!-- =====================================================
+         KHÔNG CÓ PHÒNG KHẢ DỤNG
+    ===================================================== -->
 
-            <div class="card border-0 shadow-sm text-center py-5">
+    <div
+        id="noAvailableRoom"
+        class="home-no-room">
 
-                <div class="text-muted">
+        <i class="fa-solid fa-hotel"></i>
 
-                    <i class="fa-solid fa-hotel fa-3x text-warning mb-3"></i>
+        <h5 class="fw-bold">
 
-                    <h5>
-                        Chưa có phòng nào
-                    </h5>
+            Hiện chưa có phòng trống
 
-                    <p>
-                        Hiện tại hệ thống chưa có phòng nào khả dụng.
-                    </p>
+        </h5>
 
-                </div>
+        <p class="text-muted mb-0">
 
-            </div>
+            Tất cả các phòng hiện tại đều đã được đặt
+            hoặc đang bảo trì.
 
-        </c:if>
-
+        </p>
 
     </div>
 
 
+    <!-- =====================================================
+         PHÂN TRANG
+    ===================================================== -->
 
-    <!-- =================================================
+    <div
+        id="paginationWrapper"
+        class="home-pagination-wrapper">
+
+        <div
+            id="pagination"
+            class="home-pagination">
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="paginationInfo"
+        class="home-pagination-info">
+
+    </div>
+
+
+    <!-- =====================================================
          QUICK NAVIGATION
-         ================================================= -->
+    ===================================================== -->
 
     <div class="row g-4 mb-5 mt-5">
 
@@ -820,7 +1070,9 @@
                     <i class="fa-solid fa-clock-rotate-left text-success fs-1 mb-3"></i>
 
                     <h5 class="fw-bold text-dark">
+
                         Lịch sử đặt phòng
+
                     </h5>
 
                     <p class="text-muted small">
@@ -830,8 +1082,9 @@
 
                     </p>
 
-                    <a href="${pageContext.request.contextPath}/booking?action=history"
-                       class="btn btn-outline-success btn-sm mt-2">
+                    <a
+                        href="${pageContext.request.contextPath}/booking?action=history"
+                        class="btn btn-outline-success btn-sm mt-2">
 
                         Truy cập lịch sử
 
@@ -842,7 +1095,6 @@
             </div>
 
         </div>
-
 
 
         <!-- HỒ SƠ -->
@@ -856,7 +1108,9 @@
                     <i class="fa-solid fa-user-gear text-primary fs-1 mb-3"></i>
 
                     <h5 class="fw-bold text-dark">
+
                         Hồ sơ cá nhân
+
                     </h5>
 
                     <p class="text-muted small">
@@ -866,8 +1120,9 @@
 
                     </p>
 
-                    <a href="${pageContext.request.contextPath}/user?action=profile"
-                       class="btn btn-outline-primary btn-sm mt-2">
+                    <a
+                        href="${pageContext.request.contextPath}/user?action=profile"
+                        class="btn btn-outline-primary btn-sm mt-2">
 
                         Xem thông tin
 
@@ -878,7 +1133,6 @@
             </div>
 
         </div>
-
 
 
         <!-- HỖ TRỢ -->
@@ -892,7 +1146,9 @@
                     <i class="fa-solid fa-envelope-open-text text-warning fs-1 mb-3"></i>
 
                     <h5 class="fw-bold text-dark">
+
                         Hỗ trợ & Liên hệ
+
                     </h5>
 
                     <p class="text-muted small">
@@ -902,8 +1158,9 @@
 
                     </p>
 
-                    <a href="${pageContext.request.contextPath}/contact"
-                       class="btn btn-outline-warning btn-sm text-dark fw-bold mt-2">
+                    <a
+                        href="${pageContext.request.contextPath}/contact"
+                        class="btn btn-outline-warning btn-sm text-dark fw-bold mt-2">
 
                         Gửi phản hồi
 
@@ -919,15 +1176,16 @@
     </div>
 
 
-
-    <!-- =================================================
+    <!-- =====================================================
          SERVICES
-         ================================================= -->
+    ===================================================== -->
 
     <div class="text-center mb-5">
 
         <h3 class="fw-bold text-primary">
+
             Các Dịch Vụ & Tiện Ích Đẳng Cấp
+
         </h3>
 
         <p class="text-muted">
@@ -938,7 +1196,6 @@
         </p>
 
     </div>
-
 
 
     <div class="row g-4 mb-5 text-center">
@@ -953,17 +1210,20 @@
                 <i class="fa-solid fa-wifi fs-2 text-warning mb-3"></i>
 
                 <h6 class="fw-bold mb-1">
+
                     Wifi Tốc Độ Cao
+
                 </h6>
 
                 <p class="text-muted small mb-0">
+
                     Phủ sóng toàn bộ phòng nghỉ
+
                 </p>
 
             </div>
 
         </div>
-
 
 
         <!-- NHÀ HÀNG -->
@@ -975,17 +1235,20 @@
                 <i class="fa-solid fa-utensils fs-2 text-warning mb-3"></i>
 
                 <h6 class="fw-bold mb-1">
+
                     Nhà Hàng 5 Sao
+
                 </h6>
 
                 <p class="text-muted small mb-0">
+
                     Ẩm thực đa dạng Á - Âu
+
                 </p>
 
             </div>
 
         </div>
-
 
 
         <!-- SPA -->
@@ -997,17 +1260,20 @@
                 <i class="fa-solid fa-spa fs-2 text-warning mb-3"></i>
 
                 <h6 class="fw-bold mb-1">
+
                     Spa & Trị Liệu
+
                 </h6>
 
                 <p class="text-muted small mb-0">
+
                     Thư giãn và chăm sóc sức khỏe
+
                 </p>
 
             </div>
 
         </div>
-
 
 
         <!-- HỖ TRỢ -->
@@ -1019,11 +1285,15 @@
                 <i class="fa-solid fa-clock-rotate-left fs-2 text-warning mb-3"></i>
 
                 <h6 class="fw-bold mb-1">
+
                     Hỗ Trợ 24/7
+
                 </h6>
 
                 <p class="text-muted small mb-0">
+
                     Phục vụ mọi yêu cầu
+
                 </p>
 
             </div>
@@ -1037,17 +1307,451 @@
 </div>
 
 
-
 <!-- =====================================================
      FOOTER
-     ===================================================== -->
+===================================================== -->
 
 <jsp:include page="../layout/footer.jsp"/>
 
 
-<!-- Bootstrap JS -->
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /*
+     * =========================================================
+     * CẤU HÌNH PHÂN TRANG
+     * =========================================================
+     *
+     * Mỗi trang hiển thị 7 phòng.
+     *
+     * 7 phòng x 5 trang = 35 phòng.
+     *
+     * Nếu có hơn 35 phòng thì tự động tạo trang 6, 7...
+     */
+
+    const ROOMS_PER_PAGE = 7;
+
+
+    /*
+     * =========================================================
+     * LẤY DANH SÁCH CARD PHÒNG
+     * =========================================================
+     */
+
+    const allRoomCards =
+        Array.from(
+            document.querySelectorAll(".home-room-card")
+        );
+
+
+    /*
+     * =========================================================
+     * CHỈ GIỮ PHÒNG AVAILABLE
+     *
+     * Occupied / Maintenance sẽ không hiển thị.
+     * =========================================================
+     */
+
+    const availableRooms =
+        allRoomCards.filter(function (card) {
+
+            const status =
+                card.getAttribute("data-status");
+
+            return status === "Available";
+
+        });
+
+
+    /*
+     * =========================================================
+     * CÁC ELEMENT PHÂN TRANG
+     * =========================================================
+     */
+
+    const pagination =
+        document.getElementById("pagination");
+
+
+    const paginationWrapper =
+        document.getElementById("paginationWrapper");
+
+
+    const paginationInfo =
+        document.getElementById("paginationInfo");
+
+
+    const noAvailableRoom =
+        document.getElementById("noAvailableRoom");
+
+
+    /*
+     * =========================================================
+     * TÍNH SỐ TRANG
+     * =========================================================
+     */
+
+    const totalRooms =
+        availableRooms.length;
+
+
+    const totalPages =
+        Math.ceil(
+            totalRooms / ROOMS_PER_PAGE
+        );
+
+
+    /*
+     * =========================================================
+     * TRANG HIỆN TẠI
+     * =========================================================
+     */
+
+    let currentPage = 1;
+
+
+    /*
+     * =========================================================
+     * HÀM HIỂN THỊ PHÒNG
+     * =========================================================
+     */
+
+    function showPage(page) {
+
+        currentPage = page;
+
+
+        /*
+         * -----------------------------------------------------
+         * ẨN TOÀN BỘ PHÒNG
+         * -----------------------------------------------------
+         */
+
+        allRoomCards.forEach(function (card) {
+
+            card.style.display = "none";
+
+        });
+
+
+        /*
+         * -----------------------------------------------------
+         * TÍNH VỊ TRÍ BẮT ĐẦU / KẾT THÚC
+         * -----------------------------------------------------
+         */
+
+        const start =
+            (page - 1) * ROOMS_PER_PAGE;
+
+
+        const end =
+            Math.min(
+                start + ROOMS_PER_PAGE,
+                totalRooms
+            );
+
+
+        /*
+         * -----------------------------------------------------
+         * HIỂN THỊ 7 PHÒNG CỦA TRANG
+         * -----------------------------------------------------
+         */
+
+        for (
+            let i = start;
+            i < end;
+            i++
+        ) {
+
+            availableRooms[i].style.display =
+                "flex";
+
+        }
+
+
+        /*
+         * -----------------------------------------------------
+         * CẬP NHẬT PHÂN TRANG
+         * -----------------------------------------------------
+         */
+
+        renderPagination();
+
+
+        /*
+         * -----------------------------------------------------
+         * CẬP NHẬT TEXT
+         * -----------------------------------------------------
+         */
+
+        if (totalRooms > 0) {
+
+            paginationInfo.textContent =
+                "Hiển thị "
+                + (start + 1)
+                + " - "
+                + end
+                + " trong tổng số "
+                + totalRooms
+                + " phòng trống";
+
+        } else {
+
+            paginationInfo.textContent = "";
+
+        }
+
+
+        /*
+         * -----------------------------------------------------
+         * CUỘN LÊN PHẦN PHÒNG
+         * -----------------------------------------------------
+         */
+
+        const roomList =
+            document.getElementById(
+                "homeRoomList"
+            );
+
+
+        if (page !== 1) {
+
+            roomList.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+
+    }
+
+
+    /*
+     * =========================================================
+     * TẠO NÚT PHÂN TRANG
+     * =========================================================
+     */
+
+    function renderPagination() {
+
+        pagination.innerHTML = "";
+
+
+        /*
+         * Nếu không có phòng
+         * thì ẩn pagination
+         */
+
+        if (totalPages <= 1) {
+
+            paginationWrapper.style.display =
+                totalRooms > 0
+                    ? "none"
+                    : "none";
+
+            return;
+
+        }
+
+
+        paginationWrapper.style.display =
+            "flex";
+
+
+        /*
+         * =====================================================
+         * NÚT TRANG TRƯỚC
+         * =====================================================
+         */
+
+        const previousButton =
+            document.createElement("button");
+
+
+        previousButton.type =
+            "button";
+
+
+        previousButton.className =
+            "home-page-btn";
+
+
+        previousButton.innerHTML =
+            '<i class="fa-solid fa-chevron-left"></i>';
+
+
+        previousButton.disabled =
+            currentPage === 1;
+
+
+        previousButton.addEventListener(
+            "click",
+            function () {
+
+                if (currentPage > 1) {
+
+                    showPage(
+                        currentPage - 1
+                    );
+
+                }
+
+            }
+        );
+
+
+        pagination.appendChild(
+            previousButton
+        );
+
+
+        /*
+         * =====================================================
+         * CÁC SỐ TRANG
+         * =====================================================
+         */
+
+        for (
+            let page = 1;
+            page <= totalPages;
+            page++
+        ) {
+
+            const pageButton =
+                document.createElement("button");
+
+
+            pageButton.type =
+                "button";
+
+
+            pageButton.className =
+                "home-page-btn";
+
+
+            pageButton.textContent =
+                page;
+
+
+            if (page === currentPage) {
+
+                pageButton.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            pageButton.addEventListener(
+                "click",
+                function () {
+
+                    showPage(page);
+
+                }
+            );
+
+
+            pagination.appendChild(
+                pageButton
+            );
+
+        }
+
+
+        /*
+         * =====================================================
+         * NÚT TRANG SAU
+         * =====================================================
+         */
+
+        const nextButton =
+            document.createElement("button");
+
+
+        nextButton.type =
+            "button";
+
+
+        nextButton.className =
+            "home-page-btn";
+
+
+        nextButton.innerHTML =
+            '<i class="fa-solid fa-chevron-right"></i>';
+
+
+        nextButton.disabled =
+            currentPage === totalPages;
+
+
+        nextButton.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    currentPage <
+                    totalPages
+                ) {
+
+                    showPage(
+                        currentPage + 1
+                    );
+
+                }
+
+            }
+        );
+
+
+        pagination.appendChild(
+            nextButton
+        );
+
+    }
+
+
+    /*
+     * =========================================================
+     * KHÔNG CÓ PHÒNG TRỐNG
+     * =========================================================
+     */
+
+    if (totalRooms === 0) {
+
+        noAvailableRoom.style.display =
+            "block";
+
+
+        paginationWrapper.style.display =
+            "none";
+
+
+        paginationInfo.style.display =
+            "none";
+
+
+        return;
+
+    }
+
+
+    /*
+     * =========================================================
+     * KHỞI TẠO TRANG 1
+     * ========================================================= */
+
+    showPage(1);
+
+});
+
+</script>
 
 
 </body>
