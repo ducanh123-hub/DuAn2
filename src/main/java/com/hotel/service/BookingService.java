@@ -97,4 +97,8 @@ public class BookingService {
                 checkOut
         );
     }
+
+    public Booking getByBookingCode(String bookingCode) {
+        return bookingDAO.getByBookingCode(bookingCode);
+    }
 }

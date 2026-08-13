@@ -48,6 +48,7 @@ public class BookingController extends HttpServlet {
             case "checkin" -> showCheckin(request, response);
             case "checkout" -> showCheckout(request, response);
             case "invoice" -> showInvoice(request, response);
+            case "success" -> showBookingSuccess(request, response);
             default -> showBookingPage(request, response);
         }
     }
@@ -110,15 +111,6 @@ public class BookingController extends HttpServlet {
         }
 
         request.setAttribute("room", room);
-
-        // Nếu vừa đặt phòng thành công và redirect về đây
-        String success = request.getParameter("success");
-        String bookingCode = request.getParameter("bookingCode");
-
-        if ("true".equals(success)) {
-            request.setAttribute("success",
-                    "Đặt phòng thành công! Mã đơn của bạn: " + bookingCode);
-        }
 
         request.getRequestDispatcher("/views/booking/booking.jsp")
                 .forward(request, response);
@@ -473,18 +465,9 @@ public class BookingController extends HttpServlet {
         // ------------------------------------------------------------
         if (result) {
 
-            /*
-             * Redirect về trang booking.
-             *
-             * Không truyền tổng tiền lên URL.
-             *
-             * Chỉ truyền mã đơn để hiển thị thông báo.
-             */
             response.sendRedirect(
                     request.getContextPath()
-                            + "/booking?roomId="
-                            + roomId
-                            + "&success=true"
+                            + "/booking?action=success"
                             + "&bookingCode="
                             + booking.getBookingCode()
             );
@@ -905,5 +888,42 @@ public class BookingController extends HttpServlet {
         }
 
         return (User) session.getAttribute("user");
+    }
+    private void showBookingSuccess(
+            HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+
+        User user = getLoginUser(request);
+
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
+        String bookingCode = request.getParameter("bookingCode");
+
+        if (bookingCode == null || bookingCode.isBlank()) {
+            response.sendRedirect(request.getContextPath() + "/room");
+            return;
+        }
+
+        Booking booking = bookingService.getByBookingCode(bookingCode.trim());
+
+        if (booking == null) {
+            response.sendRedirect(request.getContextPath() + "/room");
+            return;
+        }
+
+        if (booking.getUserID() != user.getUserID()) {
+            response.sendRedirect(request.getContextPath() + "/room");
+            return;
+        }
+
+        request.setAttribute("booking", booking);
+
+        request.getRequestDispatcher(
+                "/views/booking/booking-success.jsp"
+        ).forward(request, response);
     }
 }
