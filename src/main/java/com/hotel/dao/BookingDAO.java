@@ -1220,4 +1220,69 @@ public class BookingDAO implements BaseDAO<Booking> {
 
         return null;
     }
+
+    public Booking getByBookingCode(String bookingCode) {
+
+        String sql = """
+        SELECT
+            b.BookingID, b.UserID, b.VoucherID, b.BookingCode,
+            b.BookingDate, b.CheckInDate, b.CheckOutDate, b.GuestCount,
+            b.TotalAmount, b.DiscountAmount, b.FinalAmount,
+            b.CancelReason, b.CancelDate, b.Status, b.Note,
+            b.CreatedAt, b.UpdatedAt,
+            bd.RoomID, bd.Price AS RoomPrice,
+            r.RoomName, r.RoomNumber
+        FROM Booking b
+        JOIN Booking_Detail bd ON bd.BookingID = b.BookingID
+        JOIN Room r ON r.RoomID = bd.RoomID
+        WHERE b.BookingCode = ?
+        """;
+
+        try (
+                Connection con = DBConnect.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+
+            ps.setString(1, bookingCode.trim());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Booking booking = new Booking();
+
+                    booking.setBookingID(rs.getInt("BookingID"));
+                    booking.setUserID(rs.getInt("UserID"));
+
+                    int voucherId = rs.getInt("VoucherID");
+                    booking.setVoucherID(rs.wasNull() ? null : voucherId);
+
+                    booking.setBookingCode(rs.getString("BookingCode"));
+                    booking.setBookingDate(rs.getTimestamp("BookingDate"));
+                    booking.setCheckInDate(rs.getDate("CheckInDate"));
+                    booking.setCheckOutDate(rs.getDate("CheckOutDate"));
+                    booking.setGuestCount(rs.getInt("GuestCount"));
+                    booking.setTotalAmount(rs.getBigDecimal("TotalAmount"));
+                    booking.setDiscountAmount(rs.getBigDecimal("DiscountAmount"));
+                    booking.setFinalAmount(rs.getBigDecimal("FinalAmount"));
+                    booking.setCancelReason(rs.getString("CancelReason"));
+                    booking.setCancelDate(rs.getTimestamp("CancelDate"));
+                    booking.setStatus(rs.getString("Status"));
+                    booking.setNote(rs.getString("Note"));
+                    booking.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                    booking.setUpdatedAt(rs.getTimestamp("UpdatedAt"));
+
+                    booking.setRoomID(rs.getInt("RoomID"));
+                    booking.setRoomPrice(rs.getBigDecimal("RoomPrice"));
+                    booking.setRoomName(rs.getString("RoomName"));
+                    booking.setRoomNumber(rs.getString("RoomNumber"));
+
+                    return booking;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }
