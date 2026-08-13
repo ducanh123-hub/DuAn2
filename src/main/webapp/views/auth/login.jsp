@@ -449,6 +449,7 @@ align-items: center;
                             type="email"
                             name="email"
                             class="form-control"
+                            value="${emailValue}"
                             required>
 
                 </div>
@@ -498,7 +499,36 @@ align-items: center;
     </div>
 
 </div>
+    <script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+        const email    = document.querySelector("input[name='email']").value.trim();
+        const password = document.querySelector("input[name='password']").value;
+        const emailRegex = /^[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}$/;
 
+        if (!emailRegex.test(email)) {
+            e.preventDefault();
+            showError("Email không đúng định dạng.");
+            return;
+        }
+
+        if (password.length < 6) {
+            e.preventDefault();
+            showError("Mật khẩu phải có ít nhất 6 ký tự.");
+        }
+    });
+
+    function showError(msg) {
+        // Tái sử dụng luôn div alert đã có trong JSP
+        let alertBox = document.querySelector(".alert-danger");
+        if (!alertBox) {
+            alertBox = document.createElement("div");
+            alertBox.className = "alert alert-danger";
+            document.querySelector("form").before(alertBox);
+        }
+        alertBox.textContent = msg;
+        alertBox.style.display = "block";
+    }
+    </script>
 </body>
 
 </html>

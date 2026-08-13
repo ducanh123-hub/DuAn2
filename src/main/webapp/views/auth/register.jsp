@@ -479,6 +479,11 @@ font-size: 22px;
 
             </div>
 
+            <div class="mb-3">
+                <label class="form-label">Xác nhận mật khẩu</label>
+                <input type="password" name="confirmPassword" class="form-control" required>
+            </div>
+
 
             <!-- BUTTON -->
 
@@ -516,7 +521,13 @@ font-size: 22px;
 
 </div>
 
+const confirmPassword = document.querySelector("input[name='confirmPassword']").value;
 
+if (password !== confirmPassword) {
+    e.preventDefault();
+    showError("Mật khẩu xác nhận không khớp.");
+    return;
+}
 </body>
 
 </html>
