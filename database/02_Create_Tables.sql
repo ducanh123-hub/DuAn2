@@ -22,7 +22,7 @@ CREATE TABLE Role_Permission(
 );
 
 CREATE TABLE [User](
-                       UserID INT IDENTITY(1,1) PRIMARY KEY,
+    UserID INT IDENTITY(1,1) PRIMARY KEY,
     RoleID INT NOT NULL,
     FullName NVARCHAR(100) NOT NULL,
     Email VARCHAR(100) NOT NULL UNIQUE,
@@ -36,6 +36,8 @@ CREATE TABLE [User](
     Status NVARCHAR(20) DEFAULT N'Active',
     CreatedAt DATETIME DEFAULT GETDATE(),
     UpdatedAt DATETIME,
+    OTPCode NVARCHAR(6) NULL,
+    OTPExpiredAt DATETIME2 NULL,
     FOREIGN KEY(RoleID) REFERENCES Role(RoleID)
     );
 
