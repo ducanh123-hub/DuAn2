@@ -298,16 +298,6 @@ public class BookingDAO implements BaseDAO<Booking> {
 
     // =========================================================
     // INSERT BOOKING
-    //
-    // ĐẶT PHÒNG THÀNH CÔNG:
-    //
-    // Booking
-    //      ↓
-    // Booking_Detail
-    //      ↓
-    // Room.Status = "Đang có khách"
-    //
-    // Tất cả thực hiện trong cùng một transaction.
     // =========================================================
 
     @Override
@@ -346,8 +336,9 @@ public class BookingDAO implements BaseDAO<Booking> {
                 """;
 
 
-        // Sau khi đặt thành công:
-        // chuyển phòng thành đang có khách
+        // Sau khi đặt phòng thành công
+        // phòng chuyển thành Đang có khách
+
         String sqlRoom = """
                 UPDATE Room
                 SET
@@ -605,137 +596,125 @@ public class BookingDAO implements BaseDAO<Booking> {
     // =========================================================
     // UPDATE BOOKING
     //
-    // Nếu Status = "Đã hủy"
-    // → phòng trở lại "Còn trống"
+    // QUAN TRỌNG:
     //
-    // Nếu Status khác "Đã hủy"
-    // → phòng "Đang có khách"
+    // Đã trả phòng -> Room = Còn trống
+    //
+    // Đã hủy      -> Room = Còn trống
+    //
+    // Các trạng thái khác -> Room = Đang có khách
     // =========================================================
 
     @Override
     public boolean update(Booking booking) {
 
         String sqlBooking = """
-                UPDATE Booking
-                SET
-                    CheckinDate = ?,
-                    CheckoutDate = ?,
-                    GuestCount = ?,
-                    TotalAmount = ?,
-                    DiscountAmount = ?,
-                    FinalAmount = ?,
-                    Status = ?,
-                    Note = ?,
-                    CancelReason = ?,
-                    CancelDate = ?,
-                    UpdatedAt = GETDATE()
-                WHERE BookingID = ?
-                """;
-
+            UPDATE Booking
+            SET
+                CheckinDate = ?,
+                CheckoutDate = ?,
+                GuestCount = ?,
+                TotalAmount = ?,
+                DiscountAmount = ?,
+                FinalAmount = ?,
+                Status = ?,
+                Note = ?,
+                CancelReason = ?,
+                CancelDate = ?,
+                UpdatedAt = GETDATE()
+            WHERE BookingID = ?
+            """;
 
         String sqlRoomAvailable = """
-                UPDATE Room
-                SET
-                    Status = N'Còn trống',
-                    UpdatedAt = GETDATE()
-                WHERE RoomID = ?
-                """;
-
+            UPDATE Room
+            SET
+                Status = N'Còn trống',
+                UpdatedAt = GETDATE()
+            WHERE RoomID = ?
+            """;
 
         String sqlRoomOccupied = """
-                UPDATE Room
-                SET
-                    Status = N'Đang có khách',
-                    UpdatedAt = GETDATE()
-                WHERE RoomID = ?
-                """;
-
+            UPDATE Room
+            SET
+                Status = N'Đang sử dụng',
+                UpdatedAt = GETDATE()
+            WHERE RoomID = ?
+            """;
 
         try (
-                Connection con =
-                        DBConnect.getConnection()
+                Connection con = DBConnect.getConnection()
         ) {
 
             con.setAutoCommit(false);
 
-
             try (
                     PreparedStatement ps =
-                            con.prepareStatement(
-                                    sqlBooking
-                            )
+                            con.prepareStatement(sqlBooking)
             ) {
+
+                // -------------------------------------------------
+                // BOOKING
+                // -------------------------------------------------
 
                 ps.setDate(
                         1,
                         booking.getCheckInDate()
                 );
 
-
                 ps.setDate(
                         2,
                         booking.getCheckOutDate()
                 );
-
 
                 ps.setInt(
                         3,
                         booking.getGuestCount()
                 );
 
-
                 ps.setBigDecimal(
                         4,
                         booking.getTotalAmount()
                 );
-
 
                 ps.setBigDecimal(
                         5,
                         booking.getDiscountAmount()
                 );
 
-
                 ps.setBigDecimal(
                         6,
                         booking.getFinalAmount()
                 );
-
 
                 ps.setString(
                         7,
                         booking.getStatus()
                 );
 
-
                 ps.setString(
                         8,
                         booking.getNote()
                 );
-
 
                 ps.setString(
                         9,
                         booking.getCancelReason()
                 );
 
-
                 ps.setTimestamp(
                         10,
                         booking.getCancelDate()
                 );
-
 
                 ps.setInt(
                         11,
                         booking.getBookingID()
                 );
 
-
                 int result =
                         ps.executeUpdate();
 
-
+                // Không update được Booking
                 if (result == 0) {
 
                     con.rollback();
@@ -743,10 +722,9 @@ public class BookingDAO implements BaseDAO<Booking> {
                     return false;
                 }
 
-
-                // =================================================
-                // LẤY ROOM ID CỦA BOOKING
-                // =================================================
+                // -------------------------------------------------
+                // LẤY ROOM ID
+                // -------------------------------------------------
 
                 Integer roomId =
                         getRoomIdByBookingId(
@@ -754,28 +732,48 @@ public class BookingDAO implements BaseDAO<Booking> {
                                 booking.getBookingID()
                         );
 
-
                 if (roomId != null) {
 
                     String roomSql;
 
+                    // -------------------------------------------------
+                    // ĐÃ TRẢ PHÒNG
+                    // hoặc ĐÃ HỦY
+                    // → CÒN TRỐNG
+                    // -------------------------------------------------
 
-                    if (
-                            "Đã hủy".equals(
-                                    booking.getStatus()
-                            )
-                    ) {
+                    if ("Đã trả phòng".equals(
+                            booking.getStatus()
+                    )
+                            || "Đã hủy".equals(
+                            booking.getStatus()
+                    )) {
 
-                        roomSql =
-                                sqlRoomAvailable;
-
-                    } else {
-
-                        roomSql =
-                                sqlRoomOccupied;
+                        roomSql = sqlRoomAvailable;
 
                     }
 
+                    // -------------------------------------------------
+                    // ĐÃ XÁC NHẬN
+                    // → ĐANG SỬ DỤNG
+                    // -------------------------------------------------
+
+                    else if ("Đã xác nhận".equals(
+                            booking.getStatus()
+                    )) {
+
+                        roomSql = sqlRoomOccupied;
+
+                    }
+
+                    // -------------------------------------------------
+                    // CHỜ XÁC NHẬN
+                    // -------------------------------------------------
+
+                    else {
+
+                        roomSql = sqlRoomAvailable;
+                    }
 
                     try (
                             PreparedStatement psRoom =
@@ -789,18 +787,17 @@ public class BookingDAO implements BaseDAO<Booking> {
                                 roomId
                         );
 
-
                         psRoom.executeUpdate();
-
                     }
-
                 }
 
+                // -------------------------------------------------
+                // COMMIT
+                // -------------------------------------------------
 
                 con.commit();
 
                 return true;
-
 
             } catch (Exception e) {
 
@@ -808,34 +805,23 @@ public class BookingDAO implements BaseDAO<Booking> {
 
                 e.printStackTrace();
 
+                return false;
+
             } finally {
 
                 con.setAutoCommit(true);
-
             }
-
 
         } catch (Exception e) {
 
             e.printStackTrace();
 
+            return false;
         }
-
-
-        return false;
     }
 
-
     // =========================================================
-    // DELETE
-    //
-    // Xóa booking:
-    //
-    // Booking_Detail
-    //      ↓
-    // Booking
-    //      ↓
-    // Room = Còn trống
+    // DELETE BOOKING
     // =========================================================
 
     @Override
@@ -1010,7 +996,7 @@ public class BookingDAO implements BaseDAO<Booking> {
 
 
     // =========================================================
-    // GET BY USER ID
+    // GET BOOKINGS BY USER ID
     // =========================================================
 
     public List<Booking> getByUserId(int userId) {
@@ -1088,15 +1074,7 @@ public class BookingDAO implements BaseDAO<Booking> {
 
 
     // =========================================================
-    // KIỂM TRA PHÒNG CÓ TRỐNG THEO NGÀY
-    //
-    // Phòng được xem là bận nếu:
-    //
-    // Checkin < ngày trả mới
-    // AND
-    // Checkout > ngày nhận mới
-    //
-    // Booking "Đã hủy" không tính.
+    // CHECK ROOM AVAILABLE
     // =========================================================
 
     public boolean isRoomAvailable(
@@ -1173,9 +1151,7 @@ public class BookingDAO implements BaseDAO<Booking> {
 
 
     // =========================================================
-    // LẤY ROOM ID TỪ BOOKING ID
-    //
-    // Dùng nội bộ trong update()
+    // GET ROOM ID BY BOOKING ID
     // =========================================================
 
     private Integer getRoomIdByBookingId(
@@ -1221,67 +1197,200 @@ public class BookingDAO implements BaseDAO<Booking> {
         return null;
     }
 
-    public Booking getByBookingCode(String bookingCode) {
+
+    // =========================================================
+    // GET BOOKING BY BOOKING CODE
+    // =========================================================
+
+    public Booking getByBookingCode(
+            String bookingCode
+    ) {
 
         String sql = """
-        SELECT
-            b.BookingID, b.UserID, b.VoucherID, b.BookingCode,
-            b.BookingDate, b.CheckInDate, b.CheckOutDate, b.GuestCount,
-            b.TotalAmount, b.DiscountAmount, b.FinalAmount,
-            b.CancelReason, b.CancelDate, b.Status, b.Note,
-            b.CreatedAt, b.UpdatedAt,
-            bd.RoomID, bd.Price AS RoomPrice,
-            r.RoomName, r.RoomNumber
-        FROM Booking b
-        JOIN Booking_Detail bd ON bd.BookingID = b.BookingID
-        JOIN Room r ON r.RoomID = bd.RoomID
-        WHERE b.BookingCode = ?
-        """;
+                SELECT
+                    b.BookingID,
+                    b.UserID,
+                    b.VoucherID,
+                    b.BookingCode,
+                    b.BookingDate,
+                    b.CheckInDate,
+                    b.CheckOutDate,
+                    b.GuestCount,
+                    b.TotalAmount,
+                    b.DiscountAmount,
+                    b.FinalAmount,
+                    b.CancelReason,
+                    b.CancelDate,
+                    b.Status,
+                    b.Note,
+                    b.CreatedAt,
+                    b.UpdatedAt,
+
+                    bd.RoomID,
+                    bd.Price AS RoomPrice,
+
+                    r.RoomName,
+                    r.RoomNumber
+
+                FROM Booking b
+
+                JOIN Booking_Detail bd
+                    ON bd.BookingID = b.BookingID
+
+                JOIN Room r
+                    ON r.RoomID = bd.RoomID
+
+                WHERE b.BookingCode = ?
+                """;
+
 
         try (
-                Connection con = DBConnect.getConnection();
-                PreparedStatement ps = con.prepareStatement(sql)
+                Connection con =
+                        DBConnect.getConnection();
+
+                PreparedStatement ps =
+                        con.prepareStatement(sql)
         ) {
 
-            ps.setString(1, bookingCode.trim());
+            ps.setString(
+                    1,
+                    bookingCode.trim()
+            );
 
-            try (ResultSet rs = ps.executeQuery()) {
+
+            try (
+                    ResultSet rs =
+                            ps.executeQuery()
+            ) {
+
                 if (rs.next()) {
-                    Booking booking = new Booking();
 
-                    booking.setBookingID(rs.getInt("BookingID"));
-                    booking.setUserID(rs.getInt("UserID"));
+                    Booking booking =
+                            new Booking();
 
-                    int voucherId = rs.getInt("VoucherID");
-                    booking.setVoucherID(rs.wasNull() ? null : voucherId);
 
-                    booking.setBookingCode(rs.getString("BookingCode"));
-                    booking.setBookingDate(rs.getTimestamp("BookingDate"));
-                    booking.setCheckInDate(rs.getDate("CheckInDate"));
-                    booking.setCheckOutDate(rs.getDate("CheckOutDate"));
-                    booking.setGuestCount(rs.getInt("GuestCount"));
-                    booking.setTotalAmount(rs.getBigDecimal("TotalAmount"));
-                    booking.setDiscountAmount(rs.getBigDecimal("DiscountAmount"));
-                    booking.setFinalAmount(rs.getBigDecimal("FinalAmount"));
-                    booking.setCancelReason(rs.getString("CancelReason"));
-                    booking.setCancelDate(rs.getTimestamp("CancelDate"));
-                    booking.setStatus(rs.getString("Status"));
-                    booking.setNote(rs.getString("Note"));
-                    booking.setCreatedAt(rs.getTimestamp("CreatedAt"));
-                    booking.setUpdatedAt(rs.getTimestamp("UpdatedAt"));
+                    booking.setBookingID(
+                            rs.getInt("BookingID")
+                    );
 
-                    booking.setRoomID(rs.getInt("RoomID"));
-                    booking.setRoomPrice(rs.getBigDecimal("RoomPrice"));
-                    booking.setRoomName(rs.getString("RoomName"));
-                    booking.setRoomNumber(rs.getString("RoomNumber"));
+
+                    booking.setUserID(
+                            rs.getInt("UserID")
+                    );
+
+
+                    int voucherId =
+                            rs.getInt("VoucherID");
+
+
+                    booking.setVoucherID(
+                            rs.wasNull()
+                                    ? null
+                                    : voucherId
+                    );
+
+
+                    booking.setBookingCode(
+                            rs.getString("BookingCode")
+                    );
+
+
+                    booking.setBookingDate(
+                            rs.getTimestamp("BookingDate")
+                    );
+
+
+                    booking.setCheckInDate(
+                            rs.getDate("CheckInDate")
+                    );
+
+
+                    booking.setCheckOutDate(
+                            rs.getDate("CheckOutDate")
+                    );
+
+
+                    booking.setGuestCount(
+                            rs.getInt("GuestCount")
+                    );
+
+
+                    booking.setTotalAmount(
+                            rs.getBigDecimal("TotalAmount")
+                    );
+
+
+                    booking.setDiscountAmount(
+                            rs.getBigDecimal("DiscountAmount")
+                    );
+
+
+                    booking.setFinalAmount(
+                            rs.getBigDecimal("FinalAmount")
+                    );
+
+
+                    booking.setCancelReason(
+                            rs.getString("CancelReason")
+                    );
+
+
+                    booking.setCancelDate(
+                            rs.getTimestamp("CancelDate")
+                    );
+
+
+                    booking.setStatus(
+                            rs.getString("Status")
+                    );
+
+
+                    booking.setNote(
+                            rs.getString("Note")
+                    );
+
+
+                    booking.setCreatedAt(
+                            rs.getTimestamp("CreatedAt")
+                    );
+
+
+                    booking.setUpdatedAt(
+                            rs.getTimestamp("UpdatedAt")
+                    );
+
+
+                    booking.setRoomID(
+                            rs.getInt("RoomID")
+                    );
+
+
+                    booking.setRoomPrice(
+                            rs.getBigDecimal("RoomPrice")
+                    );
+
+
+                    booking.setRoomName(
+                            rs.getString("RoomName")
+                    );
+
+
+                    booking.setRoomNumber(
+                            rs.getString("RoomNumber")
+                    );
+
 
                     return booking;
                 }
             }
 
+
         } catch (Exception e) {
+
             e.printStackTrace();
+
         }
+
 
         return null;
     }
