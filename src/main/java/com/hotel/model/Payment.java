@@ -9,9 +9,14 @@ public class Payment {
     private int bookingID;
     private String paymentMethod;
     private BigDecimal amount;
+    private BigDecimal paidAmount;       // PaidAmount trong DB
     private String transactionCode;
     private String paymentStatus;
     private Timestamp paymentDate;
+    private BigDecimal refundAmount;     // RefundAmount trong DB
+    private boolean refunda;             // Refunda trong DB (BIT)
+    private boolean approved;            // Approved trong DB (BIT)
+    private String refundReason;         // RefundReason trong DB
     private String note;
 
     public Payment() {
@@ -95,6 +100,46 @@ public class Payment {
         this.note = note;
     }
 
+    public BigDecimal getPaidAmount() {
+        return paidAmount;
+    }
+
+    public void setPaidAmount(BigDecimal paidAmount) {
+        this.paidAmount = paidAmount;
+    }
+
+    public BigDecimal getRefundAmount() {
+        return refundAmount;
+    }
+
+    public void setRefundAmount(BigDecimal refundAmount) {
+        this.refundAmount = refundAmount;
+    }
+
+    public boolean isRefunda() {
+        return refunda;
+    }
+
+    public void setRefunda(boolean refunda) {
+        this.refunda = refunda;
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
+    public String getRefundReason() {
+        return refundReason;
+    }
+
+    public void setRefundReason(String refundReason) {
+        this.refundReason = refundReason;
+    }
+
     @Override
     public String toString() {
         return "Payment{" +
@@ -105,4 +150,4 @@ public class Payment {
                 ", paymentStatus='" + paymentStatus + '\'' +
                 '}';
     }
-}
+}

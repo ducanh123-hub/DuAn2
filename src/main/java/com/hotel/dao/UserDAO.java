@@ -346,4 +346,130 @@ public class UserDAO implements BaseDAO<User> {
         }
         return false;
     }
+
+    // ===============================================================
+    // CÁC PHƯƠNG THỨC BỔ SUNG CHO QUẢN LÝ
+    // ===============================================================
+
+    /**
+     * Tìm kiếm người dùng theo họ tên, email hoặc số điện thoại
+     */
+    public List<User> search(String keyword) {
+        List<User> list = new ArrayList<>();
+        String sql = """
+            SELECT * FROM [User]
+            WHERE FullName LIKE ? OR Email LIKE ? OR Phone LIKE ?
+            ORDER BY CreatedAt DESC
+            """;
+        try (
+            Connection con = DBConnect.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            String kw = "%" + keyword.trim() + "%";
+            ps.setString(1, kw);
+            ps.setString(2, kw);
+            ps.setString(3, kw);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    User user = new User();
+                    user.setUserID(rs.getInt("UserID"));
+                    user.setRoleID(rs.getInt("RoleID"));
+                    user.setFullName(rs.getString("FullName"));
+                    user.setEmail(rs.getString("Email"));
+                    user.setPhone(rs.getString("Phone"));
+                    user.setGender(rs.getString("Gender"));
+                    user.setStatus(rs.getString("Status"));
+                    user.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                    list.add(user);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * Cập nhật trạng thái tài khoản (Active / Locked)
+     */
+    public boolean updateStatus(int userId, String status) {
+        String sql = "UPDATE [User] SET Status = ?, UpdatedAt = GETDATE() WHERE UserID = ?";
+        try (
+            Connection con = DBConnect.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setString(1, status);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Cập nhật vai trò người dùng (RoleID)
+     */
+    public boolean updateRole(int userId, int roleId) {
+        String sql = "UPDATE [User] SET RoleID = ?, UpdatedAt = GETDATE() WHERE UserID = ?";
+        try (
+            Connection con = DBConnect.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setInt(1, roleId);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Đặt lại mật khẩu người dùng (lưu plain text — giống pattern hiện tại của project)
+     */
+    public boolean resetPassword(int userId, String newPassword) {
+        String sql = "UPDATE [User] SET Password = ?, UpdatedAt = GETDATE() WHERE UserID = ?";
+        try (
+            Connection con = DBConnect.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setString(1, newPassword);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Lấy danh sách người dùng theo RoleID
+     */
+    public List<User> getByRole(int roleId) {
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT * FROM [User] WHERE RoleID = ? ORDER BY FullName";
+        try (
+            Connection con = DBConnect.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setInt(1, roleId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    User user = new User();
+                    user.setUserID(rs.getInt("UserID"));
+                    user.setRoleID(rs.getInt("RoleID"));
+                    user.setFullName(rs.getString("FullName"));
+                    user.setEmail(rs.getString("Email"));
+                    user.setPhone(rs.getString("Phone"));
+                    user.setStatus(rs.getString("Status"));
+                    user.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                    list.add(user);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

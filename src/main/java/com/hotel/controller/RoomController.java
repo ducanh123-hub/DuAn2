@@ -1,13 +1,17 @@
 package com.hotel.controller;
 
 import com.hotel.model.Room;
+import com.hotel.model.User;
+import com.hotel.service.RoomCategoryService;
 import com.hotel.service.RoomService;
+import com.hotel.service.SystemLogService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -16,8 +20,9 @@ import java.util.List;
 @WebServlet("/room")
 public class RoomController extends HttpServlet {
 
-    private final RoomService roomService =
-            new RoomService();
+    private final RoomService roomService = new RoomService();
+    private final RoomCategoryService categoryService = new RoomCategoryService();
+    private final SystemLogService logService = new SystemLogService();
 
     // =====================================================
     // CẤU HÌNH PHÂN TRANG
@@ -53,18 +58,28 @@ public class RoomController extends HttpServlet {
                 home(request, response);
                 break;
 
+            // ===== ADMIN actions: yêu cầu quyền QUAN_LY =====
+            case "admin-list":
+                if (!checkAdminRole(request, response)) return;
+                adminList(request, response);
+                break;
+
             case "add":
+                if (!checkAdminRole(request, response)) return;
                 showAdd(request, response);
                 break;
 
             case "edit":
+                if (!checkAdminRole(request, response)) return;
                 showEdit(request, response);
                 break;
 
             case "delete":
+                if (!checkAdminRole(request, response)) return;
                 delete(request, response);
                 break;
 
+            // ===== PUBLIC actions =====
             case "detail":
                 detail(request, response);
                 break;
@@ -96,11 +111,19 @@ public class RoomController extends HttpServlet {
 
         if ("insert".equals(action)) {
 
+            if (!checkAdminRole(request, response)) return;
             insert(request, response);
 
         } else if ("update".equals(action)) {
 
+            if (!checkAdminRole(request, response)) return;
             update(request, response);
+
+        } else if ("updateStatus".equals(action)) {
+
+            // Cập nhật trạng thái phòng
+            if (!checkAdminRole(request, response)) return;
+            updateStatus(request, response);
 
         } else {
 
@@ -109,6 +132,77 @@ public class RoomController extends HttpServlet {
                             + "/room"
             );
         }
+    }
+
+    // =====================================================
+    // KIỂM TRA QUYỀN QUAN_LY
+    // =====================================================
+
+    private boolean checkAdminRole(HttpServletRequest request,
+                                    HttpServletResponse response)
+            throws IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return false;
+        }
+        User user = (User) session.getAttribute("user");
+        if (user.getRoleID() != 1) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                    "Bạn không có quyền thực hiện chức năng này!");
+            return false;
+        }
+        return true;
+    }
+
+    // =====================================================
+    // ADMIN LIST - Hiển thị danh sách quản lý
+    // =====================================================
+
+    private void adminList(HttpServletRequest request,
+                            HttpServletResponse response)
+            throws ServletException, IOException {
+
+        List<Room> list = roomService.getAllRooms();
+        request.setAttribute("list", list);
+        request.setAttribute("categories", categoryService.getAll());
+
+        // Thông báo sau redirect
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            request.setAttribute("successMsg", session.getAttribute("successMsg"));
+            request.setAttribute("errorMsg", session.getAttribute("errorMsg"));
+            session.removeAttribute("successMsg");
+            session.removeAttribute("errorMsg");
+        }
+
+        request.getRequestDispatcher("/views/admin/room/list.jsp")
+                .forward(request, response);
+    }
+
+    // =====================================================
+    // UPDATE STATUS
+    // =====================================================
+
+    private void updateStatus(HttpServletRequest request,
+                               HttpServletResponse response) throws IOException {
+        try {
+            int roomId = Integer.parseInt(request.getParameter("roomId"));
+            String status = request.getParameter("status");
+            Room room = roomService.getRoomById(roomId);
+            if (room != null && status != null) {
+                room.setStatus(status);
+                roomService.updateRoom(room);
+                logService.logFromRequest(request, "UPDATE",
+                        "Cập nhật trạng thái phòng " + room.getRoomNumber() + " -> " + status);
+                request.getSession().setAttribute("successMsg",
+                        "Cập nhật trạng thái thành công!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.getSession().setAttribute("errorMsg", "Cập nhật thất bại!");
+        }
+        response.sendRedirect(request.getContextPath() + "/room?action=admin-list");
     }
 
     // =====================================================

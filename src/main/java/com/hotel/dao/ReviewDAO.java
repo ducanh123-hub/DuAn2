@@ -151,4 +151,137 @@ public class ReviewDAO implements BaseDAO<Review> {
         }
         return false;
     }
+
+    // ===============================================================
+    // CÁC PHƯƠNG THỨC BỔ SUNG CHO QUẢN LÝ BÌNH LUẬN
+    // ===============================================================
+
+    /**
+     * Lấy toàn bộ bình luận kèm thông tin khách hàng và tên phòng
+     */
+    public List<Review> getAllWithDetails() {
+        List<Review> list = new ArrayList<>();
+        String sql = """
+            SELECT r.*, u.FullName AS CustomerName,
+                   rm.RoomName, rm.RoomNumber
+            FROM Review r
+            JOIN [User] u ON r.UserID = u.UserID
+            JOIN Room rm ON r.RoomID = rm.RoomID
+            ORDER BY r.CreatedAt DESC
+            """;
+        try (
+            Connection con = DBConnect.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()
+        ) {
+            while (rs.next()) {
+                Review review = mapDetail(rs);
+                list.add(review);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * Tìm kiếm bình luận theo tên khách, phòng hoặc nội dung
+     */
+    public List<Review> search(String keyword, String status) {
+        List<Review> list = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("""
+            SELECT r.*, u.FullName AS CustomerName,
+                   rm.RoomName, rm.RoomNumber
+            FROM Review r
+            JOIN [User] u ON r.UserID = u.UserID
+            JOIN Room rm ON r.RoomID = rm.RoomID
+            WHERE 1=1
+            """);
+        List<Object> params = new ArrayList<>();
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            sql.append("AND (u.FullName LIKE ? OR rm.RoomName LIKE ? OR r.Comment LIKE ?) ");
+            String kw = "%" + keyword.trim() + "%";
+            params.add(kw);
+            params.add(kw);
+            params.add(kw);
+        }
+        if (status != null && !status.trim().isEmpty()) {
+            sql.append("AND r.Status = ? ");
+            params.add(status.trim());
+        }
+        sql.append("ORDER BY r.CreatedAt DESC");
+        try (
+            Connection con = DBConnect.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql.toString())
+        ) {
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(mapDetail(rs));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * Cập nhật trạng thái bình luận (Chờ duyệt / Đã duyệt / Ẩn)
+     */
+    public boolean updateStatus(int reviewId, String status) {
+        String sql = "UPDATE Review SET Status = ? WHERE ReviewID = ?";
+        try (
+            Connection con = DBConnect.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setString(1, status);
+            ps.setInt(2, reviewId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Lưu phản hồi của quản lý cho bình luận
+     */
+    public boolean updateReply(int reviewId, String reply) {
+        String sql = "UPDATE Review SET Reply = ?, ReplyAt = GETDATE(), Status = N'Approved' WHERE ReviewID = ?";
+        try (
+            Connection con = DBConnect.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setString(1, reply);
+            ps.setInt(2, reviewId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Map ResultSet kèm JOIN (có CustomerName, RoomName, RoomNumber)
+     */
+    private Review mapDetail(ResultSet rs) throws Exception {
+        Review review = new Review();
+        review.setReviewID(rs.getInt("ReviewID"));
+        review.setBookingID(rs.getInt("BookingID"));
+        review.setUserID(rs.getInt("UserID"));
+        review.setRoomID(rs.getInt("RoomID"));
+        review.setRating(rs.getInt("Rating"));
+        review.setComment(rs.getString("Comment"));
+        review.setReply(rs.getString("Reply"));
+        review.setReplyAt(rs.getTimestamp("ReplyAt"));
+        review.setCreatedAt(rs.getTimestamp("CreatedAt"));
+        review.setStatus(rs.getString("Status"));
+        review.setCustomerName(rs.getString("CustomerName"));
+        review.setRoomName(rs.getString("RoomName"));
+        review.setRoomNumber(rs.getString("RoomNumber"));
+        return review;
+    }
 }
