@@ -718,8 +718,8 @@ public class BookingController extends HttpServlet {
     }
 
     // ================================================================
-    // XÁC NHẬN CHECK-OUT
-    // ================================================================
+// XÁC NHẬN CHECK-OUT
+// ================================================================
     private void confirmCheckout(
             HttpServletRequest request,
             HttpServletResponse response)
@@ -727,44 +727,30 @@ public class BookingController extends HttpServlet {
 
         int bookingId;
 
+        // ------------------------------------------------------------
+        // 1. Lấy BookingID
+        // ------------------------------------------------------------
         try {
 
-            bookingId = Integer.parseInt(
-                    request.getParameter("bookingId")
-            );
+            String bookingIdStr = request.getParameter("bookingId");
 
-        } catch (Exception e) {
+            if (bookingIdStr == null || bookingIdStr.isBlank()) {
 
-            response.sendRedirect(
-                    request.getContextPath()
-                            + "/booking?action=manage"
-            );
+                response.sendRedirect(
+                        request.getContextPath()
+                                + "/booking?action=manage"
+                );
 
-            return;
-        }
-
-        String note =
-                request.getParameter("note");
-
-        String totalAmountStr =
-                request.getParameter("totalAmount");
-
-        BigDecimal totalAmount;
-
-        try {
-
-            if (totalAmountStr == null
-                    || totalAmountStr.isBlank()) {
-
-                throw new NumberFormatException();
+                return;
             }
 
-            totalAmount =
-                    new BigDecimal(
-                            totalAmountStr.trim()
-                    );
+            bookingId = Integer.parseInt(
+                    bookingIdStr.trim()
+            );
 
         } catch (Exception e) {
+
+            e.printStackTrace();
 
             response.sendRedirect(
                     request.getContextPath()
@@ -774,22 +760,90 @@ public class BookingController extends HttpServlet {
             return;
         }
 
+        // ------------------------------------------------------------
+        // 2. Lấy booking từ database
+        // ------------------------------------------------------------
         Booking booking =
                 bookingService.getBookingById(bookingId);
 
-        if (booking != null) {
+        if (booking == null) {
 
-            booking.setStatus("Đã trả phòng");
+            response.sendRedirect(
+                    request.getContextPath()
+                            + "/booking?action=manage"
+            );
 
-            booking.setFinalAmount(totalAmount);
+            return;
+        }
 
-            booking.setTotalAmount(totalAmount);
+        // ------------------------------------------------------------
+        // 3. Kiểm tra trạng thái
+        // ------------------------------------------------------------
+        if (!"Đã xác nhận".equals(booking.getStatus())) {
 
-            booking.setNote(note);
+            response.sendRedirect(
+                    request.getContextPath()
+                            + "/booking?action=manage"
+            );
 
-            bookingService.updateBooking(booking);
+            return;
+        }
 
-            // Phòng trở lại trạng thái còn trống
+        // ------------------------------------------------------------
+        // 4. Lấy ghi chú
+        // ------------------------------------------------------------
+        String note = request.getParameter("note");
+
+        if (note == null) {
+            note = "";
+        }
+
+        // ------------------------------------------------------------
+        // 5. KHÔNG lấy totalAmount từ input nữa
+        //
+        // Dùng số tiền đã có trong database.
+        // Tránh lỗi:
+        // "12000000.00 VNĐ"
+        // "12,000,000"
+        // ------------------------------------------------------------
+
+        BigDecimal finalAmount = booking.getFinalAmount();
+
+        if (finalAmount == null) {
+
+            finalAmount = booking.getTotalAmount();
+        }
+
+        if (finalAmount == null) {
+
+            finalAmount = BigDecimal.ZERO;
+        }
+
+        // ------------------------------------------------------------
+        // 6. Đổi trạng thái booking
+        // ------------------------------------------------------------
+        booking.setStatus("Đã trả phòng");
+
+        booking.setFinalAmount(finalAmount);
+
+        booking.setTotalAmount(finalAmount);
+
+        booking.setNote(note);
+
+        // ------------------------------------------------------------
+        // 7. UPDATE BOOKING
+        // ------------------------------------------------------------
+        boolean result =
+                bookingService.updateBooking(booking);
+
+        // ------------------------------------------------------------
+        // 8. Nếu update thành công
+        // ------------------------------------------------------------
+        if (result) {
+
+            // --------------------------------------------------------
+            // Phòng trở lại CÒN TRỐNG
+            // --------------------------------------------------------
             Room room =
                     roomDAO.getById(
                             booking.getRoomID()
@@ -801,14 +855,26 @@ public class BookingController extends HttpServlet {
 
                 roomDAO.update(room);
             }
+
+            // --------------------------------------------------------
+            // Quay lại trang quản lý
+            // --------------------------------------------------------
+            response.sendRedirect(
+                    request.getContextPath()
+                            + "/booking?action=manage"
+            );
+
+            return;
         }
 
+        // ------------------------------------------------------------
+        // 9. Update thất bại
+        // ------------------------------------------------------------
         response.sendRedirect(
                 request.getContextPath()
-                        + "/booking?action=manage"
+                        + "/booking?action=manage&error=checkout"
         );
     }
-
     // ================================================================
     // HÓA ĐƠN
     // ================================================================
@@ -854,21 +920,27 @@ public class BookingController extends HttpServlet {
         User customer =
                 userDAO.getById(booking.getUserID());
 
-        request.setAttribute(
-                "booking",
-                booking
-        );
+        request.setAttribute("booking", booking);
+        request.setAttribute("room", room);
+        request.setAttribute("customer", customer);
 
-        request.setAttribute(
-                "room",
-                room
-        );
+// ==========================================
+// TÍNH TỔNG TIỀN PHÒNG CHƯA GIẢM GIÁ
+// ==========================================
+        if (booking.getRoomPrice() != null
+                && booking.getCheckInDate() != null
+                && booking.getCheckOutDate() != null) {
 
-        request.setAttribute(
-                "customer",
-                customer
-        );
+            long nights = ChronoUnit.DAYS.between(
+                    booking.getCheckInDate().toLocalDate(),
+                    booking.getCheckOutDate().toLocalDate()
+            );
 
+            BigDecimal roomTotal = booking.getRoomPrice()
+                    .multiply(BigDecimal.valueOf(nights));
+
+            request.setAttribute("roomTotal", roomTotal);
+        }
         request.getRequestDispatcher(
                 "/views/booking/invoice.jsp"
         ).forward(request, response);

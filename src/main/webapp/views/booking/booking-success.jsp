@@ -1,14 +1,28 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+
+<fmt:setLocale value="vi_VN"/>
+
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
+
     <meta charset="UTF-8">
+
     <title>Đặt phòng thành công - Luxury Hotel</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -118,10 +132,11 @@
             text-align: right;
         }
 
+        /* GIÁ */
         .info-value.price {
-            color: #d4af37;
+            color: #dc3545;
             font-size: 17px;
-            font-weight: 800;
+            font-weight: normal;
         }
 
         .action-buttons {
@@ -175,6 +190,7 @@
         }
 
         @media (max-width: 576px) {
+
             body {
                 padding: 15px;
             }
@@ -191,55 +207,182 @@
                 flex-direction: column;
             }
         }
+
     </style>
+
 </head>
+
+
 <body>
+
 
 <div class="success-card">
 
+
+    <!-- HEADER -->
+
     <div class="success-header">
+
         <div class="success-icon">
+
             <i class="fa-solid fa-check"></i>
+
         </div>
-        <h2>Đặt phòng thành công!</h2>
-        <p>Mã đơn của bạn</p>
-        <div class="booking-code">${booking.bookingCode}</div>
+
+
+        <h2>
+            Đặt phòng thành công!
+        </h2>
+
+
+        <p>
+            Mã đơn của bạn
+        </p>
+
+
+        <div class="booking-code">
+
+            ${booking.bookingCode}
+
+        </div>
+
     </div>
+
+
+    <!-- BODY -->
 
     <div class="success-body">
 
-        <div class="info-row">
-            <span class="info-label"><i class="fa-solid fa-door-open"></i> Phòng</span>
-            <span class="info-value">${booking.roomName} (Phòng ${booking.roomNumber})</span>
-        </div>
+
+        <!-- PHÒNG -->
 
         <div class="info-row">
-            <span class="info-label"><i class="fa-solid fa-calendar-check"></i> Nhận phòng</span>
-            <span class="info-value">${booking.checkInDate}</span>
+
+            <span class="info-label">
+
+                <i class="fa-solid fa-door-open"></i>
+
+                Phòng
+
+            </span>
+
+
+            <span class="info-value">
+
+                ${booking.roomName}
+                (Phòng ${booking.roomNumber})
+
+            </span>
+
         </div>
 
-        <div class="info-row">
-            <span class="info-label"><i class="fa-solid fa-calendar-xmark"></i> Trả phòng</span>
-            <span class="info-value">${booking.checkOutDate}</span>
-        </div>
+
+        <!-- NHẬN PHÒNG -->
 
         <div class="info-row">
-            <span class="info-label"><i class="fa-solid fa-coins"></i> Tổng tiền</span>
-            <span class="info-value price">${booking.finalAmount} VNĐ</span>
+
+            <span class="info-label">
+
+                <i class="fa-solid fa-calendar-check"></i>
+
+                Nhận phòng
+
+            </span>
+
+
+            <span class="info-value">
+
+                ${booking.checkInDate}
+
+            </span>
+
         </div>
+
+
+        <!-- TRẢ PHÒNG -->
+
+        <div class="info-row">
+
+            <span class="info-label">
+
+                <i class="fa-solid fa-calendar-xmark"></i>
+
+                Trả phòng
+
+            </span>
+
+
+            <span class="info-value">
+
+                ${booking.checkOutDate}
+
+            </span>
+
+        </div>
+
+
+        <!-- TỔNG TIỀN -->
+
+        <div class="info-row">
+
+            <span class="info-label">
+
+                <i class="fa-solid fa-coins"></i>
+
+                Tổng tiền
+
+            </span>
+
+
+            <span class="info-value price">
+
+                <fmt:formatNumber
+                        value="${booking.finalAmount}"
+                        type="number"
+                        groupingUsed="true"
+                        maxFractionDigits="0"/>
+
+                VNĐ
+
+            </span>
+
+        </div>
+
+
+        <!-- BUTTON -->
 
         <div class="action-buttons">
-            <a href="${pageContext.request.contextPath}/booking?action=history" class="btn-outline-luxury">
-                <i class="fa-solid fa-clock-rotate-left"></i> Lịch sử đặt phòng
+
+
+            <a
+                    href="${pageContext.request.contextPath}/booking?action=history"
+                    class="btn-outline-luxury">
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+                Lịch sử đặt phòng
+
             </a>
-            <a href="${pageContext.request.contextPath}/home" class="btn-fill-luxury">
+
+
+            <a
+                    href="${pageContext.request.contextPath}/home"
+                    class="btn-fill-luxury">
+
                 Về trang chủ
+
             </a>
+
+
         </div>
+
 
     </div>
 
+
 </div>
 
+
 </body>
+
 </html>
