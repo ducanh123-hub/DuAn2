@@ -1,21 +1,47 @@
 package com.hotel.model;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+
+/**
+ * Model khớp với bảng System_Setting trong DB:
+ * SettingID, HotelName, Address, Phone, Email,
+ * CheckinTime, CheckoutTime, CancelPolicy, PaymentMethods,
+ * OtherSetting, UpdatedAt
+ */
 public class SystemSetting {
 
     private int settingID;
-    private String settingKey;
-    private String settingValue;
-    private String description;
+    private String hotelName;
+    private String address;
+    private String phone;
+    private String email;
+    private Time checkinTime;
+    private Time checkoutTime;
+    private String cancelPolicy;
+    private String paymentMethods;
+    private String otherSetting;
+    private Timestamp updatedAt;
 
     public SystemSetting() {
     }
 
-    public SystemSetting(int settingID, String settingKey,
-                         String settingValue, String description) {
+    public SystemSetting(int settingID, String hotelName, String address,
+                         String phone, String email,
+                         Time checkinTime, Time checkoutTime,
+                         String cancelPolicy, String paymentMethods,
+                         String otherSetting, Timestamp updatedAt) {
         this.settingID = settingID;
-        this.settingKey = settingKey;
-        this.settingValue = settingValue;
-        this.description = description;
+        this.hotelName = hotelName;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.checkinTime = checkinTime;
+        this.checkoutTime = checkoutTime;
+        this.cancelPolicy = cancelPolicy;
+        this.paymentMethods = paymentMethods;
+        this.otherSetting = otherSetting;
+        this.updatedAt = updatedAt;
     }
 
     public int getSettingID() {
@@ -26,35 +52,92 @@ public class SystemSetting {
         this.settingID = settingID;
     }
 
-    public String getSettingKey() {
-        return settingKey;
+    public String getHotelName() {
+        return hotelName;
     }
 
-    public void setSettingKey(String settingKey) {
-        this.settingKey = settingKey;
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
     }
 
-    public String getSettingValue() {
-        return settingValue;
+    public String getAddress() {
+        return address;
     }
 
-    public void setSettingValue(String settingValue) {
-        this.settingValue = settingValue;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getDescription() {
-        return description;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Time getCheckinTime() {
+        return checkinTime;
+    }
+
+    public void setCheckinTime(Time checkinTime) {
+        this.checkinTime = checkinTime;
+    }
+
+    public Time getCheckoutTime() {
+        return checkoutTime;
+    }
+
+    public void setCheckoutTime(Time checkoutTime) {
+        this.checkoutTime = checkoutTime;
+    }
+
+    public String getCancelPolicy() {
+        return cancelPolicy;
+    }
+
+    public void setCancelPolicy(String cancelPolicy) {
+        this.cancelPolicy = cancelPolicy;
+    }
+
+    public String getPaymentMethods() {
+        return paymentMethods;
+    }
+
+    public void setPaymentMethods(String paymentMethods) {
+        this.paymentMethods = paymentMethods;
+    }
+
+    public String getOtherSetting() {
+        return otherSetting;
+    }
+
+    public void setOtherSetting(String otherSetting) {
+        this.otherSetting = otherSetting;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
     public String toString() {
         return "SystemSetting{" +
                 "settingID=" + settingID +
-                ", settingKey='" + settingKey + '\'' +
+                ", hotelName='" + hotelName + '\'' +
+                ", phone='" + phone + '\'' +
                 '}';
     }
 }

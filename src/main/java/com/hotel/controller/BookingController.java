@@ -1,6 +1,7 @@
 package com.hotel.controller;
 
 import com.hotel.service.BookingService;
+import com.hotel.service.SystemLogService;
 import com.hotel.dao.RoomDAO;
 import com.hotel.dao.UserDAO;
 import com.hotel.model.Booking;
@@ -27,6 +28,23 @@ public class BookingController extends HttpServlet {
     private final BookingService bookingService = new BookingService();
     private final RoomDAO roomDAO = new RoomDAO();
     private final UserDAO userDAO = new UserDAO();
+    private final SystemLogService logService = new SystemLogService();
+
+    // Kiểm tra quyền QUAN_LY (RoleID = 1)
+    private boolean checkAdminRole(HttpServletRequest req, HttpServletResponse res)
+            throws IOException {
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            res.sendRedirect(req.getContextPath() + "/login");
+            return false;
+        }
+        User u = (User) session.getAttribute("user");
+        if (u.getRoleID() != 1) {
+            res.sendError(HttpServletResponse.SC_FORBIDDEN, "Không có quyền!");
+            return false;
+        }
+        return true;
+    }
 
     // ================================================================
     // GET
@@ -45,6 +63,8 @@ public class BookingController extends HttpServlet {
         switch (action) {
             case "history" -> bookingHistory(request, response);
             case "manage" -> bookingManage(request, response);
+            case "admin-detail" -> bookingAdminDetail(request, response);
+            case "update-status" -> bookingUpdateStatus(request, response);
             case "checkin" -> showCheckin(request, response);
             case "checkout" -> showCheckout(request, response);
             case "invoice" -> showInvoice(request, response);
@@ -998,4 +1018,71 @@ public class BookingController extends HttpServlet {
                 "/views/booking/booking-success.jsp"
         ).forward(request, response);
     }
-}
+
+    // ================================================================
+    // XEM CHI TIẾT ĐƠN ĐẶT PHÒNG - ADMIN
+    // ================================================================
+    private void bookingAdminDetail(
+            HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+
+        if (!checkAdminRole(request, response)) return;
+
+        String idStr = request.getParameter("id");
+        if (idStr == null || idStr.isBlank()) {
+            response.sendRedirect(request.getContextPath() + "/booking?action=manage");
+            return;
+        }
+
+        try {
+            int bookingId = Integer.parseInt(idStr);
+            Booking booking = bookingService.getBookingById(bookingId);
+            if (booking == null) {
+                response.sendRedirect(request.getContextPath() + "/booking?action=manage");
+                return;
+            }
+            request.setAttribute("booking", booking);
+            request.getRequestDispatcher("/views/admin/booking/detail.jsp")
+                    .forward(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect(request.getContextPath() + "/booking?action=manage");
+        }
+    }
+
+    // ================================================================
+    // CẬP NHẬT TRẠNG THÁI ĐƠN ĐẶT PHÒNG - ADMIN
+    // ================================================================
+    private void bookingUpdateStatus(
+            HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException {
+
+        if (!checkAdminRole(request, response)) return;
+
+        try {
+            int bookingId = Integer.parseInt(request.getParameter("id"));
+            String status = request.getParameter("status");
+            String cancelReason = request.getParameter("cancelReason");
+
+            Booking booking = bookingService.getBookingById(bookingId);
+            if (booking != null && status != null && !status.isBlank()) {
+                booking.setStatus(status);
+                if ("Đã hủy".equals(status) && cancelReason != null) {
+                    booking.setCancelReason(cancelReason);
+                    booking.setCancelDate(new java.sql.Timestamp(System.currentTimeMillis()));
+                }
+                bookingService.updateBooking(booking);
+                logService.logFromRequest(request, "UPDATE",
+                        "Cập nhật trạng thái đơn #" + booking.getBookingCode()
+                        + " -> " + status);
+                request.getSession().setAttribute("successMsg",
+                        "Cập nhật trạng thái thành công!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.getSession().setAttribute("errorMsg", "Cập nhật thất bại!");
+        }
+        response.sendRedirect(request.getContextPath() + "/booking?action=manage");
+    }
+}
