@@ -126,35 +126,75 @@
         ====================================================== */
 
         .room-card {
-
             border: none;
-
-            border-radius: 15px;
-
+            border-radius: 14px;
             overflow: hidden;
-
-            transition: 0.3s;
-
-            background: white;
+            transition: transform .25s ease, box-shadow .25s ease;
+            height: 100%;
+            background: #fff;
         }
-
 
         .room-card:hover {
-
-            transform: translateY(-5px);
-
-            box-shadow:
-                    0 10px 30px rgba(0, 0, 0, 0.15) !important;
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0,0,0,.14) !important;
         }
 
+        .room-image-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
 
-        .room-image {
-
+        .room-card img {
             width: 100%;
-
-            height: 240px;
-
+            height: 215px;
             object-fit: cover;
+            transition: transform .4s ease;
+        }
+
+        .room-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .room-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,.35), transparent 50%);
+            pointer-events: none;
+        }
+
+        .room-status {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 7px 11px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(0,0,0,.72);
+            color: #ffc107;
+        }
+
+        .room-type {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            padding: 6px 11px;
+            border-radius: 20px;
+            background: rgba(255,255,255,.92);
+            color: #002b4d;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .room-name {
+            color: #002b4d;
+        }
+
+        .price {
+            color: #e53935;
+            font-weight: 800;
+            font-size: 17px;
+            white-space: nowrap;
         }
 
 
@@ -741,51 +781,53 @@
                          IMAGE
                     ================================================== -->
 
-                    <div class="position-relative">
+                    <div class="room-image-wrapper">
 
+                        <c:choose>
+                            <c:when test="${room.roomName.contains('Standard')}">
+                                <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85" alt="${room.roomName}">
+                            </c:when>
+                            <c:when test="${room.roomName.contains('Deluxe')}">
+                                <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=85" alt="${room.roomName}">
+                            </c:when>
+                            <c:when test="${room.roomName.contains('Suite')}">
+                                <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=85" alt="${room.roomName}">
+                            </c:when>
+                            <c:when test="${room.roomName.contains('Family')}">
+                                <img src="https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=800&q=85" alt="${room.roomName}">
+                            </c:when>
+                            <c:otherwise>
+                                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=85" alt="${room.roomName}">
+                            </c:otherwise>
+                        </c:choose>
 
-                        <img
-                                src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=600&q=80"
-                                class="card-img-top room-image"
-                                alt="${room.roomName}">
-
+                        <div class="room-overlay"></div>
 
                         <!-- STATUS -->
-
-                        <span
-                                class="position-absolute top-0 end-0 bg-dark text-warning fw-bold px-3 py-2 m-3 rounded">
-
-
+                        <span class="room-status">
+                            <i class="fa-solid fa-circle-check me-1"></i>
                             <c:choose>
-
-
-                                <c:when
-                                        test="${room.status == 'Còn trống'}">
-
-                                    Còn trống
-
-                                </c:when>
-
-
-                                <c:when
-                                        test="${room.status == 'Đang ở'}">
-
-                                    Đang ở
-
-                                </c:when>
-
-
-                                <c:otherwise>
-
-                                    ${room.status}
-
-                                </c:otherwise>
-
-
+                                <c:when test="${room.status == 'Còn trống'}">Còn trống</c:when>
+                                <c:when test="${room.status == 'Đang ở'}">Đang ở</c:when>
+                                <c:otherwise>${room.status}</c:otherwise>
                             </c:choose>
-
-
                         </span>
+
+                        <!-- ROOM TYPE -->
+                        <c:choose>
+                            <c:when test="${room.roomName.contains('Standard')}">
+                                <span class="room-type">Standard</span>
+                            </c:when>
+                            <c:when test="${room.roomName.contains('Deluxe')}">
+                                <span class="room-type">Deluxe</span>
+                            </c:when>
+                            <c:when test="${room.roomName.contains('Suite')}">
+                                <span class="room-type">Suite</span>
+                            </c:when>
+                            <c:when test="${room.roomName.contains('Family')}">
+                                <span class="room-type">Family</span>
+                            </c:when>
+                        </c:choose>
 
                     </div>
 
