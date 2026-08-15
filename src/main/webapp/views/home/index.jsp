@@ -16,1157 +16,1200 @@
 
     <title>Luxury Hotel - Đặt phòng khách sạn</title>
 
+    <!-- Bootstrap -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet">
 
-    <!-- =====================================================
-         BOOTSTRAP
-         ===================================================== -->
+    <!-- Font Awesome -->
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <!-- CSS project -->
+    <link
+            rel="stylesheet"
+            href="${pageContext.request.contextPath}/assets/css/style.css">
 
+    <link
+            rel="stylesheet"
+            href="${pageContext.request.contextPath}/assets/css/home.css">
 
-    <!-- =====================================================
-         FONT AWESOME
-         ===================================================== -->
+    <style>
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+        /* =====================================================
+           GENERAL
+           ===================================================== */
 
+        html {
+            scroll-behavior: smooth;
+        }
 
-    <!-- =====================================================
-         CSS PROJECT
-         ===================================================== -->
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+            color: #212529;
+        }
 
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/css/style.css">
 
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/css/home.css">
+        /* =====================================================
+           HEADER
+           ===================================================== */
 
+        .navbar {
+            position: fixed !important;
 
-<style>
+            top: 0;
+            left: 0;
 
-/* =========================================================
-   GENERAL
-   ========================================================= */
+            width: 100%;
 
-html {
-    scroll-behavior: smooth;
-}
+            z-index: 9999;
 
-body {
-    margin: 0;
-    padding: 0;
-    background: #f8f9fa;
-}
+            background: transparent !important;
 
+            border: none !important;
 
-/* =========================================================
-   HEADER
-   ========================================================= */
+            box-shadow: none !important;
 
-/*
-   BAN ĐẦU:
-   Header trong suốt để hòa với background của Hero.
+            padding-top: 15px;
+            padding-bottom: 15px;
 
-   KHI SCROLL:
-   JavaScript thêm class "scrolled"
-   -> Header chuyển sang xanh đen.
-*/
+            transition:
+                    background-color .35s ease,
+                    box-shadow .35s ease,
+                    padding .35s ease,
+                    backdrop-filter .35s ease;
+        }
 
-.navbar,
-.navbar.bg-white,
-.navbar.navbar-light,
-.navbar.navbar-dark {
 
-    position: fixed !important;
+        .navbar.scrolled {
+            background: #002b4d !important;
 
-    top: 0;
-    left: 0;
+            box-shadow:
+                    0 5px 22px rgba(0, 0, 0, .28) !important;
 
-    width: 100%;
+            backdrop-filter: blur(12px);
 
-    z-index: 9999;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
 
-    /* QUAN TRỌNG: BAN ĐẦU TRONG SUỐT */
-    background: transparent !important;
 
-    border: none !important;
+        .navbar .navbar-brand {
+            color: #fff !important;
 
-    box-shadow: none !important;
+            font-size: 22px;
 
-    backdrop-filter: none;
+            font-weight: 700;
 
-    padding-top: 15px;
-    padding-bottom: 15px;
+            transition: .25s ease;
+        }
 
-    transition:
-        background-color 0.35s ease,
-        box-shadow 0.35s ease,
-        padding 0.35s ease,
-        backdrop-filter 0.35s ease;
-}
 
+        .navbar .navbar-brand i {
+            color: #ffc107 !important;
 
-/* =========================================================
-   HEADER KHI SCROLL
-   ========================================================= */
+            margin-right: 7px;
+        }
 
-.navbar.scrolled,
-.navbar.scrolled.bg-white,
-.navbar.scrolled.navbar-light,
-.navbar.scrolled.navbar-dark {
 
-    background: #002b4d !important;
+        .navbar .navbar-brand:hover {
+            color: #ffc107 !important;
 
-    box-shadow:
-        0 5px 22px rgba(0, 0, 0, 0.28) !important;
+            transform: translateY(-1px);
+        }
 
-    backdrop-filter: blur(12px);
 
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
+        .navbar .nav-link {
+            color: #fff !important;
 
+            font-weight: 500;
 
-/* =========================================================
-   LOGO
-   ========================================================= */
+            border-radius: 7px;
 
-.navbar .navbar-brand {
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+transition: .25s ease;
+        }
 
-    color: #ffffff !important;
 
-    font-size: 22px;
+        .navbar .nav-link:hover {
+            color: #ffc107 !important;
 
-    font-weight: 700;
+            background: rgba(255,255,255,.10);
+        }
 
-    transition:
-        color 0.25s ease,
-        transform 0.25s ease;
-}
 
+        .navbar .nav-link.active {
+            color: #ffc107 !important;
 
-.navbar .navbar-brand:hover {
+            font-weight: 700;
+        }
 
-    color: #ffc107 !important;
 
-    transform: translateY(-1px);
-}
+        .navbar .dropdown-menu {
+            background: #fff !important;
 
+            border: none !important;
 
-/* Logo icon */
+            border-radius: 10px;
 
-.navbar .navbar-brand i {
+            padding: 8px;
 
-    color: #ffc107 !important;
+            margin-top: 10px;
 
-    margin-right: 7px;
-}
+            box-shadow:
+                    0 10px 30px rgba(0,0,0,.20);
+        }
 
 
-/* Logo khi scroll */
+        .navbar .dropdown-item {
+            color: #212529 !important;
 
-.navbar.scrolled .navbar-brand {
+            border-radius: 7px;
 
-    color: #ffffff !important;
-}
+            padding: 9px 14px;
+        }
 
 
-/* =========================================================
-   MENU
-   ========================================================= */
+        .navbar .dropdown-item:hover {
+            background: #002b4d !important;
 
-.navbar .nav-link {
+            color: #ffc107 !important;
+        }
 
-    color: #ffffff !important;
 
-    font-weight: 500;
+        .navbar .btn-warning {
+            background: #ffc107 !important;
 
-    border-radius: 7px;
+            border-color: #ffc107 !important;
 
-    padding-left: 12px !important;
-    padding-right: 12px !important;
+            color: #111 !important;
 
-    transition:
-        color 0.25s ease,
-        background-color 0.25s ease;
-}
+            font-weight: 600;
 
+            border-radius: 8px;
+        }
 
-/* Hover */
 
-.navbar .nav-link:hover {
+        .navbar .btn-warning:hover {
+            background: #ffca2c !important;
 
-    color: #ffc107 !important;
+            transform: translateY(-1px);
 
-    background:
-        rgba(255, 255, 255, 0.10);
-}
+            box-shadow:
+                    0 5px 15px rgba(255,193,7,.3);
+        }
 
 
-/* Active */
+        .navbar .navbar-toggler {
+            border:
+                    1px solid rgba(255,255,255,.65) !important;
 
-.navbar .nav-link.active {
+            border-radius: 7px;
 
-    color: #ffc107 !important;
+            background:
+                    rgba(0,0,0,.1);
+        }
 
-    font-weight: 700;
-}
 
+        .navbar .navbar-toggler-icon {
+            filter:
+                    brightness(0) invert(1);
+        }
 
-/* Menu khi scroll */
 
-.navbar.scrolled .nav-link {
+        /* =====================================================
+           HERO
+           ===================================================== */
 
-    color: #ffffff !important;
-}
+        .hotel-hero {
 
+            min-height: 650px;
 
-/* Hover khi scroll */
+            margin: 0;
 
-.navbar.scrolled .nav-link:hover {
+            background:
+                    linear-gradient(
+                            rgba(0,45,80,.62),
+                            rgba(0,35,65,.78)
+                    ),
+                    url("https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1800&q=85");
 
-    color: #ffc107 !important;
+            background-size: cover;
 
-    background:
-        rgba(255, 255, 255, 0.08);
-}
+            background-position: center;
 
+            background-repeat: no-repeat;
 
-/* Active khi scroll */
+            color: white;
 
-.navbar.scrolled .nav-link.active {
+            position: relative;
 
-    color: #ffc107 !important;
-}
+            display: flex;
 
+            align-items: center;
 
-/* =========================================================
-   DROPDOWN
-   ========================================================= */
+            justify-content: center;
+        }
 
-.navbar .dropdown-menu {
 
-    background: #ffffff !important;
+        .hero-content {
+            width: 100%;
 
-    border: none !important;
+            text-align: center;
 
-    border-radius: 10px;
+            padding:
+                    110px 15px 40px;
+        }
 
-    padding: 8px;
 
-    margin-top: 10px;
+        .hero-badge {
+            display: inline-block;
 
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.20);
-}
+            background:
+                    rgba(255,255,255,.14);
 
+            border:
+                    1px solid rgba(255,255,255,.3);
 
-.navbar .dropdown-item {
+            backdrop-filter: blur(8px);
 
-    color: #212529 !important;
+            padding:
+                    8px 18px;
 
-    border-radius: 7px;
+            border-radius: 30px;
 
-    padding: 9px 14px;
+            font-size: 14px;
+margin-bottom: 20px;
+        }
 
-    transition:
-        background-color 0.2s ease,
-        color 0.2s ease;
-}
 
+        .hero-content h1 {
 
-.navbar .dropdown-item:hover {
+            font-size: 50px;
 
-    background: #002b4d !important;
+            font-weight: 800;
 
-    color: #ffc107 !important;
-}
+            margin-bottom: 18px;
 
+            text-shadow:
+                    0 3px 10px rgba(0,0,0,.35);
+        }
 
-/* Dropdown arrow */
 
-.navbar .dropdown-toggle::after {
+        .hero-content p {
 
-    color: #ffffff;
+            font-size: 20px;
 
-    transition:
-        color 0.2s ease;
-}
+            margin-bottom: 30px;
 
+            text-shadow:
+                    0 2px 5px rgba(0,0,0,.4);
+        }
 
-.navbar .dropdown-toggle:hover::after {
 
-    color: #ffc107;
-}
+        .hero-button {
 
+            background: #ffc107;
 
-/* =========================================================
-   BUTTON ĐĂNG NHẬP / ĐĂNG KÝ
-   ========================================================= */
+            color: #111;
 
-.navbar .btn {
+            border: none;
 
-    border-radius: 8px;
+            font-weight: 700;
 
-    font-weight: 600;
+            padding: 14px 30px;
 
-    transition:
-        all 0.25s ease;
-}
+            border-radius: 9px;
 
+            transition: .25s ease;
+        }
 
-.navbar .btn-warning {
 
-    background: #ffc107 !important;
+        .hero-button:hover {
 
-    border-color: #ffc107 !important;
+            background: #ffca2c;
 
-    color: #111 !important;
-}
+            color: #111;
 
+            transform: translateY(-2px);
 
-.navbar .btn-warning:hover {
+            box-shadow:
+                    0 8px 20px rgba(0,0,0,.25);
+        }
 
-    background: #ffca2c !important;
 
-    border-color: #ffca2c !important;
+        /* =====================================================
+           QUICK SEARCH
+           ===================================================== */
 
-    color: #111 !important;
+        .hero-search {
 
-    transform: translateY(-1px);
+            margin-top: 45px;
 
-    box-shadow:
-        0 5px 15px rgba(255, 193, 7, 0.30);
-}
+            background:
+                    rgba(255,255,255,.96);
 
+            border-radius: 15px;
 
-/* =========================================================
-   MOBILE TOGGLE
-   ========================================================= */
+            padding: 18px;
 
-.navbar .navbar-toggler {
+            box-shadow:
+                    0 15px 40px rgba(0,0,0,.20);
 
-    border:
-        1px solid rgba(255, 255, 255, 0.65) !important;
+            color: #212529;
 
-    padding: 7px 10px;
+            text-align: left;
+        }
 
-    border-radius: 7px;
 
-    background:
-        rgba(0, 0, 0, 0.10);
-}
+        .hero-search label {
 
+            font-size: 12px;
 
-.navbar .navbar-toggler:focus {
+            color: #6c757d;
 
-    box-shadow:
-        0 0 0 3px rgba(255, 193, 7, 0.25);
-}
+            font-weight: 600;
 
+            margin-bottom: 4px;
+        }
 
-/* Icon hamburger */
 
-.navbar .navbar-toggler-icon {
+        .hero-search .form-control,
+        .hero-search .form-select {
 
-    filter:
-        brightness(0) invert(1);
-}
+            border-radius: 8px;
 
+            min-height: 44px;
+        }
 
-/* =========================================================
-   HERO
-   ========================================================= */
 
-.hotel-hero {
+        .hero-search-btn {
 
-    min-height: 620px;
+            min-height: 44px;
 
-    /*
-       Header nằm trên Hero.
-       Hero bắt đầu từ vị trí top của trang.
-    */
+            width: 100%;
 
-    margin-top: 0;
+            background: #002b4d;
 
-    background:
-        linear-gradient(
-            rgba(0, 45, 80, 0.68),
-            rgba(0, 35, 65, 0.75)
-        ),
-        url("https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1800&q=85");
+            color: #fff;
 
-    background-size: cover;
+            border: none;
 
-    background-position: center;
+            border-radius: 8px;
 
-    background-repeat: no-repeat;
+            font-weight: 700;
 
-    color: white;
+            transition: .25s ease;
+        }
 
-    position: relative;
 
-    display: flex;
+        .hero-search-btn:hover {
 
-    align-items: center;
+            background: #004a75;
 
-    justify-content: center;
-}
+            color: #fff;
+        }
 
 
-.hero-content {
+        /* =====================================================
+           VOUCHER
+           ===================================================== */
 
-    width: 100%;
+        .voucher-section {
 
-    text-align: center;
+            background: #f5f7fa;
 
-    /*
-       Chừa khoảng cho header
-    */
+            padding: 50px 0 40px;
+        }
 
-    padding: 100px 0 30px;
-}
 
+        .voucher-title {
 
-.hero-content h1 {
+            font-size: 28px;
 
-    font-size: 48px;
+            font-weight: 700;
 
-    font-weight: 700;
+            color: #1f2937;
+        }
 
-    margin-bottom: 18px;
 
-    text-shadow:
-        0 3px 10px rgba(0, 0, 0, 0.35);
-}
+        .voucher-subtitle {
 
+            color: #6b7280;
 
-.hero-content p {
+            font-size: 15px;
+        }
 
-    font-size: 20px;
 
-    margin-bottom: 30px;
+        .voucher-list {
 
-    text-shadow:
-        0 2px 5px rgba(0, 0, 0, 0.4);
-}
+            display: grid;
 
+            grid-template-columns:
+                    repeat(2, 1fr);
 
-.hero-button {
+            gap: 20px;
+        }
 
-    background: #ffc107;
 
-    color: #111;
+        .voucher-banner {
 
-    border: none;
+            position: relative;
 
-    font-weight: 700;
+            min-height: 195px;
 
-    padding: 14px 30px;
+            border-radius: 18px;
 
-    border-radius: 9px;
+            overflow: hidden;
 
-    transition:
-        all 0.25s ease;
-}
+            color: white;
 
+            display: flex;
 
-.hero-button:hover {
+            box-shadow:
+0 8px 25px rgba(0,0,0,.10);
 
-    background: #ffca2c;
+            transition: .25s ease;
+        }
 
-    color: #111;
 
-    transform: translateY(-2px);
+        .voucher-banner:hover {
 
-    box-shadow:
-        0 8px 20px rgba(0, 0, 0, 0.25);
-}
+            transform: translateY(-5px);
 
+            box-shadow:
+                    0 15px 35px rgba(0,0,0,.18);
+        }
 
-/* =========================================================
-   VOUCHER
-   ========================================================= */
 
-.voucher-section {
+        .voucher-welcome {
 
-    background: #f5f7fa;
+            background:
+                    linear-gradient(
+                            135deg,
+                            #0879f9,
+                            #005bea 55%,
+                            #003dba
+                    );
+        }
 
-    padding: 45px 0 35px;
-}
 
+        .voucher-summer {
 
-.voucher-title {
+            background:
+                    linear-gradient(
+                            135deg,
+                            #18b7a0,
+                            #08a88e 50%,
+                            #087f6a
+                    );
+        }
 
-    font-size: 28px;
 
-    font-weight: 700;
+        .voucher-banner::before {
 
-    color: #1f2937;
-}
+            content: "";
 
+            position: absolute;
 
-.voucher-subtitle {
+            width: 180px;
+            height: 180px;
 
-    color: #6b7280;
+            border-radius: 50%;
 
-    font-size: 15px;
-}
+            background:
+                    rgba(255,255,255,.1);
 
+            right: -50px;
+            top: -70px;
+        }
 
-.voucher-list {
 
-    display: grid;
+        .voucher-banner::after {
 
-    grid-template-columns: repeat(2, 1fr);
+            content: "";
 
-    gap: 20px;
-}
+            position: absolute;
 
+            width: 120px;
+            height: 120px;
 
-.voucher-banner {
+            border-radius: 50%;
 
-    position: relative;
+            background:
+                    rgba(255,255,255,.08);
 
-    min-height: 190px;
+            right: 80px;
+            bottom: -70px;
+        }
 
-    border-radius: 18px;
 
-    overflow: hidden;
+        .voucher-left {
 
-    color: white;
+            position: relative;
 
-    display: flex;
+            z-index: 2;
 
-    align-items: stretch;
+            width: 68%;
 
-    box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.10);
+            padding: 25px;
 
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
-}
+            display: flex;
 
+            flex-direction: column;
 
-.voucher-banner:hover {
+            justify-content: space-between;
+        }
 
-    transform: translateY(-5px);
 
-    box-shadow:
-        0 15px 35px rgba(0, 0, 0, 0.18);
-}
+        .voucher-right {
 
+            position: relative;
 
-.voucher-welcome {
+            z-index: 2;
 
-    background:
-        linear-gradient(
-            135deg,
-            #0879f9 0%,
-            #005bea 55%,
-            #003dba 100%
-        );
-}
+            width: 32%;
 
+            display: flex;
 
-.voucher-summer {
+            align-items: center;
 
-    background:
-        linear-gradient(
-            135deg,
-            #18b7a0 0%,
-            #08a88e 50%,
-            #087f6a 100%
-        );
-}
+            justify-content: center;
 
+            border-left:
+                    2px dashed rgba(255,255,255,.55);
+        }
 
-.voucher-banner::before {
 
-    content: "";
+        .voucher-banner-title {
 
-    position: absolute;
+            font-size: 18px;
 
-    width: 180px;
+            font-weight: 700;
 
-    height: 180px;
+            margin-bottom: 5px;
+        }
 
-    border-radius: 50%;
 
-    background:
-        rgba(255, 255, 255, 0.10);
+        .voucher-banner-title i {
 
-    right: -50px;
+            color: #ffd43b;
+        }
 
-    top: -70px;
-}
 
+        .voucher-discount {
 
-.voucher-banner::after {
+            font-size: 34px;
 
-    content: "";
+            font-weight: 800;
 
-    position: absolute;
+            line-height: 1.1;
 
-    width: 120px;
+            margin-bottom: 5px;
+        }
 
-    height: 120px;
 
-    border-radius: 50%;
+        .voucher-description {
 
-    background:
-        rgba(255, 255, 255, 0.08);
+            font-size: 13px;
 
-    right: 80px;
+            opacity: .92;
 
-    bottom: -70px;
-}
+            margin-bottom: 2px;
+        }
 
 
-.voucher-left {
+        .voucher-code-box {
 
-    position: relative;
+            display: flex;
 
-    z-index: 2;
+            align-items: center;
 
-    width: 68%;
+            gap: 8px;
 
-    padding: 25px;
+            width: fit-content;
 
-    display: flex;
+            background: white;
 
-    flex-direction: column;
+            padding: 6px 7px 6px 12px;
 
-    justify-content: space-between;
-}
+            border-radius: 9px;
+        }
 
 
-.voucher-right {
+        .voucher-code {
 
-    position: relative;
+            color: #212529;
 
-    z-index: 2;
+            font-size: 15px;
 
-    width: 32%;
+            font-weight: 800;
 
-    display: flex;
+            letter-spacing: 1px;
+        }
 
-    align-items: center;
 
-    justify-content: center;
+        .copy-voucher-btn {
 
-    border-left:
-        2px dashed rgba(255, 255, 255, 0.55);
-}
+            border: none;
+background: #ffc107;
 
+            color: #111;
 
-.voucher-banner-title {
+            font-size: 13px;
 
-    font-size: 18px;
+            font-weight: 700;
 
-    font-weight: 700;
+            padding: 7px 10px;
 
-    margin-bottom: 5px;
-}
+            border-radius: 7px;
 
+            cursor: pointer;
+        }
 
-.voucher-banner-title i {
 
-    color: #ffd43b;
-}
+        .copy-voucher-btn:hover {
 
+            background: #ffca2c;
+        }
 
-.voucher-discount {
 
-    font-size: 34px;
+        .voucher-condition {
 
-    font-weight: 800;
+            font-size: 11px;
 
-    line-height: 1.1;
+            opacity: .85;
 
-    margin-bottom: 5px;
-}
+            margin-top: 6px;
+        }
 
 
-.voucher-description {
+        .voucher-icon {
 
-    font-size: 13px;
+            width: 82px;
 
-    opacity: 0.92;
+            height: 82px;
 
-    margin-bottom: 0;
-}
+            border-radius: 50%;
 
+            background: rgba(255,255,255,.95);
 
-.voucher-code-box {
+            color: #ffc107;
 
-    display: flex;
+            display: flex;
 
-    align-items: center;
+            align-items: center;
 
-    gap: 8px;
+            justify-content: center;
 
-    width: fit-content;
+            font-size: 36px;
+        }
 
-    background: white;
 
-    padding: 6px 7px 6px 12px;
+        /* =====================================================
+           ROOM SECTION
+           ===================================================== */
 
-    border-radius: 9px;
+        .room-section {
 
-    box-shadow:
-        0 3px 10px rgba(0, 0, 0, 0.10);
-}
+            padding: 60px 0;
+        }
 
 
-.voucher-code {
+        .filter-sidebar {
 
-    color: #212529;
+            position: sticky;
 
-    font-size: 15px;
+            top: 90px;
 
-    font-weight: 800;
+            border-radius: 14px;
+        }
 
-    letter-spacing: 1px;
-}
 
+        .filter-sidebar .card-body {
 
-.copy-voucher-btn {
+            padding: 25px;
+        }
 
-    border: none;
 
-    background: #ffc107;
+        .filter-title {
 
-    color: #111;
+            color: #002b4d;
 
-    font-size: 13px;
+            font-weight: 800;
+        }
 
-    font-weight: 700;
 
-    padding: 7px 10px;
+        .room-card {
 
-    border-radius: 7px;
+            border: none;
 
-    cursor: pointer;
+            border-radius: 14px;
 
-    transition:
-        all 0.2s ease;
-}
+            overflow: hidden;
 
+            transition:
+                    transform .25s ease,
+                    box-shadow .25s ease;
 
-.copy-voucher-btn:hover {
+            height: 100%;
 
-    background: #ffca2c;
+            background: #fff;
+        }
 
-    transform: scale(1.04);
-}
 
+        .room-card:hover {
 
-.copy-voucher-btn:disabled {
+            transform: translateY(-6px);
 
-    opacity: 0.85;
+            box-shadow:
+                    0 15px 30px rgba(0,0,0,.14) !important;
+        }
 
-    cursor: default;
 
-    transform: none;
-}
+        .room-image-wrapper {
 
+            position: relative;
 
-.voucher-condition {
+            overflow: hidden;
+        }
 
-    font-size: 11px;
 
-    opacity: 0.85;
+        .room-card img {
 
-    margin-top: 6px;
-}
+            width: 100%;
 
+            height: 215px;
 
-.voucher-icon {
+            object-fit: cover;
 
-    width: 82px;
+            transition:
+                    transform .4s ease;
+        }
 
-    height: 82px;
 
-    border-radius: 50%;
+        .room-card:hover img {
 
-    background:
-        rgba(255, 255, 255, 0.95);
+            transform: scale(1.05);
+        }
 
-    color: #ffc107;
 
-    display: flex;
+        .room-overlay {
 
-    align-items: center;
+            position: absolute;
 
-    justify-content: center;
+            inset: 0;
 
-    font-size: 36px;
+            background:
+                    linear-gradient(
+                            to top,
+                            rgba(0,0,0,.35),
+                            transparent 50%
+                    );
 
-    box-shadow:
-        0 5px 15px rgba(0, 0, 0, 0.12);
-}
+            pointer-events: none;
+        }
 
 
-/* =========================================================
-   ROOM
-   ========================================================= */
+        .room-status {
 
-.room-section {
+            position: absolute;
 
-    padding: 55px 0;
-}
+            top: 12px;
 
+            right: 12px;
 
-.filter-sidebar {
+            padding: 7px 11px;
 
-    position: sticky;
+            border-radius: 20px;
 
-    top: 90px;
+            font-size: 12px;
 
-    border-radius: 12px;
-}
+            font-weight: 700;
 
+            background: rgba(0,0,0,.72);
 
-.room-card {
+            color: #ffc107;
+        }
 
-    border: none;
 
-    border-radius: 12px;
+        .room-type {
 
-    overflow: hidden;
+            position: absolute;
 
-    transition:
-        all 0.25s ease;
+            bottom: 12px;
 
-    height: 100%;
-}
+            left: 12px;
 
+            padding: 6px 11px;
 
-.room-card:hover {
+            border-radius: 20px;
 
-    transform: translateY(-5px);
+            background:
+rgba(255,255,255,.92);
 
-    box-shadow:
-        0 12px 25px rgba(0, 0, 0, 0.15) !important;
-}
+            color: #002b4d;
 
+            font-size: 12px;
 
-.room-card img {
+            font-weight: 700;
+        }
 
-    width: 100%;
 
-    height: 210px;
+        .room-name {
 
-    object-fit: cover;
-}
+            min-height: 30px;
 
+            color: #002b4d;
+        }
 
-.room-price {
 
-    color: #e53935;
+        .room-description {
 
-    font-weight: 700;
+            min-height: 42px;
 
-    font-size: 17px;
-}
+            display: -webkit-box;
 
+            -webkit-line-clamp: 2;
 
-.room-name {
+            -webkit-box-orient: vertical;
 
-    min-height: 30px;
-}
+            overflow: hidden;
+        }
 
 
-.room-description {
+        .room-price {
 
-    min-height: 42px;
-}
+            color: #e53935;
 
+            font-weight: 800;
 
-/* =========================================================
-   PAGINATION
-   ========================================================= */
+            font-size: 17px;
+        }
 
-.pagination {
 
-    margin-bottom: 0;
-}
+        .room-meta {
 
+            display: flex;
 
-.pagination .page-link {
+            flex-wrap: wrap;
 
-    min-width: 40px;
+            gap: 6px;
+        }
 
-    text-align: center;
-}
 
+        .room-meta .badge {
 
-.pagination .page-item.active .page-link {
+            font-weight: 500;
 
-    background-color: #0d6efd;
+            padding: 7px 9px;
+        }
 
-    border-color: #0d6efd;
 
-    color: white;
-}
+        .room-buttons {
 
+            display: flex;
 
-.pagination .page-item.disabled .page-link {
+            gap: 7px;
+        }
 
-    pointer-events: none;
-}
 
+        .room-buttons .btn {
 
-/* =========================================================
-   SERVICES
-   ========================================================= */
+            border-radius: 8px;
 
-.service-card {
+            font-size: 12px;
 
-    transition:
-        all 0.25s ease;
-}
+            font-weight: 600;
+        }
 
 
-.service-card:hover {
+        /* =====================================================
+           ROOM CATEGORY
+           ===================================================== */
 
-    transform: translateY(-5px);
+        .category-section {
 
-    box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.1) !important;
-}
+            padding: 60px 0;
 
+            background: #fff;
+        }
 
-/* =========================================================
-   TABLET
-   ========================================================= */
 
-@media (max-width: 991px) {
+        .category-card {
 
-    .hotel-hero {
+            position: relative;
 
-        min-height: 540px;
-    }
+            min-height: 210px;
 
+            border-radius: 15px;
 
-    .hero-content h1 {
+            overflow: hidden;
 
-        font-size: 36px;
-    }
+            background-size: cover;
 
+            background-position: center;
 
-    .hero-content p {
+            display: flex;
 
-        font-size: 17px;
-    }
+            align-items: flex-end;
 
+            color: white;
 
-    .filter-sidebar {
+            transition: .3s ease;
+        }
 
-        position: static;
-    }
 
+        .category-card:hover {
 
-    .voucher-list {
+            transform: translateY(-5px);
 
-        grid-template-columns: 1fr;
-    }
+            box-shadow:
+                    0 15px 30px rgba(0,0,0,.18);
+        }
 
 
-    /* =====================================================
-       MOBILE / TABLET HEADER
-       ===================================================== */
+        .category-card::before {
 
-    /*
-       Khi chưa scroll:
-       Header vẫn trong suốt.
+            content: "";
 
-       Khi scroll:
-       Header xanh đen.
-    */
+            position: absolute;
 
-    .navbar,
-    .navbar.bg-white,
-    .navbar.navbar-light {
+            inset: 0;
 
-        background: transparent !important;
+            background:
+                    linear-gradient(
+                            to top,
+                            rgba(0,0,0,.75),
+                            rgba(0,0,0,.05)
+                    );
+        }
 
-        box-shadow: none !important;
 
-        padding-top: 10px;
+        .category-content {
 
-        padding-bottom: 10px;
-    }
+            position: relative;
 
+            z-index: 2;
 
-    .navbar.scrolled,
-    .navbar.scrolled.bg-white,
-    .navbar.scrolled.navbar-light {
+            padding: 20px;
 
-        background: #002b4d !important;
+            width: 100%;
+        }
 
-        box-shadow:
-            0 5px 22px rgba(0, 0, 0, 0.28) !important;
-    }
 
+        .category-content h5 {
 
-    /*
-       Menu mobile mở ra sẽ có nền xanh đen
-       để dễ nhìn chữ.
-    */
+            font-weight: 800;
 
-    .navbar .navbar-collapse {
+            margin-bottom: 5px;
+        }
 
-        background: rgba(0, 43, 77, 0.97) !important;
 
-        margin-top: 10px;
+        .category-content p {
 
-        padding: 10px;
+            font-size: 13px;
 
-        border-radius: 10px;
+            margin: 0;
+        }
 
-        box-shadow:
-            0 10px 25px rgba(0, 0, 0, 0.20);
-    }
 
+        /* =====================================================
+           SERVICES
+           ===================================================== */
 
-    .navbar .nav-link {
+        .service-card {
 
-        padding: 10px 12px !important;
-    }
+            transition: .25s ease;
 
-}
+            border-radius: 14px;
+        }
 
 
-/* =========================================================
-   MOBILE
-   ========================================================= */
+        .service-card:hover {
 
-@media (max-width: 576px) {
+            transform: translateY(-5px);
 
-    .navbar {
+            box-shadow:
+                    0 10px 25px rgba(0,0,0,.1) !important;
+        }
 
-        padding-top: 10px;
 
-        padding-bottom: 10px;
-    }
+        .service-icon {
 
+            width: 65px;
+height: 65px;
 
-    .hotel-hero {
+            margin: auto;
 
-        min-height: 500px;
-    }
+            border-radius: 50%;
 
+            background: #eef5ff;
 
-    .hero-content {
+            display: flex;
 
-        padding-top: 80px;
-    }
+            align-items: center;
 
+            justify-content: center;
+        }
 
-    .hero-content h1 {
 
-        font-size: 29px;
-    }
+        /* =====================================================
+           PAGINATION
+           ===================================================== */
 
+        .pagination {
 
-    .hero-content p {
+            margin-bottom: 0;
+        }
 
-        font-size: 15px;
-    }
 
+        .pagination .page-link {
 
-    .voucher-section {
+            min-width: 40px;
 
-        padding: 30px 0;
-    }
+            text-align: center;
+        }
 
 
-    .voucher-title {
+        .pagination .page-item.active .page-link {
 
-        font-size: 23px;
-    }
+            background-color: #002b4d;
 
+            border-color: #002b4d;
 
-    .voucher-banner {
+            color: white;
+        }
 
-        min-height: 180px;
-    }
 
+        /* =====================================================
+           MOBILE
+           ===================================================== */
 
-    .voucher-left {
+        @media (max-width: 991px) {
 
-        width: 72%;
+            .hotel-hero {
+                min-height: 600px;
+            }
 
-        padding: 20px;
-    }
 
+            .hero-content h1 {
+                font-size: 38px;
+            }
 
-    .voucher-right {
 
-        width: 28%;
-    }
+            .filter-sidebar {
+                position: static;
+            }
 
 
-    .voucher-discount {
+            .voucher-list {
+                grid-template-columns: 1fr;
+            }
 
-        font-size: 27px;
-    }
 
+            .navbar .navbar-collapse {
 
-    .voucher-banner-title {
+                background:
+                        rgba(0,43,77,.97);
 
-        font-size: 15px;
-    }
+                margin-top: 10px;
 
+                padding: 10px;
 
-    .voucher-description {
+                border-radius: 10px;
+            }
+        }
 
-        font-size: 12px;
-    }
 
+        @media (max-width: 576px) {
 
-    .voucher-code {
+            .hotel-hero {
+                min-height: 650px;
+            }
 
-        font-size: 12px;
-    }
 
+            .hero-content {
+                padding-top: 100px;
+            }
 
-    .copy-voucher-btn {
 
-        font-size: 11px;
+            .hero-content h1 {
+                font-size: 29px;
+            }
 
-        padding: 6px 7px;
-    }
 
+            .hero-content p {
+                font-size: 15px;
+            }
 
-    .voucher-icon {
 
-        width: 60px;
+            .hero-search {
+                padding: 14px;
+            }
 
-        height: 60px;
 
-        font-size: 25px;
-    }
+            .voucher-section {
+                padding: 35px 0;
+            }
 
 
-    .room-card img {
+            .voucher-title {
+                font-size: 23px;
+            }
 
-        height: 200px;
-    }
 
-}
+            .voucher-banner {
+                min-height: 185px;
+            }
 
-</style>
+
+            .voucher-left {
+                width: 72%;
+
+                padding: 20px;
+            }
+
+
+            .voucher-right {
+                width: 28%;
+            }
+
+
+            .voucher-discount {
+                font-size: 27px;
+            }
+
+
+            .voucher-banner-title {
+                font-size: 15px;
+            }
+
+
+            .voucher-icon {
+                width: 60px;
+
+                height: 60px;
+
+                font-size: 25px;
+            }
+
+
+            .room-card img {
+                height: 210px;
+            }
+        }
+
+    </style>
 
 </head>
 
 
-<body class="bg-light">
+<body>
 
 
 <!-- =====================================================
@@ -1174,8 +1217,6 @@ body {
      ===================================================== -->
 
 <jsp:include page="../layout/header.jsp"/>
-
-
 <!-- =====================================================
      HERO
      ===================================================== -->
@@ -1184,20 +1225,32 @@ body {
 
     <div class="container hero-content">
 
+        <div class="hero-badge">
+
+            <i class="fa-solid fa-star me-2"></i>
+
+            Khách sạn cao cấp - Trải nghiệm đẳng cấp
+
+        </div>
+
+
         <h1>
             Chào mừng đến với Luxury Hotel
         </h1>
 
+
         <p>
-            Không gian nghỉ dưỡng sang trọng, dịch vụ chuẩn hoàng gia
+            Không gian nghỉ dưỡng sang trọng,
+            dịch vụ chuẩn hoàng gia
         </p>
+
 
         <a href="#featured-rooms"
            class="btn hero-button btn-lg">
 
             <i class="fa-solid fa-compass me-2"></i>
 
-            Khám phá ngay
+            Khám phá phòng
 
         </a>
 
@@ -1207,7 +1260,7 @@ body {
 
 
 <!-- =====================================================
-     VOUCHER BANNER
+     VOUCHERS
      ===================================================== -->
 
 <section class="voucher-section">
@@ -1250,17 +1303,20 @@ body {
 
                         </div>
 
+
                         <div class="voucher-discount">
 
                             Giảm 10%
 
                         </div>
 
+
                         <p class="voucher-description">
 
                             Khuyến mãi khách hàng mới
 
                         </p>
+
 
                         <p class="voucher-description">
 
@@ -1282,6 +1338,7 @@ body {
 
                             </span>
 
+
                             <button type="button"
                                     class="copy-voucher-btn"
                                     onclick="copyVoucher('WELCOME10', this)">
@@ -1293,6 +1350,7 @@ body {
                             </button>
 
                         </div>
+
 
                         <div class="voucher-condition">
 
@@ -1336,17 +1394,19 @@ body {
 
                         </div>
 
+
                         <div class="voucher-discount">
 
                             Giảm 20%
+</div>
 
-                        </div>
 
                         <p class="voucher-description">
 
                             Khuyến mãi mùa hè
 
                         </p>
+
 
                         <p class="voucher-description">
 
@@ -1368,6 +1428,7 @@ body {
 
                             </span>
 
+
                             <button type="button"
                                     class="copy-voucher-btn"
                                     onclick="copyVoucher('SUMMER20', this)">
@@ -1379,6 +1440,7 @@ body {
                             </button>
 
                         </div>
+
 
                         <div class="voucher-condition">
 
@@ -1424,21 +1486,24 @@ body {
         <div class="row g-4">
 
 
-            <!-- FILTER -->
+            <!-- =================================================
+                 FILTER SIDEBAR
+                 ================================================= -->
 
             <div class="col-lg-3">
 
                 <div class="card filter-sidebar shadow-sm border-0">
 
-                    <div class="card-body p-4">
+                    <div class="card-body">
 
-                        <h5 class="fw-bold text-primary mb-1">
+                        <h5 class="filter-title mb-1">
 
                             <i class="fa-solid fa-filter me-2"></i>
 
                             Tìm phòng
 
                         </h5>
+
 
                         <p class="small text-muted mb-4">
 
@@ -1454,20 +1519,23 @@ body {
                                    name="action"
                                    value="search">
 
+
                             <input type="hidden"
                                    name="page"
                                    value="1">
 
 
-                            <div class="mb-3">
+                            <!-- KEYWORD -->
 
-                                <label class="form-label fw-bold">
+                            <div class="mb-3">
+<label class="form-label fw-bold">
 
                                     <i class="fa-solid fa-magnifying-glass me-1"></i>
 
                                     Tìm kiếm
 
                                 </label>
+
 
                                 <input type="text"
                                        name="keyword"
@@ -1478,13 +1546,14 @@ body {
                             </div>
 
 
+                            <!-- SUGGESTIONS -->
+
                             <div class="mb-4">
 
                                 <small class="text-muted">
-
                                     Gợi ý:
-
                                 </small>
+
 
                                 <div class="mt-2">
 
@@ -1495,6 +1564,7 @@ body {
 
                                     </a>
 
+
                                     <a href="${pageContext.request.contextPath}/room?action=search&keyword=Deluxe&page=1"
                                        class="badge bg-light text-dark border text-decoration-none me-1 mb-1">
 
@@ -1502,12 +1572,14 @@ body {
 
                                     </a>
 
+
                                     <a href="${pageContext.request.contextPath}/room?action=search&keyword=Suite&page=1"
                                        class="badge bg-light text-dark border text-decoration-none me-1 mb-1">
 
                                         Suite
 
                                     </a>
+
 
                                     <a href="${pageContext.request.contextPath}/room?action=search&keyword=Family&page=1"
                                        class="badge bg-light text-dark border text-decoration-none me-1 mb-1">
@@ -1521,6 +1593,8 @@ body {
                             </div>
 
 
+                            <!-- MIN PRICE -->
+
                             <div class="mb-3">
 
                                 <label class="form-label fw-bold">
@@ -1531,25 +1605,27 @@ body {
 
                                 </label>
 
+
                                 <div class="input-group">
 
                                     <input type="number"
                                            name="minPrice"
                                            class="form-control"
                                            min="0"
-                                           placeholder="0"
-                                           value="${param.minPrice}">
+                                           placeholder="500000"
+value="${param.minPrice}">
+
 
                                     <span class="input-group-text">
-
                                         VNĐ
-
                                     </span>
 
                                 </div>
 
                             </div>
 
+
+                            <!-- MAX PRICE -->
 
                             <div class="mb-3">
 
@@ -1561,25 +1637,27 @@ body {
 
                                 </label>
 
+
                                 <div class="input-group">
 
                                     <input type="number"
                                            name="maxPrice"
                                            class="form-control"
                                            min="0"
-                                           placeholder="24.000.000"
+                                           placeholder="2000000"
                                            value="${param.maxPrice}">
 
+
                                     <span class="input-group-text">
-
                                         VNĐ
-
                                     </span>
 
                                 </div>
 
                             </div>
 
+
+                            <!-- PEOPLE -->
 
                             <div class="mb-3">
 
@@ -1591,12 +1669,14 @@ body {
 
                                 </label>
 
+
                                 <select name="people"
                                         class="form-select">
 
                                     <option value="">
                                         Tất cả
                                     </option>
+
 
                                     <option value="1"
                                             ${param.people == '1' ? 'selected' : ''}>
@@ -1605,12 +1685,14 @@ body {
 
                                     </option>
 
+
                                     <option value="2"
                                             ${param.people == '2' ? 'selected' : ''}>
 
                                         2 người
 
                                     </option>
+
 
                                     <option value="3"
                                             ${param.people == '3' ? 'selected' : ''}>
@@ -1619,6 +1701,7 @@ body {
 
                                     </option>
 
+
                                     <option value="4"
                                             ${param.people == '4' ? 'selected' : ''}>
 
@@ -1626,12 +1709,13 @@ body {
 
                                     </option>
 
+
                                     <option value="5"
                                             ${param.people == '5' ? 'selected' : ''}>
-
-                                        5 người
+5 người
 
                                     </option>
+
 
                                     <option value="6"
                                             ${param.people == '6' ? 'selected' : ''}>
@@ -1645,6 +1729,8 @@ body {
                             </div>
 
 
+                            <!-- SORT -->
+
                             <div class="mb-4">
 
                                 <label class="form-label fw-bold">
@@ -1655,6 +1741,7 @@ body {
 
                                 </label>
 
+
                                 <select name="sortPrice"
                                         class="form-select">
 
@@ -1662,12 +1749,14 @@ body {
                                         Mặc định
                                     </option>
 
+
                                     <option value="asc"
                                             ${param.sortPrice == 'asc' ? 'selected' : ''}>
 
                                         Giá thấp → cao
 
                                     </option>
+
 
                                     <option value="desc"
                                             ${param.sortPrice == 'desc' ? 'selected' : ''}>
@@ -1690,6 +1779,7 @@ body {
 
                             </button>
 
+
                         </form>
 
                     </div>
@@ -1699,54 +1789,167 @@ body {
             </div>
 
 
-            <!-- ROOM LIST -->
+            <!-- =================================================
+                 ROOM LIST
+                 ================================================= -->
 
             <div class="col-lg-9">
 
-                <div class="mb-4">
 
-                    <h2 class="fw-bold mb-1">
+                <div class="d-flex justify-content-between
+                            align-items-end mb-4 flex-wrap gap-2">
 
-                        Phòng nổi bật
+                    <div>
 
-                    </h2>
+                        <h2 class="fw-bold mb-1">
 
-                    <p class="text-muted mb-0">
+                            Phòng nổi bật
 
-                        Lựa chọn căn phòng phù hợp với bạn
+                        </h2>
 
-                    </p>
+
+                        <p class="text-muted mb-0">
+
+                            Lựa chọn căn phòng phù hợp với bạn
+
+                        </p>
+
+                    </div>
 
                 </div>
 
 
                 <div class="row">
-
-                    <c:forEach items="${roomList}"
+<c:forEach items="${roomList}"
                                var="room">
+
 
                         <div class="col-md-6 col-xl-4 mb-4">
 
+
                             <div class="card room-card shadow-sm">
 
-                                <div class="position-relative">
 
-                                    <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=600&q=80"
-                                         alt="${room.roomName}"
-                                         onerror="this.onerror=null;this.src='https://placehold.co/600x400?text=Luxury+Room';">
+                                <!-- ROOM IMAGE -->
 
-                                    <span class="position-absolute top-0 end-0 bg-dark text-warning fw-bold px-3 py-2 m-3 rounded">
+                                <div class="room-image-wrapper">
+
+
+                                    <c:choose>
+
+
+                                        <c:when test="${room.roomName.contains('Standard')}">
+
+                                            <img
+                                                    src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85"
+                                                    alt="${room.roomName}">
+
+                                        </c:when>
+
+
+                                        <c:when test="${room.roomName.contains('Deluxe')}">
+
+                                            <img
+                                                    src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=85"
+                                                    alt="${room.roomName}">
+
+                                        </c:when>
+
+
+                                        <c:when test="${room.roomName.contains('Suite')}">
+
+                                            <img
+                                                    src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=85"
+                                                    alt="${room.roomName}">
+
+                                        </c:when>
+
+
+                                        <c:when test="${room.roomName.contains('Family')}">
+
+                                            <img
+                                                    src="https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=800&q=85"
+                                                    alt="${room.roomName}">
+
+                                        </c:when>
+
+
+                                        <c:otherwise>
+
+                                            <img
+                                                    src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=85"
+                                                    alt="${room.roomName}">
+
+                                        </c:otherwise>
+
+
+                                    </c:choose>
+
+
+                                    <div class="room-overlay"></div>
+
+
+                                    <!-- STATUS -->
+
+                                    <span class="room-status">
+
+                                        <i class="fa-solid fa-circle-check me-1"></i>
 
                                         ${room.status}
 
                                     </span>
 
+
+                                    <!-- ROOM TYPE -->
+<c:choose>
+
+                                        <c:when test="${room.roomName.contains('Standard')}">
+
+                                            <span class="room-type">
+                                                Standard
+                                            </span>
+
+                                        </c:when>
+
+
+                                        <c:when test="${room.roomName.contains('Deluxe')}">
+
+                                            <span class="room-type">
+                                                Deluxe
+                                            </span>
+
+                                        </c:when>
+
+
+                                        <c:when test="${room.roomName.contains('Suite')}">
+
+                                            <span class="room-type">
+                                                Suite
+                                            </span>
+
+                                        </c:when>
+
+
+                                        <c:when test="${room.roomName.contains('Family')}">
+
+                                            <span class="room-type">
+                                                Family
+                                            </span>
+
+                                        </c:when>
+
+                                    </c:choose>
+
+
                                 </div>
 
 
+                                <!-- ROOM BODY -->
+
                                 <div class="card-body p-3">
 
-                                    <h5 class="fw-bold text-primary room-name">
+
+                                    <h5 class="fw-bold room-name">
 
                                         ${room.roomName}
 
@@ -1763,9 +1966,11 @@ body {
 
                                             </c:when>
 
+
                                             <c:otherwise>
 
-                                                Phòng đầy đủ tiện nghi, không gian thoải mái.
+                                                Phòng đầy đủ tiện nghi,
+                                                không gian thoải mái.
 
                                             </c:otherwise>
 
@@ -1774,7 +1979,10 @@ body {
                                     </p>
 
 
-                                    <div class="d-flex gap-2 mb-3 flex-wrap">
+                                    <!-- ROOM META -->
+
+                                    <div class="room-meta mb-3">
+
 
                                         <span class="badge bg-light text-dark border">
 
@@ -1788,8 +1996,7 @@ body {
                                         <span class="badge bg-light text-dark border">
 
                                             <i class="fa-solid fa-expand me-1"></i>
-
-                                            <fmt:formatNumber
+<fmt:formatNumber
                                                     value="${room.acreage}"
                                                     type="number"
                                                     groupingUsed="true"
@@ -1809,55 +2016,71 @@ body {
 
                                         </span>
 
+
                                     </div>
 
 
-                                    <div class="border-top pt-3 d-flex justify-content-between align-items-center">
+                                    <!-- PRICE -->
 
-                                        <div>
+                                    <div class="border-top pt-3">
 
-                                            <small class="text-muted d-block">
 
-                                                Giá phòng / đêm
+                                        <div class="d-flex
+                                                    justify-content-between
+                                                    align-items-center">
 
-                                            </small>
 
-                                            <div class="room-price">
+                                            <div>
 
-                                                <fmt:formatNumber
-                                                        value="${room.price}"
-                                                        type="number"
-                                                        groupingUsed="true"
-                                                        minFractionDigits="0"
-                                                        maxFractionDigits="0"/>
+                                                <small class="text-muted d-block">
 
-                                                VNĐ
+                                                    Giá phòng / đêm
+
+                                                </small>
+
+
+                                                <div class="room-price">
+
+                                                    <fmt:formatNumber
+                                                            value="${room.price}"
+                                                            type="number"
+                                                            groupingUsed="true"
+                                                            minFractionDigits="0"
+                                                            maxFractionDigits="0"/>
+
+                                                    VNĐ
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="room-buttons">
+
+
+                                                <a
+                                                        href="${pageContext.request.contextPath}/room?action=detail&id=${room.roomID}"
+                                                        class="btn btn-outline-primary btn-sm">
+
+                                                    <i class="fa-solid fa-eye"></i>
+
+                                                </a>
+
+
+                                                <a
+                                                        href="${pageContext.request.contextPath}/booking?roomId=${room.roomID}"
+                                                        class="btn btn-success btn-sm">
+<i class="fa-solid fa-calendar-check me-1"></i>
+
+                                                    Đặt
+
+                                                </a>
+
 
                                             </div>
 
                                         </div>
 
-
-                                        <div class="d-flex gap-2">
-
-                                            <a href="${pageContext.request.contextPath}/room?action=detail&id=${room.roomID}"
-                                               class="btn btn-outline-primary btn-sm">
-
-                                                <i class="fa-solid fa-eye me-1"></i>
-
-                                                Chi tiết
-
-                                            </a>
-
-
-                                            <a href="${pageContext.request.contextPath}/booking?roomId=${room.roomID}"
-                                               class="btn btn-success btn-sm">
-
-                                                Đặt ngay
-
-                                            </a>
-
-                                        </div>
 
                                     </div>
 
@@ -1867,8 +2090,11 @@ body {
 
                         </div>
 
+
                     </c:forEach>
 
+
+                    <!-- EMPTY -->
 
                     <c:if test="${empty roomList}">
 
@@ -1878,11 +2104,13 @@ body {
 
                                 <i class="fa-solid fa-hotel fa-3x text-warning mb-3"></i>
 
+
                                 <h4>
 
                                     Không tìm thấy phòng
 
                                 </h4>
+
 
                                 <p class="text-muted">
 
@@ -1890,33 +2118,54 @@ body {
 
                                 </p>
 
+
+                                <a
+                                        href="${pageContext.request.contextPath}/home"
+                                        class="btn btn-primary">
+
+                                    <i class="fa-solid fa-rotate-left me-1"></i>
+
+                                    Xem tất cả phòng
+
+                                </a>
+
                             </div>
 
                         </div>
 
                     </c:if>
 
+
                 </div>
 
 
-                <!-- PAGINATION -->
+                <!-- =================================================
+                     PAGINATION
+                     ================================================= -->
 
                 <c:if test="${totalPages > 1}">
 
-                    <nav aria-label="Phân trang phòng"
-                         class="mt-2 mb-4">
+                    <nav
+                            aria-label="Phân trang phòng"
+                            class="mt-2 mb-4">
 
                         <ul class="pagination justify-content-center">
 
 
-                            <li class="page-item ${currentPage <= 1 ? 'disabled' : ''}">
+                            <!-- PREVIOUS -->
+
+                            <li class="page-item
+                                       ${currentPage <= 1 ? 'disabled' : ''}">
+
 
                                 <c:choose>
 
+
                                     <c:when test="${currentPage > 1}">
 
-                                        <a class="page-link"
-                                           href="${pageContext.request.contextPath}/room?action=search&page=${currentPage - 1}&keyword=${param.keyword}&minPrice=${param.minPrice}&maxPrice=${param.maxPrice}&people=${param.people}&sortPrice=${param.sortPrice}">
+                                        <a
+                                                class="page-link"
+                                                href="${pageContext.request.contextPath}/room?action=search&page=${currentPage - 1}&keyword=${param.keyword}&minPrice=${param.minPrice}&maxPrice=${param.maxPrice}&people=${param.people}&sortPrice=${param.sortPrice}">
 
                                             <i class="fa-solid fa-chevron-left"></i>
 
@@ -1924,29 +2173,37 @@ body {
 
                                     </c:when>
 
+
                                     <c:otherwise>
 
                                         <span class="page-link">
-
-                                            <i class="fa-solid fa-chevron-left"></i>
+<i class="fa-solid fa-chevron-left"></i>
 
                                         </span>
 
                                     </c:otherwise>
+
 
                                 </c:choose>
 
                             </li>
 
 
-                            <c:forEach begin="1"
-                                       end="${totalPages}"
-                                       var="pageNumber">
+                            <!-- PAGE NUMBER -->
 
-                                <li class="page-item ${pageNumber == currentPage ? 'active' : ''}">
+                            <c:forEach
+                                    begin="1"
+                                    end="${totalPages}"
+                                    var="pageNumber">
 
-                                    <a class="page-link"
-                                       href="${pageContext.request.contextPath}/room?action=search&page=${pageNumber}&keyword=${param.keyword}&minPrice=${param.minPrice}&maxPrice=${param.maxPrice}&people=${param.people}&sortPrice=${param.sortPrice}">
+
+                                <li
+                                        class="page-item
+                                               ${pageNumber == currentPage ? 'active' : ''}">
+
+                                    <a
+                                            class="page-link"
+                                            href="${pageContext.request.contextPath}/room?action=search&page=${pageNumber}&keyword=${param.keyword}&minPrice=${param.minPrice}&maxPrice=${param.maxPrice}&people=${param.people}&sortPrice=${param.sortPrice}">
 
                                         ${pageNumber}
 
@@ -1954,23 +2211,32 @@ body {
 
                                 </li>
 
+
                             </c:forEach>
 
 
-                            <li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}">
+                            <!-- NEXT -->
+
+                            <li
+                                    class="page-item
+                                           ${currentPage >= totalPages ? 'disabled' : ''}">
+
 
                                 <c:choose>
 
+
                                     <c:when test="${currentPage < totalPages}">
 
-                                        <a class="page-link"
-                                           href="${pageContext.request.contextPath}/room?action=search&page=${currentPage + 1}&keyword=${param.keyword}&minPrice=${param.minPrice}&maxPrice=${param.maxPrice}&people=${param.people}&sortPrice=${param.sortPrice}">
+                                        <a
+                                                class="page-link"
+                                                href="${pageContext.request.contextPath}/room?action=search&page=${currentPage + 1}&keyword=${param.keyword}&minPrice=${param.minPrice}&maxPrice=${param.maxPrice}&people=${param.people}&sortPrice=${param.sortPrice}">
 
                                             <i class="fa-solid fa-chevron-right"></i>
 
                                         </a>
 
                                     </c:when>
+
 
                                     <c:otherwise>
 
@@ -1982,9 +2248,11 @@ body {
 
                                     </c:otherwise>
 
+
                                 </c:choose>
 
                             </li>
+
 
                         </ul>
 
@@ -2002,12 +2270,201 @@ body {
 
 
 <!-- =====================================================
+     ROOM CATEGORIES
+     ===================================================== -->
+
+<section class="category-section">
+
+    <div class="container">
+
+
+        <div class="text-center mb-5">
+
+            <h2 class="fw-bold">
+
+                Khám phá loại phòng
+</h2>
+
+
+            <p class="text-muted">
+
+                Nhiều lựa chọn phù hợp với mọi nhu cầu
+
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+            <!-- STANDARD -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <a
+                        href="${pageContext.request.contextPath}/room?action=search&keyword=Standard&page=1"
+                        class="text-decoration-none">
+
+
+                    <div
+                            class="category-card"
+                            style="background-image:url('https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=85');">
+
+
+                        <div class="category-content">
+
+                            <h5>
+
+                                Standard
+
+                            </h5>
+
+
+                            <p>
+
+                                Thoải mái, tiện nghi và tiết kiệm
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <!-- DELUXE -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <a
+                        href="${pageContext.request.contextPath}/room?action=search&keyword=Deluxe&page=1"
+                        class="text-decoration-none">
+
+
+                    <div
+                            class="category-card"
+                            style="background-image:url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=85');">
+
+
+                        <div class="category-content">
+
+                            <h5>
+
+                                Deluxe
+
+                            </h5>
+
+
+                            <p>
+
+                                Không gian rộng rãi và sang trọng
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <!-- SUITE -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <a
+                        href="${pageContext.request.contextPath}/room?action=search&keyword=Suite&page=1"
+                        class="text-decoration-none">
+
+
+                    <div
+                            class="category-card"
+                            style="background-image:url('https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=85');">
+
+
+                        <div class="category-content">
+
+                            <h5>
+
+                                Suite
+
+                            </h5>
+
+
+                            <p>
+
+                                Trải nghiệm nghỉ dưỡng cao cấp
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <!-- FAMILY -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <a
+href="${pageContext.request.contextPath}/room?action=search&keyword=Family&page=1"
+                        class="text-decoration-none">
+
+
+                    <div
+                            class="category-card"
+                            style="background-image:url('https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=800&q=85');">
+
+
+                        <div class="category-content">
+
+                            <h5>
+
+                                Family
+
+                            </h5>
+
+
+                            <p>
+
+                                Không gian dành cho gia đình
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
      SERVICES
      ===================================================== -->
 
-<section class="bg-white py-5 border-top">
+<section class="bg-light py-5 border-top">
 
     <div class="container">
+
 
         <div class="text-center mb-5">
 
@@ -2016,6 +2473,7 @@ body {
                 Dịch vụ & Tiện ích
 
             </h2>
+
 
             <p class="text-muted">
 
@@ -2029,17 +2487,28 @@ body {
         <div class="row text-center g-4">
 
 
+            <!-- WIFI -->
+
             <div class="col-md-3">
 
-                <div class="p-4 shadow-sm border rounded h-100 service-card">
+                <div
+                        class="p-4 shadow-sm border rounded h-100
+                               service-card bg-white">
 
-                    <i class="fa-solid fa-wifi fa-2x text-primary"></i>
+
+                    <div class="service-icon">
+
+                        <i class="fa-solid fa-wifi fa-2x text-primary"></i>
+
+                    </div>
+
 
                     <h5 class="fw-bold mt-3">
 
                         Wifi tốc độ cao
 
                     </h5>
+
 
                     <p class="small text-muted">
 
@@ -2052,17 +2521,28 @@ body {
             </div>
 
 
+            <!-- RESTAURANT -->
+
             <div class="col-md-3">
 
-                <div class="p-4 shadow-sm border rounded h-100 service-card">
+                <div
+                        class="p-4 shadow-sm border rounded h-100
+                               service-card bg-white">
 
-                    <i class="fa-solid fa-utensils fa-2x text-primary"></i>
+
+                    <div class="service-icon">
+
+                        <i class="fa-solid fa-utensils fa-2x text-primary"></i>
+
+                    </div>
+
 
                     <h5 class="fw-bold mt-3">
 
                         Nhà hàng
 
                     </h5>
+
 
                     <p class="small text-muted">
 
@@ -2075,17 +2555,27 @@ body {
             </div>
 
 
+            <!-- SPA -->
+
             <div class="col-md-3">
 
-                <div class="p-4 shadow-sm border rounded h-100 service-card">
+                <div
+                        class="p-4 shadow-sm border rounded h-100
+                               service-card bg-white">
 
-                    <i class="fa-solid fa-spa fa-2x text-primary"></i>
+
+                    <div class="service-icon">
+
+                        <i class="fa-solid fa-spa fa-2x text-primary"></i>
+</div>
+
 
                     <h5 class="fw-bold mt-3">
 
                         Spa
 
                     </h5>
+
 
                     <p class="small text-muted">
 
@@ -2098,17 +2588,28 @@ body {
             </div>
 
 
+            <!-- 24/7 -->
+
             <div class="col-md-3">
 
-                <div class="p-4 shadow-sm border rounded h-100 service-card">
+                <div
+                        class="p-4 shadow-sm border rounded h-100
+                               service-card bg-white">
 
-                    <i class="fa-solid fa-clock fa-2x text-primary"></i>
+
+                    <div class="service-icon">
+
+                        <i class="fa-solid fa-clock fa-2x text-primary"></i>
+
+                    </div>
+
 
                     <h5 class="fw-bold mt-3">
 
                         Phục vụ 24/7
 
                     </h5>
+
 
                     <p class="small text-muted">
 
@@ -2119,6 +2620,7 @@ body {
                 </div>
 
             </div>
+
 
         </div>
 
@@ -2134,23 +2636,23 @@ body {
 <jsp:include page="../layout/footer.jsp"/>
 
 
-<!-- =====================================================
-     BOOTSTRAP JS
-     ===================================================== -->
+<!-- Bootstrap JS -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
 
 
 <script>
 
-
     /* =====================================================
-       HEADER ĐỔI MÀU KHI SCROLL
+       HEADER SCROLL
        ===================================================== */
 
     window.addEventListener("scroll", function () {
 
-        const navbar = document.querySelector(".navbar");
+        const navbar =
+                document.querySelector(".navbar");
 
         if (!navbar) {
             return;
@@ -2170,15 +2672,16 @@ body {
     });
 
 
-
     /* =====================================================
        COPY VOUCHER
        ===================================================== */
 
     function copyVoucher(code, button) {
 
-        if (navigator.clipboard &&
-            window.isSecureContext) {
+        if (
+            navigator.clipboard &&
+            window.isSecureContext
+        ) {
 
             navigator.clipboard
                 .writeText(code)
@@ -2202,7 +2705,6 @@ body {
     }
 
 
-
     /* =====================================================
        FALLBACK COPY
        ===================================================== */
@@ -2210,7 +2712,8 @@ body {
     function fallbackCopy(code, button) {
 
         const input =
-            document.createElement("input");
+                document.createElement("input");
+
 
         input.value = code;
 
@@ -2218,45 +2721,47 @@ body {
 
         input.style.opacity = "0";
 
+
         document.body.appendChild(input);
+
 
         input.focus();
 
         input.select();
+
 
         try {
 
             document.execCommand("copy");
 
             showCopied(button);
-
-        } catch (error) {
+} catch (error) {
 
             alert(
-                "Không thể sao chép mã. Vui lòng copy: "
-                + code
+                    "Không thể sao chép mã. Vui lòng copy: "
+                    + code
             );
 
         }
+
 
         document.body.removeChild(input);
 
     }
 
 
-
     /* =====================================================
-       HIỂN THỊ ĐÃ COPY
+       COPIED MESSAGE
        ===================================================== */
 
     function showCopied(button) {
 
         const oldHTML =
-            button.innerHTML;
+                button.innerHTML;
 
 
         button.innerHTML =
-            '<i class="fa-solid fa-check me-1"></i> Đã copy';
+                '<i class="fa-solid fa-check me-1"></i> Đã copy';
 
 
         button.disabled = true;
@@ -2265,7 +2770,7 @@ body {
         setTimeout(function () {
 
             button.innerHTML =
-                oldHTML;
+                    oldHTML;
 
             button.disabled = false;
 
@@ -2273,6 +2778,27 @@ body {
 
     }
 
+
+    /* =====================================================
+       HEADER CHECK KHI LOAD TRANG
+       ===================================================== */
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const navbar =
+                document.querySelector(".navbar");
+
+
+        if (
+            navbar &&
+            window.scrollY > 50
+        ) {
+
+            navbar.classList.add("scrolled");
+
+        }
+
+    });
 
 </script>
 

@@ -362,7 +362,7 @@
 
                                             <i class="fa-solid fa-calendar-check me-2 text-muted"></i>
 
-                                            Quản lý đặt phòng
+                                            Danh Mục
 
                                         </a>
 
