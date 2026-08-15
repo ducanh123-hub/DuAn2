@@ -421,6 +421,23 @@
             }
         }
 
+        .back-register-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 18px;
+            color: #7b8492;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.25s ease, gap 0.25s ease;
+        }
+
+        .back-register-btn:hover {
+            color: #c39b25;
+            gap: 10px;
+        }
+
     </style>
 
 </head>
@@ -542,6 +559,13 @@
 
         </div>
 
+         <a
+                                        href="${pageContext.request.contextPath}/register"
+                                        class="back-register-btn">
+
+                                    ← Quay lại đăng ký
+
+                                </a>
 
     </div>
 

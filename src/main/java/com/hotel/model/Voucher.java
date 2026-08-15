@@ -6,64 +6,80 @@ import java.sql.Timestamp;
 
 public class Voucher {
 
-    private int voucherID;
-    private String voucherCode;
-    private String voucherName;
+    private int promotionID;
+    private String code;
+    private String name;
+    private String description;
     private String discountType;
     private BigDecimal discountValue;
-    private BigDecimal maxDiscount;
-    private BigDecimal minOrderValue;
+    private BigDecimal minOrderAmount;
+    private BigDecimal maxDiscountAmount;
+    private Integer usageLimit;
+    private int usedCount;
     private Date startDate;
     private Date endDate;
-    private int quantity;
     private String status;
     private Timestamp createdAt;
 
     public Voucher() {
     }
 
-    public Voucher(int voucherID, String voucherCode, String voucherName,
-                   String discountType, BigDecimal discountValue,
-                   BigDecimal maxDiscount, BigDecimal minOrderValue,
+    public Voucher(int promotionID, String code, String name,
+                   String description, String discountType,
+                   BigDecimal discountValue,
+                   BigDecimal minOrderAmount,
+                   BigDecimal maxDiscountAmount,
+                   Integer usageLimit,
+                   int usedCount,
                    Date startDate, Date endDate,
-                   int quantity, String status,
-                   Timestamp createdAt) {
-        this.voucherID = voucherID;
-        this.voucherCode = voucherCode;
-        this.voucherName = voucherName;
+                   String status, Timestamp createdAt) {
+
+        this.promotionID = promotionID;
+        this.code = code;
+        this.name = name;
+        this.description = description;
         this.discountType = discountType;
         this.discountValue = discountValue;
-        this.maxDiscount = maxDiscount;
-        this.minOrderValue = minOrderValue;
+        this.minOrderAmount = minOrderAmount;
+        this.maxDiscountAmount = maxDiscountAmount;
+        this.usageLimit = usageLimit;
+        this.usedCount = usedCount;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.quantity = quantity;
         this.status = status;
         this.createdAt = createdAt;
     }
 
-    public int getVoucherID() {
-        return voucherID;
+    public int getPromotionID() {
+        return promotionID;
     }
 
-    public void setVoucherID(int voucherID) {
-        this.voucherID = voucherID;
+    public void setPromotionID(int promotionID) {
+        this.promotionID = promotionID;
     }
 
-    public String getVoucherCode() {
-        return voucherCode;
+    public String getCode() {
+        return code;
     }
 
-    public void setVoucherCode(String voucherCode) {
-        this.voucherCode = voucherCode;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getVoucherName() {
-        return voucherName;
+    public String getName() {
+        return name;
     }
 
-    public void setVoucherName(String voucherName) {
-        this.voucherName = voucherName;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getDiscountType() {
@@ -82,20 +98,36 @@ public class Voucher {
         this.discountValue = discountValue;
     }
 
-    public BigDecimal getMaxDiscount() {
-        return maxDiscount;
+    public BigDecimal getMinOrderAmount() {
+        return minOrderAmount;
     }
 
-    public void setMaxDiscount(BigDecimal maxDiscount) {
-        this.maxDiscount = maxDiscount;
+    public void setMinOrderAmount(BigDecimal minOrderAmount) {
+        this.minOrderAmount = minOrderAmount;
     }
 
-    public BigDecimal getMinOrderValue() {
-        return minOrderValue;
+    public BigDecimal getMaxDiscountAmount() {
+        return maxDiscountAmount;
     }
 
-    public void setMinOrderValue(BigDecimal minOrderValue) {
-        this.minOrderValue = minOrderValue;
+    public void setMaxDiscountAmount(BigDecimal maxDiscountAmount) {
+        this.maxDiscountAmount = maxDiscountAmount;
+    }
+
+    public Integer getUsageLimit() {
+        return usageLimit;
+    }
+
+    public void setUsageLimit(Integer usageLimit) {
+        this.usageLimit = usageLimit;
+    }
+
+    public int getUsedCount() {
+        return usedCount;
+    }
+
+    public void setUsedCount(int usedCount) {
+        this.usedCount = usedCount;
     }
 
     public Date getStartDate() {
@@ -112,14 +144,6 @@ public class Voucher {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public String getStatus() {
@@ -141,12 +165,20 @@ public class Voucher {
     @Override
     public String toString() {
         return "Voucher{" +
-                "voucherID=" + voucherID +
-                ", voucherCode='" + voucherCode + '\'' +
-                ", voucherName='" + voucherName + '\'' +
+                "promotionID=" + promotionID +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", discountType='" + discountType + '\'' +
                 ", discountValue=" + discountValue +
-                ", quantity=" + quantity +
+                ", minOrderAmount=" + minOrderAmount +
+                ", maxDiscountAmount=" + maxDiscountAmount +
+                ", usageLimit=" + usageLimit +
+                ", usedCount=" + usedCount +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
                 ", status='" + status + '\'' +
+                ", createdAt=" + createdAt +
                 '}';
     }
 }

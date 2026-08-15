@@ -678,34 +678,79 @@
 
                         </div>
 
+                        <!-- =================================================
+                             VOUCHER
+                             ================================================= -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-bold">
+                                <i class="fa-solid fa-ticket text-warning me-1"></i>
+                                Mã giảm giá
+                            </label>
+
+                            <div class="input-group">
+
+                                <input
+                                    type="text"
+                                    name="voucherCode"
+                                    id="voucherCode"
+                                    class="form-control"
+                                    placeholder="Nhập mã voucher...">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-warning"
+                                    id="applyVoucher">
+
+                                    Áp dụng
+
+                                </button>
+
+                            </div>
+
+                            <div id="voucherMessage" class="small mt-2"></div>
+
+                        </div>
+
 
                         <!-- =================================================
                              TỔNG TIỀN
                              ================================================= -->
 
-                        <div
-                            class="p-3 rounded bg-danger bg-opacity-10 border border-danger border-opacity-20 d-flex justify-content-between align-items-center mb-4">
+                        <div class="p-3 rounded bg-danger bg-opacity-10 border border-danger border-opacity-20 mb-4">
 
+                            <!-- TỔNG TIỀN GỐC -->
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="text-muted">Tổng tiền phòng:</span>
+                                <span id="originalTotalDisplay" class="fw-bold">
+                                    <fmt:formatNumber value="${room.price}" type="number"
+                                        groupingUsed="true" maxFractionDigits="0"/> VNĐ
+                                </span>
+                            </div>
 
-                            <h5 class="fw-bold text-danger mb-0">
+                            <!-- SỐ TIỀN ĐƯỢC GIẢM -->
+                            <div id="discountBox" class="d-flex justify-content-between align-items-center mb-1 d-none">
+                                <span class="text-success">
+                                    <i class="fa-solid fa-tag me-1"></i>
+                                    Giảm giá (<span id="voucherCodeLabel"></span>):
+                                </span>
+                                <span id="discountDisplay" class="text-success fw-bold">-0 VNĐ</span>
+                            </div>
 
-                                TỔNG CHI PHÍ DỰ KIẾN:
+                            <hr class="my-2">
 
-                            </h5>
+                            <!-- TỔNG SAU GIẢM -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="fw-bold text-danger mb-0">TỔNG CHI PHÍ DỰ KIẾN:</h5>
+                                <span id="totalDisplay" class="fs-4">
+                                    <fmt:formatNumber value="${room.price}" type="number"
+                                        groupingUsed="true" maxFractionDigits="0"/> VNĐ
+                                </span>
+                            </div>
 
-
-                            <span id="totalDisplay">
-
-                                <fmt:formatNumber
-                                    value="${room.price}"
-                                    type="number"
-                                    groupingUsed="true"
-                                    minFractionDigits="0"
-                                    maxFractionDigits="0"/>
-
-                                VNĐ
-
-                            </span>
+                            <input type="hidden" name="discountAmount" id="discountAmount" value="0">
+                            <input type="hidden" name="finalAmount" id="finalAmount" value="${room.price}">
 
                         </div>
 
@@ -774,38 +819,60 @@
 <script>
 
 /* ============================================================
+   BIẾN TOÀN CỤC
+   ============================================================ */
+
+const basePrice = Number("${room.price}");
+let currentTotal = basePrice;   // tổng tiền gốc (trước giảm) — cập nhật khi đổi ngày
+let discountAmount = 0;         // tiền được giảm — chỉ set khi server xác nhận hợp lệ
+
+
+/* ============================================================
+   FORMAT TIỀN (global, dùng chung mọi nơi)
+   ============================================================ */
+
+function formatMoney(amount) {
+    return Number(amount).toLocaleString("vi-VN") + " VNĐ";
+}
+
+
+/* ============================================================
+   CẬP NHẬT HIỂN THỊ TỔNG / GIẢM / CÒN LẠI
+   ============================================================ */
+
+function updateFinalAmount() {
+
+    const finalAmount = Math.max(0, currentTotal - discountAmount);
+
+    document.getElementById("originalTotalDisplay").textContent =
+        formatMoney(currentTotal);
+
+    if (discountAmount > 0) {
+        document.getElementById("discountBox").classList.remove("d-none");
+        document.getElementById("discountDisplay").textContent =
+            "-" + formatMoney(discountAmount);
+    } else {
+        document.getElementById("discountBox").classList.add("d-none");
+    }
+
+    document.getElementById("totalDisplay").textContent =
+        formatMoney(finalAmount);
+
+    document.getElementById("discountAmount").value = discountAmount;
+    document.getElementById("finalAmount").value = finalAmount;
+}
+
+
+/* ============================================================
    XỬ LÝ FORM ĐẶT PHÒNG
    ============================================================ */
 
 document.addEventListener("DOMContentLoaded", function () {
 
-
-    const checkInInput =
-        document.getElementById("checkIn");
-
-
-    const checkOutInput =
-        document.getElementById("checkOut");
-
-
-    const totalDisplay =
-        document.getElementById("totalDisplay");
-
-
-    const bookingForm =
-        document.getElementById("bookingForm");
-
-
-    const submitButton =
-        document.getElementById("submitButton");
-
-
-    /* ========================================================
-       GIÁ PHÒNG GỐC
-       ======================================================== */
-
-    const basePrice =
-        Number("${room.price}");
+    const checkInInput  = document.getElementById("checkIn");
+    const checkOutInput = document.getElementById("checkOut");
+    const bookingForm    = document.getElementById("bookingForm");
+    const submitButton   = document.getElementById("submitButton");
 
 
     /* ========================================================
@@ -813,104 +880,41 @@ document.addEventListener("DOMContentLoaded", function () {
        ======================================================== */
 
     const now = new Date();
-
-
-    const year =
-        now.getFullYear();
-
-
-    const month =
-        String(now.getMonth() + 1)
-            .padStart(2, "0");
-
-
-    const day =
-        String(now.getDate())
-            .padStart(2, "0");
-
-
-    const today =
-        year + "-" + month + "-" + day;
-
+    const today = now.getFullYear() + "-"
+        + String(now.getMonth() + 1).padStart(2, "0") + "-"
+        + String(now.getDate()).padStart(2, "0");
 
     checkInInput.min = today;
 
 
     /* ========================================================
-       FORMAT TIỀN
-       ======================================================== */
-
-    function formatMoney(amount) {
-
-        return Number(amount).toLocaleString("vi-VN")
-            + " VNĐ";
-
-    }
-
-
-    /* ========================================================
-       TÍNH TỔNG TIỀN
+       TÍNH SỐ ĐÊM & TỔNG TIỀN GỐC
        ======================================================== */
 
     function calculateTotal() {
 
-
-        if (
-            !checkInInput.value ||
-            !checkOutInput.value
-        ) {
-
-            totalDisplay.textContent =
-                formatMoney(basePrice);
-
+        if (!checkInInput.value || !checkOutInput.value) {
+            currentTotal = basePrice;
+            updateFinalAmount();
             return;
-
         }
 
+        const checkInDate  = new Date(checkInInput.value + "T00:00:00");
+        const checkOutDate = new Date(checkOutInput.value + "T00:00:00");
+        const nights = Math.round(
+            (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)
+        );
 
-        const checkInDate =
-            new Date(
-                checkInInput.value + "T00:00:00"
-            );
+        currentTotal = nights > 0 ? nights * basePrice : basePrice;
 
-
-        const checkOutDate =
-            new Date(
-                checkOutInput.value + "T00:00:00"
-            );
-
-
-        const timeDiff =
-            checkOutDate.getTime()
-            - checkInDate.getTime();
-
-
-        const nights =
-            Math.round(
-                timeDiff /
-                (1000 * 60 * 60 * 24)
-            );
-
-
-        if (nights > 0) {
-
-
-            const totalAmount =
-                nights * basePrice;
-
-
-            totalDisplay.textContent =
-                formatMoney(totalAmount);
-
-
-        } else {
-
-
-            totalDisplay.textContent =
-                formatMoney(basePrice);
-
+        // Đổi ngày -> voucher cũ (nếu có) không còn đúng nữa, phải áp lại
+        if (discountAmount > 0) {
+            discountAmount = 0;
+            document.getElementById("voucherMessage").innerHTML =
+                '<span class="text-warning">Bạn đã đổi ngày, vui lòng áp dụng lại voucher.</span>';
         }
 
+        updateFinalAmount();
     }
 
 
@@ -918,149 +922,55 @@ document.addEventListener("DOMContentLoaded", function () {
        CHỌN NGÀY NHẬN
        ======================================================== */
 
-    checkInInput.addEventListener(
-        "change",
-        function () {
+    checkInInput.addEventListener("change", function () {
 
+        if (checkInInput.value) {
+            const nextDay = new Date(checkInInput.value + "T00:00:00");
+            nextDay.setDate(nextDay.getDate() + 1);
+            checkOutInput.min = nextDay.getFullYear() + "-"
+                + String(nextDay.getMonth() + 1).padStart(2, "0") + "-"
+                + String(nextDay.getDate()).padStart(2, "0");
 
-            if (checkInInput.value) {
-
-
-                const nextDay =
-                    new Date(
-                        checkInInput.value
-                        + "T00:00:00"
-                    );
-
-
-                nextDay.setDate(
-                    nextDay.getDate() + 1
-                );
-
-
-                const nextYear =
-                    nextDay.getFullYear();
-
-
-                const nextMonth =
-                    String(
-                        nextDay.getMonth() + 1
-                    ).padStart(2, "0");
-
-
-                const nextDate =
-                    String(
-                        nextDay.getDate()
-                    ).padStart(2, "0");
-
-
-                checkOutInput.min =
-                    nextYear
-                    + "-"
-                    + nextMonth
-                    + "-"
-                    + nextDate;
-
-
-                /* --------------------------------------------
-                   Nếu ngày trả không hợp lệ thì xóa
-                   -------------------------------------------- */
-
-                if (
-                    checkOutInput.value &&
-                    checkOutInput.value
-                    <= checkInInput.value
-                ) {
-
-                    checkOutInput.value = "";
-
-                }
-
+            if (checkOutInput.value && checkOutInput.value <= checkInInput.value) {
+                checkOutInput.value = "";
             }
-
-
-            calculateTotal();
-
         }
-    );
+
+        calculateTotal();
+    });
 
 
     /* ========================================================
        CHỌN NGÀY TRẢ
        ======================================================== */
 
-    checkOutInput.addEventListener(
-        "change",
-        function () {
+    checkOutInput.addEventListener("change", function () {
 
+        if (checkInInput.value && checkOutInput.value) {
+            const checkInDate  = new Date(checkInInput.value + "T00:00:00");
+            const checkOutDate = new Date(checkOutInput.value + "T00:00:00");
 
-            if (
-                checkInInput.value &&
-                checkOutInput.value
-            ) {
-
-
-                const checkInDate =
-                    new Date(
-                        checkInInput.value
-                        + "T00:00:00"
-                    );
-
-
-                const checkOutDate =
-                    new Date(
-                        checkOutInput.value
-                        + "T00:00:00"
-                    );
-
-
-                if (
-                    checkOutDate <= checkInDate
-                ) {
-
-
-                    alert(
-                        "Ngày trả phòng phải sau ngày nhận phòng ít nhất 1 ngày!"
-                    );
-
-
-                    checkOutInput.value = "";
-
-
-                    calculateTotal();
-
-
-                    return;
-
-                }
-
+            if (checkOutDate <= checkInDate) {
+                alert("Ngày trả phòng phải sau ngày nhận phòng ít nhất 1 ngày!");
+                checkOutInput.value = "";
+                calculateTotal();
+                return;
             }
-
-
-            calculateTotal();
-
         }
-    );
+
+        calculateTotal();
+    });
 
 
     /* ========================================================
        CHỐNG BẤM NÚT 2 LẦN
        ======================================================== */
 
-    bookingForm.addEventListener(
-        "submit",
-        function () {
-
-
-            submitButton.disabled = true;
-
-
-            submitButton.innerHTML =
-                '<i class="fa-solid fa-spinner fa-spin me-1"></i>'
-                + ' Đang xử lý...';
-
-        }
-    );
+    bookingForm.addEventListener("submit", function () {
+        submitButton.disabled = true;
+        submitButton.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin me-1"></i> Đang xử lý...';
+    });
 
 
     /* ========================================================
@@ -1078,76 +988,85 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function toggleGuestFields() {
 
-
-    const checkbox =
-        document.getElementById(
-            "isBookingForOthers"
-        );
-
-
-    const guestFields =
-        document.getElementById(
-            "guestFields"
-        );
-
-
-    const guestName =
-        document.getElementById(
-            "guestName"
-        );
-
-
-    const guestPhone =
-        document.getElementById(
-            "guestPhone"
-        );
-
-
-    const guestEmail =
-        document.getElementById(
-            "guestEmail"
-        );
-
+    const checkbox    = document.getElementById("isBookingForOthers");
+    const guestFields = document.getElementById("guestFields");
+    const guestName   = document.getElementById("guestName");
+    const guestPhone  = document.getElementById("guestPhone");
+    const guestEmail  = document.getElementById("guestEmail");
 
     if (checkbox.checked) {
 
-
-        guestFields.classList.remove(
-            "d-none"
-        );
-
-
+        guestFields.classList.remove("d-none");
         guestName.required = true;
-
-
         guestPhone.required = true;
-
 
     } else {
 
-
-        guestFields.classList.add(
-            "d-none"
-        );
-
-
+        guestFields.classList.add("d-none");
         guestName.required = false;
-
-
         guestPhone.required = false;
-
-
         guestName.value = "";
-
-
         guestPhone.value = "";
-
-
         guestEmail.value = "";
 
     }
 
 }
+
+
+/* ================================================================
+   ÁP DỤNG VOUCHER — GỌI SERVER THẬT (POST /voucher?action=apply)
+   ================================================================ */
+
+document.getElementById("applyVoucher").addEventListener("click", function () {
+
+    const code = document.getElementById("voucherCode").value.trim();
+    const message = document.getElementById("voucherMessage");
+    const applyBtn = this;
+
+    if (!code) {
+        message.innerHTML = '<span class="text-danger">Vui lòng nhập mã voucher.</span>';
+        return;
+    }
+
+    applyBtn.disabled = true;
+    applyBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+    const params = new URLSearchParams();
+    params.append("code", code);
+    params.append("totalAmount", currentTotal);
+
+    fetch("${pageContext.request.contextPath}/voucher?action=apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString()
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        applyBtn.disabled = false;
+        applyBtn.innerHTML = "Áp dụng";
+
+        if (data.valid) {
+            discountAmount = Number(data.discount);
+            document.getElementById("voucherCodeLabel").textContent = code.toUpperCase();
+            message.innerHTML = '<span class="text-success">' + data.message + '</span>';
+        } else {
+            discountAmount = 0;
+            message.innerHTML = '<span class="text-danger">' + data.message + '</span>';
+        }
+
+        updateFinalAmount();
+    })
+    .catch(() => {
+        applyBtn.disabled = false;
+        applyBtn.innerHTML = "Áp dụng";
+        discountAmount = 0;
+        message.innerHTML = '<span class="text-danger">Có lỗi xảy ra, vui lòng thử lại.</span>';
+        updateFinalAmount();
+    });
+
+});
 
 </script>
 
