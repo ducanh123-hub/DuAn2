@@ -14,23 +14,19 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 
-/**
- * Controller quản lý khuyến mãi / voucher.
- * URL: /promotion — chỉ QUAN_LY (RoleID = 1).
- */
 @WebServlet("/promotion")
 public class PromotionController extends HttpServlet {
 
     private final PromotionService service = new PromotionService();
     private final SystemLogService logService = new SystemLogService();
 
-    private boolean checkRole(HttpServletRequest req, HttpServletResponse res)
-            throws IOException {
+    private boolean checkRole(HttpServletRequest req, HttpServletResponse res) throws IOException {
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
             res.sendRedirect(req.getContextPath() + "/login");
             return false;
         }
+
         User user = (User) session.getAttribute("user");
         if (user.getRoleID() != 1) {
             res.sendError(HttpServletResponse.SC_FORBIDDEN, "Không có quyền!");
@@ -40,8 +36,7 @@ public class PromotionController extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
@@ -58,42 +53,46 @@ public class PromotionController extends HttpServlet {
                         .forward(request, response);
                 break;
 
-            case "edit": {
+            case "edit":
                 try {
                     int id = Integer.parseInt(request.getParameter("id"));
                     Voucher v = service.getById(id);
+
                     if (v == null) {
                         request.getSession().setAttribute("errorMsg", "Không tìm thấy khuyến mãi!");
                         response.sendRedirect(request.getContextPath() + "/promotion");
                         return;
                     }
+
                     request.setAttribute("voucher", v);
                     request.getRequestDispatcher("/views/admin/promotion/form.jsp")
                             .forward(request, response);
+
                 } catch (NumberFormatException e) {
                     response.sendRedirect(request.getContextPath() + "/promotion");
                 }
                 break;
-            }
 
-            case "delete": {
+            case "delete":
                 try {
                     int id = Integer.parseInt(request.getParameter("id"));
                     boolean ok = service.delete(id);
+
                     if (ok) {
                         logService.logFromRequest(request, "DELETE", "Xóa voucher ID=" + id);
                         request.getSession().setAttribute("successMsg", "Xóa khuyến mãi thành công!");
                     } else {
                         request.getSession().setAttribute("errorMsg", "Xóa thất bại!");
                     }
+
                 } catch (NumberFormatException e) {
                     request.getSession().setAttribute("errorMsg", "ID không hợp lệ!");
                 }
+
                 response.sendRedirect(request.getContextPath() + "/promotion");
                 break;
-            }
 
-            default: { // list
+            default:
                 List<Voucher> list = service.getAll();
                 request.setAttribute("list", list);
 
@@ -106,50 +105,57 @@ public class PromotionController extends HttpServlet {
                 }
                 request.getRequestDispatcher("/views/admin/promotion/list.jsp")
                         .forward(request, response);
-            }
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
         if (!checkRole(request, response)) return;
 
         String action = request.getParameter("action");
-
         Voucher v = buildVoucher(request);
         String error;
 
         if ("insert".equals(action)) {
             error = service.addPromotion(v);
+
             if (error == null) {
-                logService.logFromRequest(request, "ADD", "Thêm voucher: " + v.getVoucherCode());
+                logService.logFromRequest(request, "ADD", "Thêm voucher: " + v.getCode());
                 request.getSession().setAttribute("successMsg",
-                        "Thêm khuyến mãi \"" + v.getVoucherCode() + "\" thành công!");
+                        "Thêm khuyến mãi \"" + v.getCode() + "\" thành công!");
                 response.sendRedirect(request.getContextPath() + "/promotion");
                 return;
             }
 
         } else if ("update".equals(action)) {
             try {
-                v.setVoucherID(Integer.parseInt(request.getParameter("voucherID")));
-            } catch (NumberFormatException ignore) {}
+                v.setPromotionID(Integer.parseInt(request.getParameter("promotionID")));
+            } catch (NumberFormatException e) {
+                error = "ID voucher không hợp lệ!";
+                request.setAttribute("error", error);
+                request.setAttribute("voucher", v);
+                request.getRequestDispatcher("/views/admin/promotion/form.jsp")
+                        .forward(request, response);
+                return;
+            }
+
             error = service.updatePromotion(v);
+
             if (error == null) {
-                logService.logFromRequest(request, "UPDATE", "Cập nhật voucher: " + v.getVoucherCode());
+                logService.logFromRequest(request, "UPDATE", "Cập nhật voucher: " + v.getCode());
                 request.getSession().setAttribute("successMsg", "Cập nhật khuyến mãi thành công!");
                 response.sendRedirect(request.getContextPath() + "/promotion");
                 return;
             }
+
         } else {
             response.sendRedirect(request.getContextPath() + "/promotion");
             return;
         }
 
-        // Nếu có lỗi — quay lại form
         request.setAttribute("error", error);
         request.setAttribute("voucher", v);
         request.getRequestDispatcher("/views/admin/promotion/form.jsp")
@@ -158,23 +164,51 @@ public class PromotionController extends HttpServlet {
 
     private Voucher buildVoucher(HttpServletRequest request) {
         Voucher v = new Voucher();
-        v.setVoucherCode(request.getParameter("voucherCode") != null
-                ? request.getParameter("voucherCode").trim().toUpperCase() : "");
-        v.setVoucherName(request.getParameter("voucherName"));
+
+        String code = request.getParameter("code");
+        v.setCode(code != null ? code.trim().toUpperCase() : "");
+
+        v.setName(request.getParameter("name"));
+        v.setDescription(request.getParameter("description"));
         v.setDiscountType(request.getParameter("discountType"));
         v.setStatus(request.getParameter("status"));
-        try { v.setDiscountValue(new BigDecimal(request.getParameter("discountValue"))); }
-        catch (Exception ignore) {}
-        try { v.setMaxDiscount(new BigDecimal(request.getParameter("maxDiscount"))); }
-        catch (Exception ignore) {}
-        try { v.setMinOrderValue(new BigDecimal(request.getParameter("minOrderValue"))); }
-        catch (Exception ignore) {}
-        try { v.setQuantity(Integer.parseInt(request.getParameter("quantity"))); }
-        catch (Exception ignore) {}
-        try { v.setStartDate(Date.valueOf(request.getParameter("startDate"))); }
-        catch (Exception ignore) {}
-        try { v.setEndDate(Date.valueOf(request.getParameter("endDate"))); }
-        catch (Exception ignore) {}
+
+        try {
+            String value = request.getParameter("discountValue");
+            if (value != null && !value.trim().isEmpty())
+                v.setDiscountValue(new BigDecimal(value.trim()));
+        } catch (Exception ignored) {}
+
+        try {
+            String value = request.getParameter("minOrderAmount");
+            if (value != null && !value.trim().isEmpty())
+                v.setMinOrderAmount(new BigDecimal(value.trim()));
+        } catch (Exception ignored) {}
+
+        try {
+            String value = request.getParameter("maxDiscountAmount");
+            if (value != null && !value.trim().isEmpty())
+                v.setMaxDiscountAmount(new BigDecimal(value.trim()));
+        } catch (Exception ignored) {}
+
+        try {
+            String value = request.getParameter("usageLimit");
+            if (value != null && !value.trim().isEmpty())
+                v.setUsageLimit(Integer.parseInt(value.trim()));
+        } catch (Exception ignored) {}
+
+        try {
+            String value = request.getParameter("startDate");
+            if (value != null && !value.trim().isEmpty())
+                v.setStartDate(Date.valueOf(value));
+        } catch (Exception ignored) {}
+
+        try {
+            String value = request.getParameter("endDate");
+            if (value != null && !value.trim().isEmpty())
+                v.setEndDate(Date.valueOf(value));
+        } catch (Exception ignored) {}
+
         return v;
     }
 }

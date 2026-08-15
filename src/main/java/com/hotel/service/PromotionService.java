@@ -43,8 +43,8 @@ public class PromotionService {
      * @return null nếu OK, chuỗi lỗi nếu có lỗi
      */
     public String updatePromotion(Voucher voucher) {
-        if (voucher.getVoucherID() <= 0) return "ID không hợp lệ!";
-        String error = validate(voucher, voucher.getVoucherID());
+        if (voucher.getPromotionID() <= 0) return "ID không hợp lệ!";
+        String error = validate(voucher, voucher.getPromotionID());
         if (error != null) return error;
         boolean ok = promotionDAO.update(voucher);
         return ok ? null : "Cập nhật khuyến mãi thất bại!";
@@ -59,10 +59,10 @@ public class PromotionService {
 
     // ---- Validate nội bộ ----
     private String validate(Voucher v, int excludeId) {
-        if (v.getVoucherCode() == null || v.getVoucherCode().trim().isEmpty()) {
+        if (v.getCode() == null || v.getCode().trim().isEmpty()) {
             return "Mã giảm giá không được để trống!";
         }
-        if (v.getVoucherName() == null || v.getVoucherName().trim().isEmpty()) {
+        if (v.getName() == null || v.getName().trim().isEmpty()) {
             return "Tên chương trình không được để trống!";
         }
         if (v.getDiscountValue() == null || v.getDiscountValue().compareTo(BigDecimal.ZERO) <= 0) {
@@ -78,11 +78,13 @@ public class PromotionService {
         if (v.getStartDate().compareTo(v.getEndDate()) > 0) {
             return "Ngày bắt đầu không được sau ngày kết thúc!";
         }
-        // Kiểm tra trùng mã (ngoại trừ chính nó khi update)
-        Voucher existing = promotionDAO.getByCode(v.getVoucherCode().trim().toUpperCase());
-        if (existing != null && existing.getVoucherID() != excludeId) {
+        // Kiểm tra trùng mã, ngoại trừ chính nó khi update
+        Voucher existing = promotionDAO.getByCode(v.getCode().trim().toUpperCase());
+
+        if (existing != null && existing.getPromotionID() != excludeId) {
             return "Mã giảm giá đã tồn tại!";
         }
+
         return null;
     }
 }

@@ -73,7 +73,7 @@
                                 <c:if test="${sessionScope.user.roleID == 1 || sessionScope.user.roleID == 2}">
                                     <li>
                                         <a class="dropdown-item py-2" href="${pageContext.request.contextPath}/booking?action=manage">
-                                            <i class="fa-solid fa-calendar-check me-2 text-muted"></i> Quản lý đặt phòng
+                                            <i class="fa-solid fa-calendar-check me-2 text-muted"></i> Quản lý
                                         </a>
                                     </li>
                                 </c:if>
