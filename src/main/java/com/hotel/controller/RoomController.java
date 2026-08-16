@@ -3,6 +3,7 @@ package com.hotel.controller;
 import com.hotel.model.Room;
 import com.hotel.model.User;
 import com.hotel.service.RoomCategoryService;
+import com.hotel.service.RoomFavoriteService;
 import com.hotel.service.RoomService;
 import com.hotel.service.SystemLogService;
 
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @WebServlet("/room")
 public class RoomController extends HttpServlet {
@@ -23,6 +25,7 @@ public class RoomController extends HttpServlet {
     private final RoomService roomService = new RoomService();
     private final RoomCategoryService categoryService = new RoomCategoryService();
     private final SystemLogService logService = new SystemLogService();
+    private final RoomFavoriteService favoriteService = new RoomFavoriteService();
 
     // =====================================================
     // CẤU HÌNH PHÂN TRANG
@@ -238,6 +241,8 @@ public class RoomController extends HttpServlet {
                         PAGE_SIZE
                 );
 
+        favoriteService.populateFavoriteCounts(roomList);
+
         request.setAttribute(
                 "roomList",
                 roomList
@@ -262,6 +267,13 @@ public class RoomController extends HttpServlet {
                 "pageSize",
                 PAGE_SIZE
         );
+
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            Set<Integer> favoriteRoomIds = favoriteService.getFavoriteRoomIdsByUser(user.getUserID());
+            request.setAttribute("favoriteRoomIds", favoriteRoomIds);
+        }
 
         request.getRequestDispatcher(
                 "/views/home/home.jsp"
@@ -410,10 +422,19 @@ public class RoomController extends HttpServlet {
             return;
         }
 
+        room.setFavoriteCount(favoriteService.getFavoriteCountByRoomId(room.getRoomID()));
+
         request.setAttribute(
                 "room",
                 room
         );
+
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            boolean isFavorite = favoriteService.isFavorite(user.getUserID(), room.getRoomID());
+            request.setAttribute("isFavorite", isFavorite);
+        }
 
         request.getRequestDispatcher(
                 "/views/room/detail.jsp"
@@ -789,6 +810,8 @@ public class RoomController extends HttpServlet {
                         PAGE_SIZE
                 );
 
+        favoriteService.populateFavoriteCounts(list);
+
         // =================================================
         // SEND JSP
         // =================================================
@@ -842,6 +865,13 @@ public class RoomController extends HttpServlet {
                 "pageSize",
                 PAGE_SIZE
         );
+
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            Set<Integer> favoriteRoomIds = favoriteService.getFavoriteRoomIdsByUser(user.getUserID());
+            request.setAttribute("favoriteRoomIds", favoriteRoomIds);
+        }
 
         request.getRequestDispatcher(
                 "/views/room/search.jsp"

@@ -30,6 +30,12 @@
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/favorite">
+                        <i class="fa-solid fa-heart text-danger me-1"></i> Phòng yêu thích
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/views/home/about.jsp">
                         Giới thiệu
                     </a>
@@ -58,6 +64,11 @@
                                 <li>
                                     <a class="dropdown-item py-2" href="${pageContext.request.contextPath}/user?action=change-password">
                                         <i class="fa-solid fa-key me-2 text-muted"></i> Đổi mật khẩu
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2" href="${pageContext.request.contextPath}/favorite">
+                                        <i class="fa-solid fa-heart me-2 text-danger"></i> Phòng yêu thích
                                     </a>
                                 </li>
                                 
