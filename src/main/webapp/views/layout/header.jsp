@@ -114,6 +114,9 @@
                     <a class="nav-link" href="${pageContext.request.contextPath}/room">Phòng</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/favorite">❤️ Phòng yêu thích</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/views/home/about.jsp">Giới thiệu</a>
                 </li>
                 <li class="nav-item">
@@ -138,6 +141,11 @@
                                 <li>
                                     <a class="dropdown-item" href="${pageContext.request.contextPath}/user?action=change-password">
                                         <i class="fa-solid fa-key me-2 text-muted"></i> Đổi mật khẩu
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="${pageContext.request.contextPath}/favorite">
+                                        <i class="fa-solid fa-heart me-2 text-danger"></i> Phòng yêu thích
                                     </a>
                                 </li>
                                 <c:if test="${sessionScope.user.roleID == 1}">

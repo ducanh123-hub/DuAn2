@@ -549,6 +549,22 @@
                         </tr>
 
 
+                        <!-- FAVORITE COUNT -->
+
+                        <tr>
+
+                            <th>
+                                Lượt yêu thích
+                            </th>
+
+                            <td>
+                                <i class="fa-solid fa-heart text-danger me-1"></i>
+                                <strong>${room.favoriteCount}</strong> lượt yêu thích
+                            </td>
+
+                        </tr>
+
+
                         <!-- STATUS -->
 
                         <tr>
@@ -583,15 +599,91 @@
                             </th>
 
                             <td>
-
-                                ${room.description}
-
+                                <c:choose>
+                                    <c:when test="${room.roomName.contains('Family')}">
+                                        Phòng Family rộng rãi, thiết kế hiện đại, phù hợp cho gia đình hoặc nhóm bạn. Không gian thoáng mát, đầy đủ tiện nghi, mang đến trải nghiệm nghỉ dưỡng thoải mái.
+                                    </c:when>
+                                    <c:when test="${room.roomName.contains('Deluxe')}">
+                                        Phòng Deluxe được thiết kế sang trọng và tinh tế, mang đến không gian nghỉ ngơi thoải mái cho các cặp đôi hoặc khách công tác.
+                                    </c:when>
+                                    <c:when test="${room.roomName.contains('Standard')}">
+                                        Phòng Standard có thiết kế đơn giản, tiện nghi và ấm cúng, phù hợp cho khách hàng tìm kiếm không gian nghỉ ngơi thoải mái với mức giá hợp lý.
+                                    </c:when>
+                                    <c:when test="${room.roomName.contains('Suite')}">
+                                        Phòng Suite sở hữu không gian rộng rãi và sang trọng, được trang bị đầy đủ tiện nghi, phù hợp cho những kỳ nghỉ cao cấp và thư giãn.
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:out value="${not empty room.description ? room.description : 'Phòng được thiết kế hiện đại, đầy đủ tiện nghi, mang lại không gian nghỉ dưỡng thoải mái và tuyệt vời cho quý khách.'}"/>
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
 
                         </tr>
 
 
                     </table>
+
+
+                    <!-- =================================================
+                         TIỆN ÍCH CHÍNH (MAIN AMENITIES)
+                    ================================================== -->
+
+                    <div class="mt-4 pt-3 border-top">
+
+                        <h5 class="fw-bold text-primary mb-3">
+                            <i class="fa-solid fa-square-check me-2"></i>Tiện ích chính
+                        </h5>
+
+                        <div class="row g-3">
+
+                            <!-- CỘT TRÁI -->
+                            <div class="col-6">
+
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fa-solid fa-snowflake text-primary fs-5 me-3" style="width: 24px; text-align: center;"></i>
+                                    <span class="fw-semibold text-dark">Máy lạnh</span>
+                                </div>
+
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fa-solid fa-utensils text-primary fs-5 me-3" style="width: 24px; text-align: center;"></i>
+                                    <span class="fw-semibold text-dark">Nhà hàng</span>
+                                </div>
+
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fa-solid fa-person-swimming text-primary fs-5 me-3" style="width: 24px; text-align: center;"></i>
+                                    <span class="fw-semibold text-dark">Hồ bơi</span>
+                                </div>
+
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fa-solid fa-clock text-primary fs-5 me-3" style="width: 24px; text-align: center;"></i>
+                                    <span class="fw-semibold text-dark">Lễ tân 24h</span>
+                                </div>
+
+                            </div>
+
+                            <!-- CỘT PHẢI -->
+                            <div class="col-6">
+
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fa-solid fa-square-parking text-primary fs-5 me-3" style="width: 24px; text-align: center;"></i>
+                                    <span class="fw-semibold text-dark">Chỗ đậu xe</span>
+                                </div>
+
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fa-solid fa-elevator text-primary fs-5 me-3" style="width: 24px; text-align: center;"></i>
+                                    <span class="fw-semibold text-dark">Thang máy</span>
+                                </div>
+
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fa-solid fa-wifi text-primary fs-5 me-3" style="width: 24px; text-align: center;"></i>
+                                    <span class="fw-semibold text-dark">WiFi</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
 
 
                     <!-- =================================================
@@ -625,6 +717,24 @@
                             Đặt phòng ngay
 
                         </a>
+
+
+                        <!-- FAVORITE BUTTON -->
+
+                        <c:choose>
+                            <c:when test="${isFavorite}">
+                                <a href="${pageContext.request.contextPath}/favorite?action=remove&roomId=${room.roomID}"
+                                   class="btn btn-danger me-2">
+                                    <i class="fa-solid fa-heart me-1"></i> ♥ Đã yêu thích
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${pageContext.request.contextPath}/favorite?action=add&roomId=${room.roomID}"
+                                   class="btn btn-outline-danger me-2">
+                                    <i class="fa-regular fa-heart me-1"></i> ♡ Yêu thích
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
 
 
                         <!-- EDIT - ADMIN -->

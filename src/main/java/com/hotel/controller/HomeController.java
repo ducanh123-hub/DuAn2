@@ -1,6 +1,7 @@
 package com.hotel.controller;
 
 import com.hotel.model.Room;
+import com.hotel.service.RoomFavoriteService;
 import com.hotel.service.RoomService;
 
 import jakarta.servlet.ServletException;
@@ -16,6 +17,7 @@ import java.util.List;
 public class HomeController extends HttpServlet {
 
     private final RoomService roomService = new RoomService();
+    private final RoomFavoriteService favoriteService = new RoomFavoriteService();
 
 
     // =====================================================
@@ -123,6 +125,8 @@ public class HomeController extends HttpServlet {
                         currentPage,
                         ROOMS_PER_PAGE
                 );
+
+        favoriteService.populateFavoriteCounts(roomList);
 
 
         // =================================================

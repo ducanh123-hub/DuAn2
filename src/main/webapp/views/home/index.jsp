@@ -1981,7 +1981,7 @@ value="${param.minPrice}">
 
                                     <!-- ROOM META -->
 
-                                    <div class="room-meta mb-3">
+                                    <div class="room-meta mb-2">
 
 
                                         <span class="badge bg-light text-dark border">
@@ -2016,6 +2016,17 @@ value="${param.minPrice}">
 
                                         </span>
 
+
+                                    </div>
+
+
+                                    <!-- FAVORITE COUNT -->
+
+                                    <div class="mb-3 text-danger small fw-bold">
+
+                                        <i class="fa-solid fa-heart me-1"></i>
+
+                                        ${room.favoriteCount} lượt yêu thích
 
                                     </div>
 

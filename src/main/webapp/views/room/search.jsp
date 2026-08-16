@@ -956,6 +956,23 @@
 
                             </span>
 
+
+                            <!-- FAVORITE COUNT -->
+
+                            <span
+                                    class="badge bg-light text-dark border room-spec">
+
+
+                                <i
+                                        class="fa-solid fa-heart text-danger me-1">
+                                </i>
+
+
+                                ${room.favoriteCount} Lượt thích
+
+
+                            </span>
+
                         </div>
 
 
@@ -1002,8 +1019,23 @@
 
                             <!-- BUTTONS -->
 
-                            <div>
+                            <div class="d-flex align-items-center gap-1">
 
+                                <!-- FAVORITE -->
+                                <c:choose>
+                                    <c:when test="${not empty favoriteRoomIds && favoriteRoomIds.contains(room.roomID)}">
+                                        <a href="${pageContext.request.contextPath}/favorite?action=remove&roomId=${room.roomID}"
+                                           class="btn btn-danger btn-sm" title="Bỏ yêu thích">
+                                            <i class="fa-solid fa-heart me-1"></i> ♥ Đã thích
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/favorite?action=add&roomId=${room.roomID}"
+                                           class="btn btn-outline-danger btn-sm" title="Thêm vào yêu thích">
+                                            <i class="fa-regular fa-heart me-1"></i> ♡ Yêu thích
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
 
                                 <!-- DETAIL -->
 
@@ -1031,7 +1063,7 @@
 
                                     <a
                                             href="${pageContext.request.contextPath}/booking?roomId=${room.roomID}"
-                                            class="btn btn-success btn-sm ms-1">
+                                            class="btn btn-success btn-sm">
 
 
                                         Đặt ngay

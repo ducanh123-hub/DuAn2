@@ -17,6 +17,7 @@ public class Room {
     private String status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+    private int favoriteCount;
 
     public Room() {
     }
@@ -114,6 +115,24 @@ public class Room {
     }
 
     public String getDescription() {
+        if (description == null || description.trim().isEmpty()
+                || "Phòng gia đình dành cho nhóm đông người".equals(description.trim())
+                || "Phòng Deluxe rộng rãi, tiện nghi đầy đủ".equals(description.trim())
+                || "Phòng Suite cao cấp".equals(description.trim())
+                || "Phòng tiêu chuẩn, đầy đủ tiện nghi cơ bản".equals(description.trim())
+                || "Phòng tiêu chuẩn".equals(description.trim())) {
+            if (roomName != null) {
+                if (roomName.contains("Family")) {
+                    return "Phòng Family rộng rãi, thiết kế hiện đại, phù hợp cho gia đình hoặc nhóm bạn. Không gian thoáng mát, đầy đủ tiện nghi, mang đến trải nghiệm nghỉ dưỡng thoải mái.";
+                } else if (roomName.contains("Deluxe")) {
+                    return "Phòng Deluxe được thiết kế sang trọng và tinh tế, mang đến không gian nghỉ ngơi thoải mái cho các cặp đôi hoặc khách công tác.";
+                } else if (roomName.contains("Standard")) {
+                    return "Phòng Standard có thiết kế đơn giản, tiện nghi và ấm cúng, phù hợp cho khách hàng tìm kiếm không gian nghỉ ngơi thoải mái với mức giá hợp lý.";
+                } else if (roomName.contains("Suite")) {
+                    return "Phòng Suite sở hữu không gian rộng rãi và sang trọng, được trang bị đầy đủ tiện nghi, phù hợp cho những kỳ nghỉ cao cấp và thư giãn.";
+                }
+            }
+        }
         return description;
     }
 
@@ -143,6 +162,14 @@ public class Room {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public int getFavoriteCount() {
+        return favoriteCount;
+    }
+
+    public void setFavoriteCount(int favoriteCount) {
+        this.favoriteCount = favoriteCount;
     }
 
     @Override

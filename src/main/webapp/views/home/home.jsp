@@ -912,6 +912,15 @@
                         </span>
 
 
+                        <span>
+
+                            <i class="fa-solid fa-heart text-danger me-1"></i>
+
+                            ${room.favoriteCount} lượt yêu thích
+
+                        </span>
+
+
                     </div>
 
 
@@ -954,7 +963,27 @@
                              NÚT CHỌN PHÒNG
                         ================================================= -->
 
-                        <div>
+                        <div class="d-flex align-items-center flex-wrap gap-2">
+
+                            <a href="${pageContext.request.contextPath}/room?action=detail&id=${room.roomID}"
+                               class="btn btn-outline-primary">
+                                <i class="fa-solid fa-eye me-1"></i> Chi tiết
+                            </a>
+
+                            <c:choose>
+                                <c:when test="${not empty favoriteRoomIds && favoriteRoomIds.contains(room.roomID)}">
+                                    <a href="${pageContext.request.contextPath}/favorite?action=remove&roomId=${room.roomID}"
+                                       class="btn btn-danger" title="Bỏ yêu thích">
+                                        <i class="fa-solid fa-heart me-1"></i> ♥ Đã yêu thích
+                                    </a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="${pageContext.request.contextPath}/favorite?action=add&roomId=${room.roomID}"
+                                       class="btn btn-outline-danger" title="Thêm vào yêu thích">
+                                        <i class="fa-regular fa-heart me-1"></i> ♡ Yêu thích
+                                    </a>
+                                </c:otherwise>
+                            </c:choose>
 
                             <c:if test="${room.status == 'Available'}">
 
@@ -969,7 +998,6 @@
                                 </a>
 
                             </c:if>
-
 
                             <c:if test="${room.status != 'Available'}">
 
