@@ -5,7 +5,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>${not empty voucher and voucher.voucherID > 0 ? 'Sửa' : 'Thêm'} khuyến mãi - Luxury Hotel</title>
+    <title>${not empty voucher and voucher.promotionID > 0 ? 'Sửa' : 'Thêm'} khuyến mãi - Luxury Hotel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
@@ -25,7 +25,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h3 class="fw-bold text-primary">
                     <i class="fa-solid fa-tags me-2"></i>
-                    ${not empty voucher and voucher.voucherID > 0 ? 'Chỉnh sửa' : 'Thêm mới'} khuyến mãi
+                    ${not empty voucher and voucher.promotionID > 0 ? 'Chỉnh sửa' : 'Thêm mới'} khuyến mãi
                 </h3>
                 <a href="${pageContext.request.contextPath}/promotion" class="btn btn-outline-secondary">
                     <i class="fa-solid fa-arrow-left me-1"></i>Quay lại
@@ -43,9 +43,9 @@
                 <div class="card-body p-4">
                     <form method="post" action="${pageContext.request.contextPath}/promotion">
                         <c:choose>
-                            <c:when test="${not empty voucher and voucher.voucherID > 0}">
+                            <c:when test="${not empty voucher and voucher.promotionID > 0}">
                                 <input type="hidden" name="action" value="update">
-                                <input type="hidden" name="voucherID" value="${voucher.voucherID}">
+                                <input type="hidden" name="promotionID" value="${voucher.promotionID}">
                             </c:when>
                             <c:otherwise>
                                 <input type="hidden" name="action" value="insert">
@@ -55,13 +55,18 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Mã Voucher *</label>
-                                <input type="text" name="voucherCode" class="form-control"
-                                       placeholder="VD: SUMMERSALE" value="${voucher.voucherCode}" required>
+                                <input type="text" name="code" class="form-control"
+                                       placeholder="VD: SUMMERSALE" value="${voucher.code}" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Tên chương trình *</label>
-                                <input type="text" name="voucherName" class="form-control"
-                                       placeholder="VD: Chào Hè Rực Rỡ" value="${voucher.voucherName}" required>
+                                <input type="text" name="name" class="form-control"
+                                       placeholder="VD: Chào Hè Rực Rỡ" value="${voucher.name}" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Mô tả</label>
+                                <textarea name="description" class="form-control" rows="2"
+                                          placeholder="Mô tả chương trình khuyến mãi">${voucher.description}</textarea>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label fw-bold">Loại giảm giá</label>
@@ -76,9 +81,9 @@
                                        placeholder="VD: 10 hoặc 100000" value="${voucher.discountValue}" required>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label fw-bold">Số lượng *</label>
-                                <input type="number" name="quantity" class="form-control"
-                                       placeholder="VD: 50" value="${voucher.quantity}" required>
+                                <label class="form-label fw-bold">Số lượng</label>
+                                <input type="number" name="usageLimit" class="form-control"
+                                       placeholder="Để trống = không giới hạn" value="${voucher.usageLimit}">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Ngày bắt đầu *</label>
@@ -90,13 +95,13 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Giảm tối đa (VNĐ)</label>
-                                <input type="number" name="maxDiscount" class="form-control"
-                                       placeholder="Dành cho giảm theo %" value="${voucher.maxDiscount}">
+                                <input type="number" name="maxDiscountAmount" class="form-control"
+                                       placeholder="Dành cho giảm theo %" value="${voucher.maxDiscountAmount}">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Đơn tối thiểu (VNĐ)</label>
-                                <input type="number" name="minOrderValue" class="form-control"
-                                       placeholder="VD: 500000" value="${voucher.minOrderValue}">
+                                <input type="number" name="minOrderAmount" class="form-control"
+                                       placeholder="VD: 500000" value="${voucher.minOrderAmount}">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Trạng thái</label>

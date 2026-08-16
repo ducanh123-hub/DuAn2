@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -49,7 +50,7 @@
 
             <div class="card shadow border-0">
                 <div class="card-header bg-dark text-white py-3">
-                    <h5 class="mb-0">Danh sách mã khuyến mãi (${list.size()})</h5>
+                    <h5 class="mb-0">Danh sách mã khuyến mãi (${fn:length(list)})</h5>
                 </div>
                 <div class="card-body p-0">
                     <c:choose>
@@ -76,8 +77,8 @@
                                     <tbody>
                                         <c:forEach var="v" items="${list}">
                                             <tr>
-                                                <td class="ps-3 fw-bold text-primary">${v.voucherCode}</td>
-                                                <td>${v.voucherName}</td>
+                                                <td class="ps-3 fw-bold text-primary">${v.code}</td>
+                                                <td>${v.name}</td>
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${v.discountType == 'percent'}">
@@ -90,7 +91,12 @@
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
-                                                <td>${v.quantity}</td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${empty v.usageLimit}">Không giới hạn</c:when>
+                                                        <c:otherwise>${v.usedCount} / ${v.usageLimit}</c:otherwise>
+                                                    </c:choose>
+                                                </td>
                                                 <td class="small text-muted">${v.startDate} đến ${v.endDate}</td>
                                                 <td class="text-center">
                                                     <c:choose>
@@ -103,9 +109,9 @@
                                                     </c:choose>
                                                 </td>
                                                 <td class="text-center">
-                                                    <a href="${pageContext.request.contextPath}/promotion?action=edit&id=${v.voucherID}"
+                                                    <a href="${pageContext.request.contextPath}/promotion?action=edit&id=${v.promotionID}"
                                                        class="btn btn-sm btn-outline-primary me-1"><i class="fa-solid fa-edit"></i></a>
-                                                    <a href="${pageContext.request.contextPath}/promotion?action=delete&id=${v.voucherID}"
+                                                    <a href="${pageContext.request.contextPath}/promotion?action=delete&id=${v.promotionID}"
                                                        class="btn btn-sm btn-outline-danger"
                                                        onclick="return confirm('Bạn có chắc muốn xóa voucher này?')"><i class="fa-solid fa-trash"></i></a>
                                                 </td>

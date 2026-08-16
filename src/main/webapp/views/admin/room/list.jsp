@@ -128,7 +128,7 @@
                                             <tr>
                                                 <td class="ps-3 text-muted small">${s.count}</td>
                                                 <td>
-                                                    <span class="badge bg-primary bg-opacity-15 text-primary fw-bold">
+                                                    <span class="badge bg-primary text-white fw-bold">
                                                         ${room.roomNumber}
                                                     </span>
                                                 </td>
