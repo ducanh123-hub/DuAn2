@@ -18,12 +18,42 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/css/style.css">
+
     <style>
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        .required {
+            color: #dc3545 !important;
+            font-weight: bold;
+        }
+
+        .is-invalid {
+            border: 1px solid #dc3545 !important;
+        }
+
+        .is-invalid:focus {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 0.1rem rgba(220, 53, 69, 0.15) !important;
+        }
+
+        .validation-error,
+        .invalid-feedback {
+            color: #dc3545 !important;
+            font-size: 13px !important;
+            margin-top: 4px !important;
+            display: none;
+        }
+
+        .is-invalid ~ .validation-error,
+        .is-invalid ~ .invalid-feedback {
+            display: block !important;
         }
 
         /* =========================
@@ -409,7 +439,9 @@ font-size: 22px;
         <!-- FORM -->
 
         <form method="post"
-              action="${pageContext.request.contextPath}/register">
+              action="${pageContext.request.contextPath}/register"
+              id="registerForm"
+              novalidate>
 
 
             <!-- HỌ TÊN -->
@@ -417,14 +449,17 @@ font-size: 22px;
             <div class="mb-3">
 
                 <label class="form-label">
-                    Họ và tên
+                    Họ và tên <span class="required">*</span>
                 </label>
 
                 <input
                         type="text"
                         class="form-control"
+                        id="fullName"
                         name="fullName"
-                        required>
+                        placeholder="Họ và tên của bạn">
+
+                <div class="validation-error invalid-feedback" id="fullNameError"></div>
 
             </div>
 
@@ -434,14 +469,17 @@ font-size: 22px;
             <div class="mb-3">
 
                 <label class="form-label">
-                    Email
+                    Email <span class="required">*</span>
                 </label>
 
                 <input
                         type="email"
                         class="form-control"
+                        id="email"
                         name="email"
-                        required>
+                        placeholder="Địa chỉ email...">
+
+                <div class="validation-error invalid-feedback" id="emailError"></div>
 
             </div>
 
@@ -451,14 +489,17 @@ font-size: 22px;
             <div class="mb-3">
 
                 <label class="form-label">
-                    Số điện thoại
+                    Số điện thoại <span class="required">*</span>
                 </label>
 
                 <input
                         type="text"
                         class="form-control"
+                        id="phone"
                         name="phone"
-                        required>
+                        placeholder="Số điện thoại...">
+
+                <div class="validation-error invalid-feedback" id="phoneError"></div>
 
             </div>
 
@@ -468,20 +509,33 @@ font-size: 22px;
             <div class="mb-3">
 
                 <label class="form-label">
-                    Mật khẩu
+                    Mật khẩu <span class="required">*</span>
                 </label>
 
                 <input
                         type="password"
                         class="form-control"
+                        id="password"
                         name="password"
-                        required>
+                        placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)...">
+
+                <div class="validation-error invalid-feedback" id="passwordError"></div>
 
             </div>
 
+            <!-- XÁC NHẬN MẬT KHẨU -->
+
             <div class="mb-3">
-                <label class="form-label">Xác nhận mật khẩu</label>
-                <input type="password" name="confirmPassword" class="form-control" required>
+                <label class="form-label">
+                    Xác nhận mật khẩu <span class="required">*</span>
+                </label>
+                <input
+                        type="password"
+                        class="form-control"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Nhập lại mật khẩu...">
+                <div class="validation-error invalid-feedback" id="confirmPasswordError"></div>
             </div>
 
 
@@ -496,7 +550,7 @@ font-size: 22px;
                 Đăng ký
 
             </button>
-</form>
+        </form>
 
 
         <hr>
@@ -521,13 +575,51 @@ font-size: 22px;
 
 </div>
 
-const confirmPassword = document.querySelector("input[name='confirmPassword']").value;
+<script src="${pageContext.request.contextPath}/assets/js/form-validation.js"></script>
 
-if (password !== confirmPassword) {
-    e.preventDefault();
-    showError("Mật khẩu xác nhận không khớp.");
-    return;
-}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const registerForm = document.getElementById("registerForm");
+    if (!registerForm) return;
+
+    createFormValidator(registerForm, {
+        fullName: function(input) {
+            const val = input.value.trim();
+            if (!val) return "Họ và tên là phần bắt buộc";
+            const nameRegex = /^[a-zA-ZàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ\s]+$/;
+            if (!nameRegex.test(val)) return "Họ và tên không hợp lệ";
+            return null;
+        },
+        email: function(input) {
+            const val = input.value.trim();
+            if (!val) return "Email là phần bắt buộc";
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(val)) return "Email không đúng định dạng";
+            return null;
+        },
+        phone: function(input) {
+            const val = input.value.trim();
+            if (!val) return "Số điện thoại là phần bắt buộc";
+            const phoneRegex = /^(0|\+84)[3|5|7|8|9]\d{8}$/;
+            if (!phoneRegex.test(val)) return "Số điện thoại không hợp lệ";
+            return null;
+        },
+        password: function(input) {
+            const val = input.value;
+            if (!val) return "Mật khẩu là phần bắt buộc";
+            if (val.length < 6) return "Mật khẩu phải có ít nhất 6 ký tự";
+            return null;
+        },
+        confirmPassword: function(input, form) {
+            const val = input.value;
+            if (!val) return "Vui lòng xác nhận mật khẩu";
+            const passVal = form.querySelector("[name='password']").value;
+            if (val !== passVal) return "Mật khẩu xác nhận không khớp";
+            return null;
+        }
+    });
+});
+</script>
 </body>
 
 </html>

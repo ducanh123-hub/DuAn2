@@ -30,6 +30,33 @@
 
     <style>
 
+        .required {
+            color: #dc3545 !important;
+            font-weight: bold;
+        }
+
+        .is-invalid {
+            border: 1px solid #dc3545 !important;
+        }
+
+        .is-invalid:focus {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 0.15rem rgba(220, 53, 69, 0.25) !important;
+        }
+
+        .validation-error,
+        .invalid-feedback {
+            color: #dc3545 !important;
+            font-size: 13px !important;
+            margin-top: 4px !important;
+            display: none;
+        }
+
+        .is-invalid ~ .validation-error,
+        .is-invalid ~ .invalid-feedback {
+            display: block !important;
+        }
+
         /* =====================================================
            THÔNG BÁO
            ===================================================== */
@@ -311,7 +338,7 @@
 
                                 <label class="form-label fw-bold">
 
-                                    Họ và tên <span class="text-danger">*</span>
+                                    Họ và tên <span class="required">*</span>
 
                                 </label>
 
@@ -321,9 +348,9 @@
                                     name="fullName"
                                     class="form-control"
                                     value="${sessionScope.user.fullName}"
-                                    placeholder="Nhập họ và tên...">
+                                    placeholder="Họ và tên của bạn">
 
-                                <div class="invalid-feedback"></div>
+                                <div class="validation-error invalid-feedback" id="fullNameError"></div>
 
                             </div>
 
@@ -334,7 +361,7 @@
 
                                 <label class="form-label fw-bold">
 
-                                    Số điện thoại <span class="text-danger">*</span>
+                                    Số điện thoại <span class="required">*</span>
 
                                 </label>
 
@@ -344,9 +371,9 @@
                                     name="phone"
                                     class="form-control"
                                     value="${sessionScope.user.phone}"
-                                    placeholder="Nhập số điện thoại...">
+                                    placeholder="Số điện thoại...">
 
-                                <div class="invalid-feedback"></div>
+                                <div class="validation-error invalid-feedback" id="phoneError"></div>
 
                             </div>
 
@@ -357,7 +384,7 @@
 
                                 <label class="form-label fw-bold">
 
-                                    Email <span class="text-danger">*</span>
+                                    Email <span class="required">*</span>
 
                                 </label>
 
@@ -367,9 +394,9 @@
                                     name="email"
                                     class="form-control"
                                     value="${sessionScope.user.email}"
-                                    placeholder="Nhập email...">
+                                    placeholder="Địa chỉ email...">
 
-                                <div class="invalid-feedback"></div>
+                                <div class="validation-error invalid-feedback" id="emailError"></div>
 
                             </div>
 
@@ -433,7 +460,7 @@
                                     <label
                                         class="form-label small fw-bold">
 
-                                        Họ tên khách <span class="text-danger">*</span>
+                                        Họ tên khách <span class="required">*</span>
 
                                     </label>
 
@@ -444,7 +471,7 @@
                                         class="form-control form-control-sm"
                                         placeholder="Nhập tên khách...">
 
-                                    <div class="invalid-feedback"></div>
+                                    <div class="validation-error invalid-feedback" id="guestNameError"></div>
 
                                 </div>
 
@@ -456,7 +483,7 @@
                                     <label
                                         class="form-label small fw-bold">
 
-                                        Số điện thoại khách <span class="text-danger">*</span>
+                                        Số điện thoại khách <span class="required">*</span>
 
                                     </label>
 
@@ -467,7 +494,7 @@
                                         class="form-control form-control-sm"
                                         placeholder="Nhập số điện thoại...">
 
-                                    <div class="invalid-feedback"></div>
+                                    <div class="validation-error invalid-feedback" id="guestPhoneError"></div>
 
                                 </div>
 
@@ -490,7 +517,7 @@
                                         class="form-control form-control-sm"
                                         placeholder="Nhập email...">
 
-                                    <div class="invalid-feedback"></div>
+                                    <div class="validation-error invalid-feedback" id="guestEmailError"></div>
 
                                 </div>
 
@@ -522,7 +549,7 @@
 
                                 <label class="form-label fw-bold">
 
-                                    Ngày nhận phòng <span class="text-danger">*</span>
+                                    Ngày nhận phòng <span class="required">*</span>
 
                                 </label>
 
@@ -532,7 +559,7 @@
                                     id="checkIn"
                                     class="form-control">
 
-                                <div class="invalid-feedback"></div>
+                                <div class="validation-error invalid-feedback" id="checkInError"></div>
 
                             </div>
 
@@ -543,7 +570,7 @@
 
                                 <label class="form-label fw-bold">
 
-                                    Ngày trả phòng <span class="text-danger">*</span>
+                                    Ngày trả phòng <span class="required">*</span>
 
                                 </label>
 
@@ -553,7 +580,7 @@
                                     id="checkOut"
                                     class="form-control">
 
-                                <div class="invalid-feedback"></div>
+                                <div class="validation-error invalid-feedback" id="checkOutError"></div>
 
                             </div>
 
@@ -573,7 +600,7 @@
 
                                 <label class="form-label fw-bold">
 
-                                    Số lượng Người lớn <span class="text-danger">*</span>
+                                    Số lượng Người lớn <span class="required">*</span>
 
                                 </label>
 
@@ -584,7 +611,7 @@
                                     class="form-control"
                                     value="1">
 
-                                <div class="invalid-feedback"></div>
+                                <div class="validation-error invalid-feedback" id="adultsError"></div>
 
                             </div>
 
@@ -606,7 +633,7 @@
                                     class="form-control"
                                     value="0">
 
-                                <div class="invalid-feedback"></div>
+                                <div class="validation-error invalid-feedback" id="childrenError"></div>
 
                             </div>
 
@@ -632,7 +659,7 @@
                                 rows="2"
                                 placeholder="Ví dụ: phòng tầng cao, giường phụ, check-in muộn..."></textarea>
 
-                            <div class="invalid-feedback"></div>
+                            <div class="validation-error invalid-feedback" id="noteError"></div>
 
                         </div>
 

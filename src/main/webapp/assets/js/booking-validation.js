@@ -30,14 +30,29 @@ document.addEventListener("DOMContentLoaded", function () {
     function showError(inputEl, message) {
         if (!inputEl) return;
         inputEl.classList.add("is-invalid");
+        inputEl.style.setProperty("border-color", "#dc3545", "important");
 
-        let feedback = inputEl.nextElementSibling;
-        if (!feedback || !feedback.classList.contains("invalid-feedback")) {
+        let parentNode = inputEl.parentNode;
+        if (parentNode.classList.contains("input-group")) {
+            parentNode = parentNode.parentNode;
+        }
+
+        let feedback = parentNode.querySelector("#" + inputEl.name + "Error")
+            || parentNode.querySelector("#" + inputEl.id + "Error")
+            || parentNode.querySelector(".validation-error, .invalid-feedback");
+
+        if (!feedback) {
             feedback = document.createElement("div");
-            feedback.className = "invalid-feedback";
-            inputEl.parentNode.insertBefore(feedback, inputEl.nextSibling);
+            feedback.className = "validation-error invalid-feedback";
+            if (inputEl.id || inputEl.name) {
+                feedback.id = (inputEl.id || inputEl.name) + "Error";
+            }
+            parentNode.appendChild(feedback);
         }
         feedback.textContent = message;
+        feedback.style.color = "#dc3545";
+        feedback.style.fontSize = "13px";
+        feedback.style.marginTop = "4px";
         feedback.style.display = "block";
     }
 
@@ -47,9 +62,18 @@ document.addEventListener("DOMContentLoaded", function () {
     function clearError(inputEl) {
         if (!inputEl) return;
         inputEl.classList.remove("is-invalid");
+        inputEl.style.removeProperty("border-color");
 
-        const feedback = inputEl.nextElementSibling;
-        if (feedback && feedback.classList.contains("invalid-feedback")) {
+        let parentNode = inputEl.parentNode;
+        if (parentNode.classList.contains("input-group")) {
+            parentNode = parentNode.parentNode;
+        }
+
+        const feedback = parentNode.querySelector("#" + inputEl.name + "Error")
+            || parentNode.querySelector("#" + inputEl.id + "Error")
+            || parentNode.querySelector(".validation-error, .invalid-feedback");
+
+        if (feedback) {
             feedback.textContent = "";
             feedback.style.display = "none";
         }
