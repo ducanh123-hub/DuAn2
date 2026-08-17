@@ -216,7 +216,8 @@
                     <form
                         method="post"
                         action="${pageContext.request.contextPath}/booking"
-                        id="bookingForm">
+                        id="bookingForm"
+                        novalidate>
 
 
                         <!-- ROOM ID -->
@@ -310,15 +311,19 @@
 
                                 <label class="form-label fw-bold">
 
-                                    Họ và tên
+                                    Họ và tên <span class="text-danger">*</span>
 
                                 </label>
 
                                 <input
                                     type="text"
-                                    class="form-control bg-light"
+                                    id="fullName"
+                                    name="fullName"
+                                    class="form-control"
                                     value="${sessionScope.user.fullName}"
-                                    readonly>
+                                    placeholder="Nhập họ và tên...">
+
+                                <div class="invalid-feedback"></div>
 
                             </div>
 
@@ -329,15 +334,19 @@
 
                                 <label class="form-label fw-bold">
 
-                                    Số điện thoại
+                                    Số điện thoại <span class="text-danger">*</span>
 
                                 </label>
 
                                 <input
                                     type="text"
-                                    class="form-control bg-light"
+                                    id="phone"
+                                    name="phone"
+                                    class="form-control"
                                     value="${sessionScope.user.phone}"
-                                    readonly>
+                                    placeholder="Nhập số điện thoại...">
+
+                                <div class="invalid-feedback"></div>
 
                             </div>
 
@@ -348,15 +357,19 @@
 
                                 <label class="form-label fw-bold">
 
-                                    Email
+                                    Email <span class="text-danger">*</span>
 
                                 </label>
 
                                 <input
-                                    type="text"
-                                    class="form-control bg-light"
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    class="form-control"
                                     value="${sessionScope.user.email}"
-                                    readonly>
+                                    placeholder="Nhập email...">
+
+                                <div class="invalid-feedback"></div>
 
                             </div>
 
@@ -420,7 +433,7 @@
                                     <label
                                         class="form-label small fw-bold">
 
-                                        Họ tên khách
+                                        Họ tên khách <span class="text-danger">*</span>
 
                                     </label>
 
@@ -430,6 +443,8 @@
                                         id="guestName"
                                         class="form-control form-control-sm"
                                         placeholder="Nhập tên khách...">
+
+                                    <div class="invalid-feedback"></div>
 
                                 </div>
 
@@ -441,7 +456,7 @@
                                     <label
                                         class="form-label small fw-bold">
 
-                                        Số điện thoại khách
+                                        Số điện thoại khách <span class="text-danger">*</span>
 
                                     </label>
 
@@ -451,6 +466,8 @@
                                         id="guestPhone"
                                         class="form-control form-control-sm"
                                         placeholder="Nhập số điện thoại...">
+
+                                    <div class="invalid-feedback"></div>
 
                                 </div>
 
@@ -472,6 +489,8 @@
                                         id="guestEmail"
                                         class="form-control form-control-sm"
                                         placeholder="Nhập email...">
+
+                                    <div class="invalid-feedback"></div>
 
                                 </div>
 
@@ -503,7 +522,7 @@
 
                                 <label class="form-label fw-bold">
 
-                                    Ngày nhận phòng
+                                    Ngày nhận phòng <span class="text-danger">*</span>
 
                                 </label>
 
@@ -511,8 +530,9 @@
                                     type="date"
                                     name="checkIn"
                                     id="checkIn"
-                                    class="form-control"
-                                    required>
+                                    class="form-control">
+
+                                <div class="invalid-feedback"></div>
 
                             </div>
 
@@ -523,7 +543,7 @@
 
                                 <label class="form-label fw-bold">
 
-                                    Ngày trả phòng
+                                    Ngày trả phòng <span class="text-danger">*</span>
 
                                 </label>
 
@@ -531,8 +551,9 @@
                                     type="date"
                                     name="checkOut"
                                     id="checkOut"
-                                    class="form-control"
-                                    required>
+                                    class="form-control">
+
+                                <div class="invalid-feedback"></div>
 
                             </div>
 
@@ -552,7 +573,7 @@
 
                                 <label class="form-label fw-bold">
 
-                                    Số lượng Người lớn
+                                    Số lượng Người lớn <span class="text-danger">*</span>
 
                                 </label>
 
@@ -561,10 +582,9 @@
                                     name="adults"
                                     id="adults"
                                     class="form-control"
-                                    value="1"
-                                    min="1"
-                                    max="6"
-                                    required>
+                                    value="1">
+
+                                <div class="invalid-feedback"></div>
 
                             </div>
 
@@ -584,10 +604,9 @@
                                     name="children"
                                     id="children"
                                     class="form-control"
-                                    value="0"
-                                    min="0"
-                                    max="6"
-                                    required>
+                                    value="0">
+
+                                <div class="invalid-feedback"></div>
 
                             </div>
 
@@ -608,9 +627,12 @@
 
                             <textarea
                                 name="note"
+                                id="note"
                                 class="form-control"
                                 rows="2"
                                 placeholder="Ví dụ: phòng tầng cao, giường phụ, check-in muộn..."></textarea>
+
+                            <div class="invalid-feedback"></div>
 
                         </div>
 
@@ -720,6 +742,12 @@
 
                         <div class="p-3 rounded bg-danger bg-opacity-10 border border-danger border-opacity-20 mb-4">
 
+                            <!-- SỐ ĐÊM LƯU TRÚ -->
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="text-muted">Số đêm:</span>
+                                <span id="nightsDisplay" class="fw-bold text-dark">0 đêm</span>
+                            </div>
+
                             <!-- TỔNG TIỀN GỐC -->
                             <div class="d-flex justify-content-between align-items-center mb-1">
                                 <span class="text-muted">Tổng tiền phòng:</span>
@@ -822,7 +850,9 @@
    BIẾN TOÀN CỤC
    ============================================================ */
 
-const basePrice = Number("${room.price}");
+const rawPrice = "${room.price}";
+const basePrice = parseFloat(String(rawPrice).replace(/[^0-9.]/g, "")) || 0;
+let currentNights = 0;
 let currentTotal = basePrice;   // tổng tiền gốc (trước giảm) — cập nhật khi đổi ngày
 let discountAmount = 0;         // tiền được giảm — chỉ set khi server xác nhận hợp lệ
 
@@ -837,30 +867,106 @@ function formatMoney(amount) {
 
 
 /* ============================================================
-   CẬP NHẬT HIỂN THỊ TỔNG / GIẢM / CÒN LẠI
+   CẬP NHẬT HIỂN THỊ TỔNG / GIẢM / CÒN LẠI / SỐ ĐÊM
    ============================================================ */
 
 function updateFinalAmount() {
 
     const finalAmount = Math.max(0, currentTotal - discountAmount);
 
-    document.getElementById("originalTotalDisplay").textContent =
-        formatMoney(currentTotal);
-
-    if (discountAmount > 0) {
-        document.getElementById("discountBox").classList.remove("d-none");
-        document.getElementById("discountDisplay").textContent =
-            "-" + formatMoney(discountAmount);
-    } else {
-        document.getElementById("discountBox").classList.add("d-none");
+    const nightsElement = document.getElementById("nightsDisplay");
+    if (nightsElement) {
+        nightsElement.textContent = currentNights + " đêm";
     }
 
-    document.getElementById("totalDisplay").textContent =
-        formatMoney(finalAmount);
+    const origTotalEl = document.getElementById("originalTotalDisplay");
+    if (origTotalEl) {
+        origTotalEl.textContent = formatMoney(currentTotal);
+    }
 
-    document.getElementById("discountAmount").value = discountAmount;
-    document.getElementById("finalAmount").value = finalAmount;
+    const discountBox = document.getElementById("discountBox");
+    const discountDisplay = document.getElementById("discountDisplay");
+    if (discountAmount > 0) {
+        if (discountBox) discountBox.classList.remove("d-none");
+        if (discountDisplay) discountDisplay.textContent = "-" + formatMoney(discountAmount);
+    } else {
+        if (discountBox) discountBox.classList.add("d-none");
+    }
+
+    const totalDisplayEl = document.getElementById("totalDisplay");
+    if (totalDisplayEl) {
+        totalDisplayEl.textContent = formatMoney(finalAmount);
+    }
+
+    const discountInput = document.getElementById("discountAmount");
+    if (discountInput) discountInput.value = discountAmount;
+
+    const finalInput = document.getElementById("finalAmount");
+    if (finalInput) finalInput.value = finalAmount;
 }
+
+
+/* ============================================================
+   TÍNH SỐ ĐÊM & TỔNG TIỀN GỐC (GIÁ PHÒNG × SỐ ĐÊM)
+   ============================================================ */
+
+function calculateTotal() {
+
+    const checkInInput  = document.getElementById("checkIn");
+    const checkOutInput = document.getElementById("checkOut");
+
+    if (!checkInInput || !checkOutInput) return;
+
+    const checkInVal  = checkInInput.value;
+    const checkOutVal = checkOutInput.value;
+
+    console.log("Check-in:", checkInVal);
+    console.log("Check-out:", checkOutVal);
+    console.log("Room price:", basePrice);
+
+    if (!checkInVal || !checkOutVal) {
+        currentNights = 0;
+        currentTotal = basePrice;
+        console.log("Nights:", 0);
+        console.log("Room total:", currentTotal);
+        console.log("Grand total:", currentTotal);
+        updateFinalAmount();
+        return;
+    }
+
+    const checkInDate  = new Date(checkInVal + "T00:00:00");
+    const checkOutDate = new Date(checkOutVal + "T00:00:00");
+    const diffTime     = checkOutDate.getTime() - checkInDate.getTime();
+    const nights       = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+    if (nights > 0) {
+        currentNights = nights;
+        currentTotal  = nights * basePrice;
+    } else {
+        currentNights = 0;
+        currentTotal  = basePrice;
+    }
+
+    const grandTotal = Math.max(0, currentTotal - discountAmount);
+
+    console.log("Nights:", nights);
+    console.log("Room total:", currentTotal);
+    console.log("Grand total:", grandTotal);
+
+    // Đổi ngày -> voucher cũ (nếu có) không còn đúng nữa, phải áp lại
+    if (discountAmount > 0) {
+        discountAmount = 0;
+        const msgEl = document.getElementById("voucherMessage");
+        if (msgEl) {
+            msgEl.innerHTML =
+                '<span class="text-warning">Bạn đã đổi ngày, vui lòng áp dụng lại voucher.</span>';
+        }
+    }
+
+    updateFinalAmount();
+}
+
+window.calculateTotal = calculateTotal;
 
 
 /* ============================================================
@@ -874,109 +980,45 @@ document.addEventListener("DOMContentLoaded", function () {
     const bookingForm    = document.getElementById("bookingForm");
     const submitButton   = document.getElementById("submitButton");
 
+    if (checkInInput) {
+        const now = new Date();
+        const today = now.getFullYear() + "-"
+            + String(now.getMonth() + 1).padStart(2, "0") + "-"
+            + String(now.getDate()).padStart(2, "0");
+        checkInInput.min = today;
 
-    /* ========================================================
-       NGÀY HÔM NAY
-       ======================================================== */
-
-    const now = new Date();
-    const today = now.getFullYear() + "-"
-        + String(now.getMonth() + 1).padStart(2, "0") + "-"
-        + String(now.getDate()).padStart(2, "0");
-
-    checkInInput.min = today;
-
-
-    /* ========================================================
-       TÍNH SỐ ĐÊM & TỔNG TIỀN GỐC
-       ======================================================== */
-
-    function calculateTotal() {
-
-        if (!checkInInput.value || !checkOutInput.value) {
-            currentTotal = basePrice;
-            updateFinalAmount();
-            return;
-        }
-
-        const checkInDate  = new Date(checkInInput.value + "T00:00:00");
-        const checkOutDate = new Date(checkOutInput.value + "T00:00:00");
-        const nights = Math.round(
-            (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)
-        );
-
-        currentTotal = nights > 0 ? nights * basePrice : basePrice;
-
-        // Đổi ngày -> voucher cũ (nếu có) không còn đúng nữa, phải áp lại
-        if (discountAmount > 0) {
-            discountAmount = 0;
-            document.getElementById("voucherMessage").innerHTML =
-                '<span class="text-warning">Bạn đã đổi ngày, vui lòng áp dụng lại voucher.</span>';
-        }
-
-        updateFinalAmount();
+        checkInInput.addEventListener("change", function () {
+            if (checkInInput.value) {
+                const nextDay = new Date(checkInInput.value + "T00:00:00");
+                nextDay.setDate(nextDay.getDate() + 1);
+                if (checkOutInput) {
+                    checkOutInput.min = nextDay.getFullYear() + "-"
+                        + String(nextDay.getMonth() + 1).padStart(2, "0") + "-"
+                        + String(nextDay.getDate()).padStart(2, "0");
+                }
+            }
+            calculateTotal();
+        });
+        checkInInput.addEventListener("input", calculateTotal);
     }
 
+    if (checkOutInput) {
+        checkOutInput.addEventListener("change", calculateTotal);
+        checkOutInput.addEventListener("input", calculateTotal);
+    }
 
-    /* ========================================================
-       CHỌN NGÀY NHẬN
-       ======================================================== */
-
-    checkInInput.addEventListener("change", function () {
-
-        if (checkInInput.value) {
-            const nextDay = new Date(checkInInput.value + "T00:00:00");
-            nextDay.setDate(nextDay.getDate() + 1);
-            checkOutInput.min = nextDay.getFullYear() + "-"
-                + String(nextDay.getMonth() + 1).padStart(2, "0") + "-"
-                + String(nextDay.getDate()).padStart(2, "0");
-
-            if (checkOutInput.value && checkOutInput.value <= checkInInput.value) {
-                checkOutInput.value = "";
-            }
-        }
-
-        calculateTotal();
-    });
-
-
-    /* ========================================================
-       CHỌN NGÀY TRẢ
-       ======================================================== */
-
-    checkOutInput.addEventListener("change", function () {
-
-        if (checkInInput.value && checkOutInput.value) {
-            const checkInDate  = new Date(checkInInput.value + "T00:00:00");
-            const checkOutDate = new Date(checkOutInput.value + "T00:00:00");
-
-            if (checkOutDate <= checkInDate) {
-                alert("Ngày trả phòng phải sau ngày nhận phòng ít nhất 1 ngày!");
-                checkOutInput.value = "";
-                calculateTotal();
+    if (bookingForm && submitButton) {
+        bookingForm.addEventListener("submit", function () {
+            if (bookingForm.querySelectorAll(".is-invalid").length > 0) {
                 return;
             }
-        }
+            submitButton.disabled = true;
+            submitButton.innerHTML =
+                '<i class="fa-solid fa-spinner fa-spin me-1"></i> Đang xử lý...';
+        });
+    }
 
-        calculateTotal();
-    });
-
-
-    /* ========================================================
-       CHỐNG BẤM NÚT 2 LẦN
-       ======================================================== */
-
-    bookingForm.addEventListener("submit", function () {
-        submitButton.disabled = true;
-        submitButton.innerHTML =
-            '<i class="fa-solid fa-spinner fa-spin me-1"></i> Đang xử lý...';
-    });
-
-
-    /* ========================================================
-       HIỂN THỊ TỔNG TIỀN BAN ĐẦU
-       ======================================================== */
-
+    /* Hiển thị tổng tiền ban đầu */
     calculateTotal();
 
 });
@@ -994,21 +1036,17 @@ function toggleGuestFields() {
     const guestPhone  = document.getElementById("guestPhone");
     const guestEmail  = document.getElementById("guestEmail");
 
+    if (!checkbox || !guestFields) return;
+
     if (checkbox.checked) {
-
         guestFields.classList.remove("d-none");
-        guestName.required = true;
-        guestPhone.required = true;
-
+        if (guestName) guestName.required = true;
+        if (guestPhone) guestPhone.required = true;
     } else {
-
         guestFields.classList.add("d-none");
-        guestName.required = false;
-        guestPhone.required = false;
-        guestName.value = "";
-        guestPhone.value = "";
-        guestEmail.value = "";
-
+        if (guestName) { guestName.required = false; guestName.value = ""; }
+        if (guestPhone) { guestPhone.required = false; guestPhone.value = ""; }
+        if (guestEmail) { guestEmail.value = ""; }
     }
 
 }
@@ -1018,58 +1056,63 @@ function toggleGuestFields() {
    ÁP DỤNG VOUCHER — GỌI SERVER THẬT (POST /voucher?action=apply)
    ================================================================ */
 
-document.getElementById("applyVoucher").addEventListener("click", function () {
+const applyVoucherBtn = document.getElementById("applyVoucher");
+if (applyVoucherBtn) {
+    applyVoucherBtn.addEventListener("click", function () {
 
-    const code = document.getElementById("voucherCode").value.trim();
-    const message = document.getElementById("voucherMessage");
-    const applyBtn = this;
+        const voucherInput = document.getElementById("voucherCode");
+        const code = voucherInput ? voucherInput.value.trim() : "";
+        const message = document.getElementById("voucherMessage");
+        const applyBtn = this;
 
-    if (!code) {
-        message.innerHTML = '<span class="text-danger">Vui lòng nhập mã voucher.</span>';
-        return;
-    }
-
-    applyBtn.disabled = true;
-    applyBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-
-    const params = new URLSearchParams();
-    params.append("code", code);
-    params.append("totalAmount", currentTotal);
-
-    fetch("${pageContext.request.contextPath}/voucher?action=apply", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: params.toString()
-    })
-    .then(res => res.json())
-    .then(data => {
-
-        applyBtn.disabled = false;
-        applyBtn.innerHTML = "Áp dụng";
-
-        if (data.valid) {
-            discountAmount = Number(data.discount);
-            document.getElementById("voucherCodeLabel").textContent = code.toUpperCase();
-            message.innerHTML = '<span class="text-success">' + data.message + '</span>';
-        } else {
-            discountAmount = 0;
-            message.innerHTML = '<span class="text-danger">' + data.message + '</span>';
+        if (!code) {
+            if (message) message.innerHTML = '<span class="text-danger">Vui lòng nhập mã voucher.</span>';
+            return;
         }
 
-        updateFinalAmount();
-    })
-    .catch(() => {
-        applyBtn.disabled = false;
-        applyBtn.innerHTML = "Áp dụng";
-        discountAmount = 0;
-        message.innerHTML = '<span class="text-danger">Có lỗi xảy ra, vui lòng thử lại.</span>';
-        updateFinalAmount();
-    });
+        applyBtn.disabled = true;
+        applyBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 
-});
+        const params = new URLSearchParams();
+        params.append("code", code);
+        params.append("totalAmount", currentTotal);
+
+        fetch("${pageContext.request.contextPath}/voucher?action=apply", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: params.toString()
+        })
+        .then(res => res.json())
+        .then(data => {
+            applyBtn.disabled = false;
+            applyBtn.innerHTML = "Áp dụng";
+
+            if (data.valid) {
+                discountAmount = Number(data.discount);
+                const labelEl = document.getElementById("voucherCodeLabel");
+                if (labelEl) labelEl.textContent = code.toUpperCase();
+                if (message) message.innerHTML = '<span class="text-success">' + data.message + '</span>';
+            } else {
+                discountAmount = 0;
+                if (message) message.innerHTML = '<span class="text-danger">' + data.message + '</span>';
+            }
+
+            updateFinalAmount();
+        })
+        .catch(() => {
+            applyBtn.disabled = false;
+            applyBtn.innerHTML = "Áp dụng";
+            discountAmount = 0;
+            if (message) message.innerHTML = '<span class="text-danger">Có lỗi xảy ra, vui lòng thử lại.</span>';
+            updateFinalAmount();
+        });
+
+    });
+}
 
 </script>
 
+<script src="${pageContext.request.contextPath}/assets/js/booking-validation.js"></script>
 
 </body>
 

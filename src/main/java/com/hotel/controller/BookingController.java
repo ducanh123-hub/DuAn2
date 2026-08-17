@@ -141,14 +141,54 @@ public class BookingController extends HttpServlet {
             return;
         }
 
-        // ── 3. Validate ngày ──────────────────────────────────────
+        // ── 3. Validate Họ và tên, SĐT, Email ────────────────────
+        String fullName = request.getParameter("fullName");
+        String phone    = request.getParameter("phone");
+        String email    = request.getParameter("email");
+        String isBookingForOthers = request.getParameter("isBookingForOthers");
+        boolean isOthers = "on".equals(isBookingForOthers) || "true".equals(isBookingForOthers);
+
+        String targetName  = isOthers ? request.getParameter("guestName") : fullName;
+        String targetPhone = isOthers ? request.getParameter("guestPhone") : phone;
+        String targetEmail = isOthers ? request.getParameter("guestEmail") : email;
+
+        if (targetName == null || targetName.isBlank()) {
+            setErrorAndForward(request, response, room, "Họ và tên là phần bắt buộc!");
+            return;
+        }
+
+        if (targetPhone == null || targetPhone.isBlank()) {
+            setErrorAndForward(request, response, room, "Số điện thoại là phần bắt buộc!");
+            return;
+        }
+
+        if (!targetPhone.matches("^(0|\\+84)[3|5|7|8|9]\\d{8}$")) {
+            setErrorAndForward(request, response, room, "Số điện thoại không hợp lệ!");
+            return;
+        }
+
+        if (!isOthers || (targetEmail != null && !targetEmail.isBlank())) {
+            if (targetEmail == null || targetEmail.isBlank()) {
+                setErrorAndForward(request, response, room, "Email là phần bắt buộc!");
+                return;
+            }
+            if (!targetEmail.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+                setErrorAndForward(request, response, room, "Email không đúng định dạng!");
+                return;
+            }
+        }
+
+        // ── 4. Validate ngày nhận/trả phòng ──────────────────────
         String checkInStr  = request.getParameter("checkIn");
         String checkOutStr = request.getParameter("checkOut");
 
-        if (checkInStr == null || checkInStr.isBlank()
-                || checkOutStr == null || checkOutStr.isBlank()) {
-            setErrorAndForward(request, response, room,
-                    "Vui lòng chọn ngày nhận phòng và ngày trả phòng!");
+        if (checkInStr == null || checkInStr.isBlank()) {
+            setErrorAndForward(request, response, room, "Ngày nhận phòng là phần bắt buộc!");
+            return;
+        }
+
+        if (checkOutStr == null || checkOutStr.isBlank()) {
+            setErrorAndForward(request, response, room, "Ngày trả phòng là phần bắt buộc!");
             return;
         }
 
@@ -162,13 +202,20 @@ public class BookingController extends HttpServlet {
             return;
         }
 
-        if (!checkOut.after(checkIn)) {
+        Date today = Date.valueOf(java.time.LocalDate.now());
+        if (checkIn.before(today)) {
             setErrorAndForward(request, response, room,
-                    "Ngày trả phòng phải sau ngày nhận phòng ít nhất 1 ngày!");
+                    "Ngày nhận phòng không được ở quá khứ!");
             return;
         }
 
-        // ── 4. Tính số đêm & tổng tiền gốc (server tự tính) ──────
+        if (!checkOut.after(checkIn)) {
+            setErrorAndForward(request, response, room,
+                    "Ngày trả phòng phải sau ngày nhận phòng!");
+            return;
+        }
+
+        // ── 5. Tính số đêm & tổng tiền gốc (server tự tính) ──────
         long nights = ChronoUnit.DAYS.between(
                 checkIn.toLocalDate(), checkOut.toLocalDate());
 
@@ -187,7 +234,7 @@ public class BookingController extends HttpServlet {
         // totalAmount = giá phòng × số đêm (CHƯA giảm giá)
         BigDecimal totalAmount = roomPrice.multiply(BigDecimal.valueOf(nights));
 
-        // ── 5. XỬ LÝ VOUCHER ──────────────────────────────────────
+        // ── 6. XỬ LÝ VOUCHER ──────────────────────────────────────
         String     voucherCode    = request.getParameter("voucherCode");
         Integer    voucherID      = null;
         BigDecimal discountAmount = BigDecimal.ZERO;
@@ -198,7 +245,6 @@ public class BookingController extends HttpServlet {
             Voucher voucher = voucherService
                     .getVoucherByCode(voucherCode.trim().toUpperCase());
 
-            // 5a. Voucher không tồn tại hoặc không active
             if (voucher == null || !"Active".equalsIgnoreCase(voucher.getStatus())) {
                 request.setAttribute("voucherCode", voucherCode);
                 setErrorAndForward(request, response, room,
@@ -206,16 +252,14 @@ public class BookingController extends HttpServlet {
                 return;
             }
 
-            // 5b. Kiểm tra ngày hiệu lực
-            Date today = new Date(System.currentTimeMillis());
-            if (today.before(voucher.getStartDate()) || today.after(voucher.getEndDate())) {
+            Date nowSql = new Date(System.currentTimeMillis());
+            if (nowSql.before(voucher.getStartDate()) || nowSql.after(voucher.getEndDate())) {
                 request.setAttribute("voucherCode", voucherCode);
                 setErrorAndForward(request, response, room,
                         "Mã voucher chưa hoặc đã hết hạn sử dụng!");
                 return;
             }
 
-            // 5c. Kiểm tra giới hạn lượt dùng
             if (voucher.getUsageLimit() != null
                     && voucher.getUsedCount() >= voucher.getUsageLimit()) {
                 request.setAttribute("voucherCode", voucherCode);
@@ -224,7 +268,6 @@ public class BookingController extends HttpServlet {
                 return;
             }
 
-            // 5d. Kiểm tra giá trị đơn tối thiểu
             if (voucher.getMinOrderAmount() != null
                     && totalAmount.compareTo(voucher.getMinOrderAmount()) < 0) {
                 String minStr = String.format("%,.0f VNĐ", voucher.getMinOrderAmount());
@@ -234,33 +277,53 @@ public class BookingController extends HttpServlet {
                 return;
             }
 
-            // 5e. Tính tiền giảm
             discountAmount = voucherService.calculateDiscount(voucher, totalAmount);
             finalAmount    = totalAmount.subtract(discountAmount);
             voucherID      = voucher.getPromotionID();
         }
 
-        // ── 6. Số người lớn & trẻ em ──────────────────────────────
-        int adults = 1;
+        // ── 7. Số người lớn & trẻ em ──────────────────────────────
+        String adultsStr = request.getParameter("adults");
+        if (adultsStr == null || adultsStr.isBlank()) {
+            setErrorAndForward(request, response, room, "Số lượng người lớn là phần bắt buộc!");
+            return;
+        }
+        int adults;
         try {
-            String s = request.getParameter("adults");
-            if (s != null && !s.isBlank()) adults = Integer.parseInt(s);
-        } catch (NumberFormatException ignored) {}
-        if (adults < 1) adults = 1;
+            adults = Integer.parseInt(adultsStr.trim());
+            if (adults <= 0) {
+                setErrorAndForward(request, response, room, "Số lượng người lớn phải lớn hơn 0!");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            setErrorAndForward(request, response, room, "Số lượng người lớn phải là số!");
+            return;
+        }
 
+        String childrenStr = request.getParameter("children");
         int children = 0;
-        try {
-            String s = request.getParameter("children");
-            if (s != null && !s.isBlank()) children = Integer.parseInt(s);
-        } catch (NumberFormatException ignored) {}
-        if (children < 0) children = 0;
+        if (childrenStr != null && !childrenStr.isBlank()) {
+            try {
+                children = Integer.parseInt(childrenStr.trim());
+                if (children < 0) {
+                    setErrorAndForward(request, response, room, "Số lượng trẻ em không được nhỏ hơn 0!");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                setErrorAndForward(request, response, room, "Số lượng trẻ em phải là số!");
+                return;
+            }
+        }
 
-        // ── 7. Ghi chú ────────────────────────────────────────────
+        // ── 8. Ghi chú ────────────────────────────────────────────
         String note = request.getParameter("note");
         if (note == null) note = "";
+        if (note.length() > 500) {
+            setErrorAndForward(request, response, room, "Yêu cầu đặc biệt không được vượt quá 500 ký tự!");
+            return;
+        }
 
-        String isBookingForOthers = request.getParameter("isBookingForOthers");
-        if ("on".equals(isBookingForOthers) || "true".equals(isBookingForOthers)) {
+        if (isOthers) {
             String guestName  = request.getParameter("guestName");
             String guestPhone = request.getParameter("guestPhone");
             String guestEmail = request.getParameter("guestEmail");
