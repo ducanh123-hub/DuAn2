@@ -37,7 +37,25 @@ public class RegisterController extends HttpServlet {
         String password        = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
 
-        // ── 1. Validate email ──────────────────────────────────────────
+        // ── 1. Validate required fields & email ─────────────────────────
+        if (fullName == null || fullName.trim().isEmpty()) {
+            request.setAttribute("error", "Họ và tên là phần bắt buộc.");
+            request.setAttribute("fullNameValue", fullName);
+            request.setAttribute("emailValue", email);
+            request.setAttribute("phoneValue", phone);
+            request.getRequestDispatcher("/views/auth/register.jsp").forward(request, response);
+            return;
+        }
+
+        if (phone == null || phone.trim().isEmpty()) {
+            request.setAttribute("error", "Số điện thoại là phần bắt buộc.");
+            request.setAttribute("fullNameValue", fullName);
+            request.setAttribute("emailValue", email);
+            request.setAttribute("phoneValue", phone);
+            request.getRequestDispatcher("/views/auth/register.jsp").forward(request, response);
+            return;
+        }
+
         String emailRegex = "^[\\w.+-]+@[\\w-]+\\.[a-zA-Z]{2,}$";
         if (email == null || !email.trim().matches(emailRegex)) {
             request.setAttribute("error", "Email không đúng định dạng.");

@@ -18,12 +18,42 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/css/style.css">
+
     <style>
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        .required {
+            color: #dc3545 !important;
+            font-weight: bold;
+        }
+
+        .is-invalid {
+            border: 1px solid #dc3545 !important;
+        }
+
+        .is-invalid:focus {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 0.1rem rgba(220, 53, 69, 0.15) !important;
+        }
+
+        .validation-error,
+        .invalid-feedback {
+            color: #dc3545 !important;
+            font-size: 13px !important;
+            margin-top: 4px !important;
+            display: none;
+        }
+
+        .is-invalid ~ .validation-error,
+        .is-invalid ~ .invalid-feedback {
+            display: block !important;
         }
 
         body {
@@ -437,20 +467,25 @@ align-items: center;
             <!-- FORM LOGIN -->
 
             <form method="post"
-                  action="${pageContext.request.contextPath}/login">
+                  action="${pageContext.request.contextPath}/login"
+                  id="loginForm"
+                  novalidate>
 
                 <div class="mb-3">
 
                     <label class="form-label">
-                        Email
+                        Email <span class="required">*</span>
                     </label>
 
                     <input
                             type="email"
+                            id="email"
                             name="email"
                             class="form-control"
                             value="${emailValue}"
-                            required>
+                            placeholder="Nhập địa chỉ email...">
+
+                    <div class="validation-error invalid-feedback" id="emailError"></div>
 
                 </div>
 
@@ -458,14 +493,17 @@ align-items: center;
                 <div class="mb-3">
 
                     <label class="form-label">
-                        Mật khẩu
+                        Mật khẩu <span class="required">*</span>
                     </label>
 
                     <input
                             type="password"
+                            id="password"
                             name="password"
                             class="form-control"
-                            required>
+                            placeholder="Nhập mật khẩu...">
+
+                    <div class="validation-error invalid-feedback" id="passwordError"></div>
 
                 </div>
 
@@ -484,7 +522,7 @@ align-items: center;
 
 
             <hr>
-<div class="register-link">
+            <div class="register-link">
 
                 Chưa có tài khoản?
 
@@ -499,36 +537,31 @@ align-items: center;
     </div>
 
 </div>
-    <script>
-    document.querySelector("form").addEventListener("submit", function (e) {
-        const email    = document.querySelector("input[name='email']").value.trim();
-        const password = document.querySelector("input[name='password']").value;
-        const emailRegex = /^[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}$/;
 
-        if (!emailRegex.test(email)) {
-            e.preventDefault();
-            showError("Email không đúng định dạng.");
-            return;
-        }
+<script src="${pageContext.request.contextPath}/assets/js/form-validation.js"></script>
 
-        if (password.length < 6) {
-            e.preventDefault();
-            showError("Mật khẩu phải có ít nhất 6 ký tự.");
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const loginForm = document.getElementById("loginForm");
+    if (!loginForm) return;
+
+    createFormValidator(loginForm, {
+        email: function(input) {
+            const val = input.value.trim();
+            if (!val) return "Email là phần bắt buộc";
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(val)) return "Email không đúng định dạng";
+            return null;
+        },
+        password: function(input) {
+            const val = input.value;
+            if (!val) return "Mật khẩu là phần bắt buộc";
+            if (val.length < 6) return "Mật khẩu phải có ít nhất 6 ký tự";
+            return null;
         }
     });
-
-    function showError(msg) {
-        // Tái sử dụng luôn div alert đã có trong JSP
-        let alertBox = document.querySelector(".alert-danger");
-        if (!alertBox) {
-            alertBox = document.createElement("div");
-            alertBox.className = "alert alert-danger";
-            document.querySelector("form").before(alertBox);
-        }
-        alertBox.textContent = msg;
-        alertBox.style.display = "block";
-    }
-    </script>
+});
+</script>
 </body>
 
 </html>

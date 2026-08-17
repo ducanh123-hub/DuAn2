@@ -40,32 +40,35 @@
                         </div>
                     </c:if>
 
-                    <form method="post" action="${pageContext.request.contextPath}/user?action=updatePassword">
+                    <form method="post" action="${pageContext.request.contextPath}/user?action=updatePassword" id="changePasswordForm" novalidate>
                         <!-- Mật khẩu cũ -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Mật khẩu hiện tại</label>
+                            <label class="form-label fw-bold">Mật khẩu hiện tại <span class="required">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fa-solid fa-lock text-muted"></i></span>
-                                <input type="password" name="oldPassword" class="form-control" placeholder="Nhập mật khẩu hiện tại..." required>
+                                <input type="password" name="oldPassword" id="oldPassword" class="form-control" placeholder="Nhập mật khẩu hiện tại...">
                             </div>
+                            <div class="invalid-feedback"></div>
                         </div>
 
                         <!-- Mật khẩu mới -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Mật khẩu mới</label>
+                            <label class="form-label fw-bold">Mật khẩu mới <span class="required">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fa-solid fa-key text-muted"></i></span>
-                                <input type="password" name="newPassword" class="form-control" placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)..." required>
+                                <input type="password" name="newPassword" id="newPassword" class="form-control" placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)...">
                             </div>
+                            <div class="invalid-feedback"></div>
                         </div>
 
                         <!-- Xác nhận mật khẩu mới -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Xác nhận mật khẩu mới</label>
+                            <label class="form-label fw-bold">Xác nhận mật khẩu mới <span class="required">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fa-solid fa-check-double text-muted"></i></span>
-                                <input type="password" name="confirmPassword" class="form-control" placeholder="Nhập lại mật khẩu mới..." required>
+                                <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" placeholder="Nhập lại mật khẩu mới...">
                             </div>
+                            <div class="invalid-feedback"></div>
                         </div>
 
                         <div class="d-flex justify-content-between mt-4">
@@ -87,5 +90,33 @@
 <jsp:include page="../layout/footer.jsp"/>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/form-validation.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("changePasswordForm");
+    if (!form) return;
+
+    createFormValidator(form, {
+        oldPassword: function(input) {
+            const val = input.value;
+            if (!val) return "Vui lòng nhập mật khẩu hiện tại";
+            return null;
+        },
+        newPassword: function(input) {
+            const val = input.value;
+            if (!val) return "Mật khẩu mới là phần bắt buộc";
+            if (val.length < 6) return "Mật khẩu mới phải có ít nhất 6 ký tự";
+            return null;
+        },
+        confirmPassword: function(input, formEl) {
+            const val = input.value;
+            if (!val) return "Vui lòng xác nhận mật khẩu mới";
+            const passVal = formEl.querySelector("[name='newPassword']").value;
+            if (val !== passVal) return "Mật khẩu xác nhận không khớp";
+            return null;
+        }
+    });
+});
+</script>
 </body>
 </html>
