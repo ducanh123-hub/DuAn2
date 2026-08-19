@@ -63,6 +63,10 @@
                        class="list-group-item list-group-item-action py-3">
                         <i class="fa-solid fa-scroll me-2 text-warning"></i> Nhật ký hệ thống
                     </a>
+                    <a href="${pageContext.request.contextPath}/admin/contact"
+                       class="list-group-item list-group-item-action py-3">
+                        <i class="fa-solid fa-envelope-open-text me-2 text-warning"></i> Quản lý liên hệ
+                    </a>
                     <a href="${pageContext.request.contextPath}/admin/setting"
                        class="list-group-item list-group-item-action py-3">
                         <i class="fa-solid fa-gear me-2 text-warning"></i> Cấu hình hệ thống

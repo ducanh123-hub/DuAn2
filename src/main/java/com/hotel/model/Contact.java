@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 public class Contact {
 
     private int contactID;
+    private Integer userID;
     private String fullName;
     private String email;
     private String phone;
@@ -17,11 +18,12 @@ public class Contact {
 
     }
 
-    public Contact(int contactID, String fullName, String email,
+    public Contact(int contactID, Integer userID, String fullName, String email,
                    String phone, String subject,
                    String message, String status,
                    Timestamp createdAt) {
         this.contactID = contactID;
+        this.userID = userID;
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
@@ -99,12 +101,18 @@ public class Contact {
     public String toString() {
         return "Contact{" +
                 "contactID=" + contactID +
+                ", userID=" + userID +
                 ", fullName='" + fullName + '\'' +
                 ", email='" + email + '\'' +
                 ", status='" + status + '\'' +
                 '}';
     }
 
-    public void setUserID(int userID) {
+    public Integer getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Integer userID) {
+        this.userID = userID;
     }
 }

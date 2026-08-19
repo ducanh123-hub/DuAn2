@@ -31,10 +31,6 @@
 
     <style>
 
-        /* =====================================================
-           ROOM GALLERY
-        ===================================================== */
-
         .room-gallery {
             width: 100%;
         }
@@ -70,10 +66,6 @@
             background-size: 45%;
         }
 
-        /* =====================================================
-           THUMBNAILS
-        ===================================================== */
-
         .room-thumbnails {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -96,14 +88,6 @@
             border-color: #ffc107;
         }
 
-        /* =====================================================
-           GIÁ PHÒNG
-
-           Màu đỏ
-           Không in đậm
-           Không bị ảnh hưởng bởi font-weight từ CSS khác
-        ===================================================== */
-
         .room-detail-price {
             color: #e53935 !important;
             font-size: 24px;
@@ -111,27 +95,15 @@
             line-height: 1.5;
         }
 
-        /* =====================================================
-           TIÊU ĐỀ
-        ===================================================== */
-
         .room-detail-title {
             color: #0d6efd;
             font-weight: 700;
         }
 
-        /* =====================================================
-           BẢNG THÔNG TIN
-        ===================================================== */
-
         .room-info-table th {
             width: 180px;
             background: #f8f9fa;
         }
-
-        /* =====================================================
-           MOBILE
-        ===================================================== */
 
         @media (max-width: 768px) {
 
@@ -158,35 +130,22 @@
             .room-detail-price {
                 font-size: 21px;
             }
+
         }
 
     </style>
 
 </head>
 
-
 <body class="bg-light">
 
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
 
 <jsp:include page="../layout/header.jsp"/>
 
 
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
 <div class="container mt-5 mb-5">
 
     <div class="card shadow border-0">
-
-
-        <!-- =================================================
-             HEADER CARD
-        ================================================== -->
 
         <div class="card-header bg-dark text-white">
 
@@ -201,36 +160,23 @@
         </div>
 
 
-        <!-- =================================================
-             CARD BODY
-        ================================================== -->
-
         <div class="card-body p-4">
 
             <div class="row g-4">
 
 
-                <!-- =================================================
-                     LEFT - GALLERY
-                ================================================== -->
+                <!-- LEFT - GALLERY -->
 
                 <div class="col-md-5">
 
                     <div class="room-gallery">
-
-
-                        <!-- MAIN CAROUSEL -->
 
                         <div
                                 id="roomGallery"
                                 class="carousel slide room-gallery-main"
                                 data-bs-ride="carousel">
 
-
                             <div class="carousel-inner">
-
-
-                                <!-- IMAGE 1 -->
 
                                 <div class="carousel-item active">
 
@@ -241,9 +187,6 @@
 
                                 </div>
 
-
-                                <!-- IMAGE 2 -->
-
                                 <div class="carousel-item">
 
                                     <img
@@ -252,9 +195,6 @@
                                             onerror="this.onerror=null; this.src='https://placehold.co/800x600?text=Room+2';">
 
                                 </div>
-
-
-                                <!-- IMAGE 3 -->
 
                                 <div class="carousel-item">
 
@@ -265,9 +205,6 @@
 
                                 </div>
 
-
-                                <!-- IMAGE 4 -->
-
                                 <div class="carousel-item">
 
                                     <img
@@ -276,9 +213,6 @@
                                             onerror="this.onerror=null; this.src='https://placehold.co/800x600?text=Room+4';">
 
                                 </div>
-
-
-                                <!-- IMAGE 5 -->
 
                                 <div class="carousel-item">
 
@@ -289,9 +223,6 @@
 
                                 </div>
 
-
-                                <!-- IMAGE 6 -->
-
                                 <div class="carousel-item">
 
                                     <img
@@ -301,11 +232,8 @@
 
                                 </div>
 
-
                             </div>
 
-
-                            <!-- PREVIOUS -->
 
                             <button
                                     class="carousel-control-prev"
@@ -322,8 +250,6 @@
                             </button>
 
 
-                            <!-- NEXT -->
-
                             <button
                                     class="carousel-control-next"
                                     type="button"
@@ -338,16 +264,10 @@
 
                             </button>
 
-
                         </div>
 
 
-                        <!-- =================================================
-                             THUMBNAILS
-                        ================================================== -->
-
                         <div class="room-thumbnails">
-
 
                             <img
                                     src="https://du-lich.chudu24.com/f/m/2302/28/khach-san-the-empyrean-nha-trang-eastin-grand-nha-trang-cu-38.jpg"
@@ -356,14 +276,12 @@
                                     data-bs-slide-to="0"
                                     alt="Ảnh 1">
 
-
                             <img
                                     src="https://cdnturint.touristica.com.tr/otel-resimleri/v1.00/reges-a-luxury-collection-resort-spa/900x600/reges-a-luxury-collection-resort-oda-aegean_136694.jpg"
                                     class="room-thumbnail"
                                     data-bs-target="#roomGallery"
                                     data-bs-slide-to="1"
                                     alt="Ảnh 2">
-
 
                             <img
                                     src="https://res.klook.com/image/upload/fl_lossy.progressive%2Cq_85/c_fill%2Cw_1000/v1660125874/blog/o6doqv8vwrhsjb1tyokx.jpg"
@@ -372,14 +290,12 @@
                                     data-bs-slide-to="2"
                                     alt="Ảnh 3">
 
-
                             <img
                                     src="https://www.ticati.com/img/hotel/19454583s.jpg"
                                     class="room-thumbnail"
                                     data-bs-target="#roomGallery"
                                     data-bs-slide-to="3"
                                     alt="Ảnh 4">
-
 
                             <img
                                     src="https://contenu.nyc3.digitaloceanspaces.com/journalist/def51bb4-28fd-4a97-bbb4-f24722e648b4/thumbnail.jpeg"
@@ -388,7 +304,6 @@
                                     data-bs-slide-to="4"
                                     alt="Ảnh 5">
 
-
                             <img
                                     src="https://cdn.mos.cms.futurecdn.net/NKxs7o4onnCjzmbnY83QJQ.jpg"
                                     class="room-thumbnail"
@@ -396,39 +311,23 @@
                                     data-bs-slide-to="5"
                                     alt="Ảnh 6">
 
-
                         </div>
-
 
                     </div>
 
                 </div>
 
 
-                <!-- =================================================
-                     RIGHT - ROOM INFORMATION
-                ================================================== -->
+                <!-- RIGHT - ROOM INFORMATION -->
 
                 <div class="col-md-7">
 
-
-                    <!-- ROOM NAME -->
-
                     <h2 class="room-detail-title mb-3">
-
                         ${room.roomName}
-
                     </h2>
 
 
-                    <!-- =================================================
-                         INFORMATION TABLE
-                    ================================================== -->
-
                     <table class="table table-bordered table-striped room-info-table">
-
-
-                        <!-- ROOM NUMBER -->
 
                         <tr>
 
@@ -443,8 +342,6 @@
                         </tr>
 
 
-                        <!-- ROOM NAME -->
-
                         <tr>
 
                             <th>
@@ -458,8 +355,6 @@
                         </tr>
 
 
-                        <!-- CATEGORY -->
-
                         <tr>
 
                             <th>
@@ -472,16 +367,6 @@
 
                         </tr>
 
-
-                        <!-- =================================================
-                             PRICE
-
-                             ĐÃ SỬA:
-                             1.500.000 VNĐ
-                             Không có .00
-                             Màu đỏ
-                             Không in đậm
-                        ================================================== -->
 
                         <tr>
 
@@ -504,8 +389,6 @@
                         </tr>
 
 
-                        <!-- ACREAGE -->
-
                         <tr>
 
                             <th>
@@ -518,8 +401,6 @@
 
                         </tr>
 
-
-                        <!-- BED -->
 
                         <tr>
 
@@ -534,8 +415,6 @@
                         </tr>
 
 
-                        <!-- AREA -->
-
                         <tr>
 
                             <th>
@@ -549,8 +428,6 @@
                         </tr>
 
 
-                        <!-- FAVORITE COUNT -->
-
                         <tr>
 
                             <th>
@@ -558,14 +435,16 @@
                             </th>
 
                             <td>
+
                                 <i class="fa-solid fa-heart text-danger me-1"></i>
-                                <strong>${room.favoriteCount}</strong> lượt yêu thích
+
+                                <strong>${room.favoriteCount}</strong>
+                                lượt yêu thích
+
                             </td>
 
                         </tr>
 
-
-                        <!-- STATUS -->
 
                         <tr>
 
@@ -575,11 +454,10 @@
 
                             <td>
 
-                                <span
-                                        class="badge
-                                        ${room.status == 'Còn trống'
-                                            ? 'bg-success'
-                                            : 'bg-warning text-dark'}">
+                                <span class="badge
+                                    ${room.status == 'Còn trống'
+                                        ? 'bg-success'
+                                        : 'bg-warning text-dark'}">
 
                                     ${room.status}
 
@@ -590,8 +468,6 @@
                         </tr>
 
 
-                        <!-- DESCRIPTION -->
-
                         <tr>
 
                             <th>
@@ -599,114 +475,53 @@
                             </th>
 
                             <td>
+
                                 <c:choose>
+
                                     <c:when test="${room.roomName.contains('Family')}">
                                         Phòng Family rộng rãi, thiết kế hiện đại, phù hợp cho gia đình hoặc nhóm bạn. Không gian thoáng mát, đầy đủ tiện nghi, mang đến trải nghiệm nghỉ dưỡng thoải mái.
                                     </c:when>
+
                                     <c:when test="${room.roomName.contains('Deluxe')}">
                                         Phòng Deluxe được thiết kế sang trọng và tinh tế, mang đến không gian nghỉ ngơi thoải mái cho các cặp đôi hoặc khách công tác.
                                     </c:when>
+
                                     <c:when test="${room.roomName.contains('Standard')}">
                                         Phòng Standard có thiết kế đơn giản, tiện nghi và ấm cúng, phù hợp cho khách hàng tìm kiếm không gian nghỉ ngơi thoải mái với mức giá hợp lý.
                                     </c:when>
+
                                     <c:when test="${room.roomName.contains('Suite')}">
                                         Phòng Suite sở hữu không gian rộng rãi và sang trọng, được trang bị đầy đủ tiện nghi, phù hợp cho những kỳ nghỉ cao cấp và thư giãn.
                                     </c:when>
+
                                     <c:otherwise>
-                                        <c:out value="${not empty room.description ? room.description : 'Phòng được thiết kế hiện đại, đầy đủ tiện nghi, mang lại không gian nghỉ dưỡng thoải mái và tuyệt vời cho quý khách.'}"/>
+
+                                        <c:out
+                                                value="${not empty room.description
+                                                ? room.description
+                                                : 'Phòng được thiết kế hiện đại, đầy đủ tiện nghi, mang lại không gian nghỉ dưỡng thoải mái và tuyệt vời cho quý khách.'}"/>
+
                                     </c:otherwise>
+
                                 </c:choose>
+
                             </td>
 
                         </tr>
 
-
                     </table>
 
 
-                    <!-- =================================================
-                         TIỆN ÍCH CHÍNH (MAIN AMENITIES)
-                    ================================================== -->
-
-                    <div class="mt-4 pt-3 border-top">
-
-                        <h5 class="fw-bold text-primary mb-3">
-                            <i class="fa-solid fa-square-check me-2"></i>Tiện ích chính
-                        </h5>
-
-                        <div class="row g-3">
-
-                            <!-- CỘT TRÁI -->
-                            <div class="col-6">
-
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fa-solid fa-snowflake text-primary fs-5 me-3" style="width: 24px; text-align: center;"></i>
-                                    <span class="fw-semibold text-dark">Máy lạnh</span>
-                                </div>
-
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fa-solid fa-utensils text-primary fs-5 me-3" style="width: 24px; text-align: center;"></i>
-                                    <span class="fw-semibold text-dark">Nhà hàng</span>
-                                </div>
-
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fa-solid fa-person-swimming text-primary fs-5 me-3" style="width: 24px; text-align: center;"></i>
-                                    <span class="fw-semibold text-dark">Hồ bơi</span>
-                                </div>
-
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fa-solid fa-clock text-primary fs-5 me-3" style="width: 24px; text-align: center;"></i>
-                                    <span class="fw-semibold text-dark">Lễ tân 24h</span>
-                                </div>
-
-                            </div>
-
-                            <!-- CỘT PHẢI -->
-                            <div class="col-6">
-
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fa-solid fa-square-parking text-primary fs-5 me-3" style="width: 24px; text-align: center;"></i>
-                                    <span class="fw-semibold text-dark">Chỗ đậu xe</span>
-                                </div>
-
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fa-solid fa-elevator text-primary fs-5 me-3" style="width: 24px; text-align: center;"></i>
-                                    <span class="fw-semibold text-dark">Thang máy</span>
-                                </div>
-
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fa-solid fa-wifi text-primary fs-5 me-3" style="width: 24px; text-align: center;"></i>
-                                    <span class="fw-semibold text-dark">WiFi</span>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- =================================================
-                         BUTTONS
-                    ================================================== -->
+                    <!-- BUTTONS -->
 
                     <div class="mt-4">
 
-
-                        <!-- BACK -->
-
-                        <a
-                                href="${pageContext.request.contextPath}/room"
-                                class="btn btn-secondary me-2">
-
+                        <!-- ĐÃ SỬA: Link quay lại trang chủ -->
+                        <a href="${pageContext.request.contextPath}/home" class="btn btn-secondary me-2">
                             <i class="fa-solid fa-arrow-left me-1"></i>
-
-                            Quay lại
-
+                            Quay lại trang chủ
                         </a>
 
-
-                        <!-- BOOK -->
 
                         <a
                                 href="${pageContext.request.contextPath}/booking?roomId=${room.roomID}"
@@ -719,28 +534,41 @@
                         </a>
 
 
-                        <!-- FAVORITE BUTTON -->
-
                         <c:choose>
+
                             <c:when test="${isFavorite}">
-                                <a href="${pageContext.request.contextPath}/favorite?action=remove&roomId=${room.roomID}"
-                                   class="btn btn-danger me-2">
-                                    <i class="fa-solid fa-heart me-1"></i> ♥ Đã yêu thích
+
+                                <a
+                                        href="${pageContext.request.contextPath}/favorite?action=remove&roomId=${room.roomID}"
+                                        class="btn btn-danger me-2">
+
+                                    <i class="fa-solid fa-heart me-1"></i>
+
+                                    ♥ Đã yêu thích
+
                                 </a>
+
                             </c:when>
+
+
                             <c:otherwise>
-                                <a href="${pageContext.request.contextPath}/favorite?action=add&roomId=${room.roomID}"
-                                   class="btn btn-outline-danger me-2">
-                                    <i class="fa-regular fa-heart me-1"></i> ♡ Yêu thích
+
+                                <a
+                                        href="${pageContext.request.contextPath}/favorite?action=add&roomId=${room.roomID}"
+                                        class="btn btn-outline-danger me-2">
+
+                                    <i class="fa-regular fa-heart me-1"></i>
+
+                                    ♡ Yêu thích
+
                                 </a>
+
                             </c:otherwise>
+
                         </c:choose>
 
 
-                        <!-- EDIT - ADMIN -->
-
-                        <c:if
-                                test="${sessionScope.user != null && sessionScope.user.roleID == 1}">
+                        <c:if test="${sessionScope.user != null && sessionScope.user.roleID == 1}">
 
                             <a
                                     href="${pageContext.request.contextPath}/room?action=edit&id=${room.roomID}"
@@ -757,7 +585,6 @@
 
                     </div>
 
-
                 </div>
 
             </div>
@@ -769,21 +596,12 @@
 </div>
 
 
-<!-- =====================================================
-     FOOTER
-===================================================== -->
-
 <jsp:include page="../layout/footer.jsp"/>
 
-
-<!-- =====================================================
-     BOOTSTRAP JS
-===================================================== -->
 
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
 </script>
-
 
 </body>
 

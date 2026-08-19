@@ -2641,6 +2641,128 @@ href="${pageContext.request.contextPath}/room?action=search&keyword=Family&page=
 
 
 <!-- =====================================================
+     NEWS & EVENTS
+     ===================================================== -->
+
+<section class="bg-white py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Tin tức & Sự kiện</h2>
+            <p class="text-muted">Cập nhật những thông tin và ưu đãi mới nhất từ Luxury Hotel</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- News 1 -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm news-card">
+                    <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="News 1" style="height: 220px; object-fit: cover;">
+                    <div class="card-body">
+                        <small class="text-primary fw-bold"><i class="fa-regular fa-calendar me-1"></i> 20/08/2026</small>
+                        <h5 class="card-title fw-bold mt-2">Khai trương dịch vụ Spa cao cấp mới</h5>
+                        <p class="card-text text-muted small">Khám phá không gian thư giãn tuyệt đối với các liệu trình chăm sóc sức khỏe và sắc đẹp chuyên sâu tại Luxury Spa.</p>
+                        <button class="btn btn-outline-primary btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#newsModal1">Đọc tiếp <i class="fa-solid fa-arrow-right ms-1"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News 2 -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm news-card">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="News 2" style="height: 220px; object-fit: cover;">
+                    <div class="card-body">
+                        <small class="text-primary fw-bold"><i class="fa-regular fa-calendar me-1"></i> 18/08/2026</small>
+                        <h5 class="card-title fw-bold mt-2">Ưu đãi giảm 20% cho thành viên đặt phòng</h5>
+                        <p class="card-text text-muted small">Đăng ký thành viên ngay hôm nay để nhận ưu đãi độc quyền giảm 20% cho tất cả các hạng phòng tại Luxury Hotel.</p>
+                        <button class="btn btn-outline-primary btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#newsModal2">Đọc tiếp <i class="fa-solid fa-arrow-right ms-1"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News 3 -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm news-card">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="News 3" style="height: 220px; object-fit: cover;">
+                    <div class="card-body">
+                        <small class="text-primary fw-bold"><i class="fa-regular fa-calendar me-1"></i> 15/08/2026</small>
+                        <h5 class="card-title fw-bold mt-2">Lễ hội ẩm thực quốc tế tại nhà hàng</h5>
+                        <p class="card-text text-muted small">Thưởng thức tinh hoa ẩm thực từ các đầu bếp hàng đầu thế giới trong tuần lễ giao lưu văn hóa ẩm thực cuối tháng này.</p>
+                        <button class="btn btn-outline-primary btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#newsModal3">Đọc tiếp <i class="fa-solid fa-arrow-right ms-1"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modals for News -->
+<!-- Modal 1 -->
+<div class="modal fade" id="newsModal1" tabindex="-1" aria-labelledby="newsModalLabel1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-0 px-4 pb-4">
+        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80" class="img-fluid rounded mb-3" alt="News 1">
+        <small class="text-primary fw-bold"><i class="fa-regular fa-calendar me-1"></i> 20/08/2026</small>
+        <h3 class="fw-bold mt-2" id="newsModalLabel1">Khai trương dịch vụ Spa cao cấp mới</h3>
+        <p class="mt-3">Chúng tôi vô cùng tự hào thông báo ra mắt dịch vụ Spa hoàn toàn mới tại Luxury Hotel, mang đến trải nghiệm thư giãn đẳng cấp dành riêng cho quý khách.</p>
+        <p>Với hệ thống phòng trị liệu được thiết kế sang trọng, yên tĩnh cùng đội ngũ chuyên gia giàu kinh nghiệm, Spa của chúng tôi cung cấp các liệu trình chăm sóc sức khỏe và sắc đẹp chuyên sâu như: massage toàn thân đá nóng, chăm sóc da mặt bằng thảo dược thiên nhiên, và liệu pháp xông hơi giải độc.</p>
+        <p>Đặc biệt, trong tuần lễ khai trương, khách hàng đặt trước sẽ nhận được voucher ưu đãi 30% cho dịch vụ massage đầu cổ vai gáy. Hãy đến và nuông chiều bản thân tại không gian thư giãn tuyệt đối của chúng tôi.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 2 -->
+<div class="modal fade" id="newsModal2" tabindex="-1" aria-labelledby="newsModalLabel2" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-0 px-4 pb-4">
+        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80" class="img-fluid rounded mb-3" alt="News 2">
+        <small class="text-primary fw-bold"><i class="fa-regular fa-calendar me-1"></i> 18/08/2026</small>
+        <h3 class="fw-bold mt-2" id="newsModalLabel2">Ưu đãi giảm 20% cho thành viên đặt phòng</h3>
+        <p class="mt-3">Chào đón mùa du lịch thu đông, Luxury Hotel mang đến chương trình tri ân đặc biệt dành cho khách hàng thân thiết.</p>
+        <p>Ngay từ hôm nay, tất cả các khách hàng đã đăng ký thành viên trên website của chúng tôi sẽ tự động nhận được mã giảm giá 20% áp dụng cho mọi hạng phòng, từ Standard, Deluxe cho đến Family và Suite cao cấp.</p>
+        <p>Chưa hết, các thành viên còn được ưu tiên nhận phòng sớm (Early Check-in) và trả phòng trễ (Late Check-out) tùy thuộc vào tình trạng phòng trống, cùng miễn phí buffet sáng chuẩn quốc tế. Đừng bỏ lỡ cơ hội trải nghiệm kỳ nghỉ dưỡng trong mơ với mức giá vô cùng hấp dẫn!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 3 -->
+<div class="modal fade" id="newsModal3" tabindex="-1" aria-labelledby="newsModalLabel3" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-0 px-4 pb-4">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80" class="img-fluid rounded mb-3" alt="News 3">
+        <small class="text-primary fw-bold"><i class="fa-regular fa-calendar me-1"></i> 15/08/2026</small>
+        <h3 class="fw-bold mt-2" id="newsModalLabel3">Lễ hội ẩm thực quốc tế tại nhà hàng</h3>
+        <p class="mt-3">Tháng này, nhà hàng chính của Luxury Hotel sẽ biến thành thiên đường ẩm thực với "Tuần lễ Giao lưu Văn hóa Ẩm thực Quốc tế", quy tụ tinh hoa các món ăn đến từ Á sang Âu.</p>
+        <p>Thực khách sẽ có cơ hội thưởng thức các tuyệt tác ẩm thực được chính tay các đầu bếp khách mời hàng đầu thế giới chuẩn bị. Từ Sushi Nhật Bản tươi ngon, Pasta Ý đúng điệu, đến các món Steak hảo hạng chuẩn phong cách Mỹ, tất cả sẽ hòa quyện để mang đến một bản giao hưởng hương vị tuyệt vời.</p>
+        <p>Chương trình sẽ diễn ra vào các buổi tối cuối tuần với tiếng nhạc giao hưởng du dương và rượu vang hảo hạng. Vui lòng liên hệ lễ tân để đặt bàn trước vì số lượng chỗ ngồi có hạn.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.news-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+</style>
+
+<!-- =====================================================
      FOOTER
      ===================================================== -->
 

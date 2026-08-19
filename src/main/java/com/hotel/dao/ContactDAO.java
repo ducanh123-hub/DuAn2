@@ -24,6 +24,10 @@ public class ContactDAO implements BaseDAO<Contact> {
             while (rs.next()) {
                 Contact contact = new Contact();
                 contact.setContactID(rs.getInt("ContactID"));
+                int userId = rs.getInt("UserID");
+                if (!rs.wasNull()) {
+                    contact.setUserID(userId);
+                }
                 contact.setFullName(rs.getString("FullName"));
                 contact.setEmail(rs.getString("Email"));
                 contact.setPhone(rs.getString("Phone"));
@@ -51,6 +55,10 @@ public class ContactDAO implements BaseDAO<Contact> {
                 if (rs.next()) {
                     Contact contact = new Contact();
                     contact.setContactID(rs.getInt("ContactID"));
+                    int userId = rs.getInt("UserID");
+                    if (!rs.wasNull()) {
+                        contact.setUserID(userId);
+                    }
                     contact.setFullName(rs.getString("FullName"));
                     contact.setEmail(rs.getString("Email"));
                     contact.setPhone(rs.getString("Phone"));
@@ -69,18 +77,23 @@ public class ContactDAO implements BaseDAO<Contact> {
 
     @Override
     public boolean insert(Contact contact) {
-        String sql = "INSERT INTO Contact (FullName, Email, Phone, Subject, Message, Status, CreatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Contact (UserID, FullName, Email, Phone, Subject, Message, Status, CreatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (
                 Connection con = DBConnect.getConnection();
                 PreparedStatement ps = con.prepareStatement(sql)
         ) {
-            ps.setString(1, contact.getFullName());
-            ps.setString(2, contact.getEmail());
-            ps.setString(3, contact.getPhone());
-            ps.setString(4, contact.getSubject());
-            ps.setString(5, contact.getMessage());
-            ps.setString(6, contact.getStatus() != null ? contact.getStatus() : "Chưa xử lý");
-            ps.setTimestamp(7, contact.getCreatedAt() != null ? contact.getCreatedAt() : new Timestamp(System.currentTimeMillis()));
+            if (contact.getUserID() != null) {
+                ps.setInt(1, contact.getUserID());
+            } else {
+                ps.setNull(1, java.sql.Types.INTEGER);
+            }
+            ps.setString(2, contact.getFullName());
+            ps.setString(3, contact.getEmail());
+            ps.setString(4, contact.getPhone());
+            ps.setString(5, contact.getSubject());
+            ps.setString(6, contact.getMessage());
+            ps.setString(7, contact.getStatus() != null ? contact.getStatus() : "Chưa xử lý");
+            ps.setTimestamp(8, contact.getCreatedAt() != null ? contact.getCreatedAt() : new Timestamp(System.currentTimeMillis()));
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,18 +103,23 @@ public class ContactDAO implements BaseDAO<Contact> {
 
     @Override
     public boolean update(Contact contact) {
-        String sql = "UPDATE Contact SET FullName = ?, Email = ?, Phone = ?, Subject = ?, Message = ?, Status = ? WHERE ContactID = ?";
+        String sql = "UPDATE Contact SET UserID = ?, FullName = ?, Email = ?, Phone = ?, Subject = ?, Message = ?, Status = ? WHERE ContactID = ?";
         try (
                 Connection con = DBConnect.getConnection();
                 PreparedStatement ps = con.prepareStatement(sql)
         ) {
-            ps.setString(1, contact.getFullName());
-            ps.setString(2, contact.getEmail());
-            ps.setString(3, contact.getPhone());
-            ps.setString(4, contact.getSubject());
-            ps.setString(5, contact.getMessage());
-            ps.setString(6, contact.getStatus());
-            ps.setInt(7, contact.getContactID());
+            if (contact.getUserID() != null) {
+                ps.setInt(1, contact.getUserID());
+            } else {
+                ps.setNull(1, java.sql.Types.INTEGER);
+            }
+            ps.setString(2, contact.getFullName());
+            ps.setString(3, contact.getEmail());
+            ps.setString(4, contact.getPhone());
+            ps.setString(5, contact.getSubject());
+            ps.setString(6, contact.getMessage());
+            ps.setString(7, contact.getStatus());
+            ps.setInt(8, contact.getContactID());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();

@@ -140,9 +140,8 @@
                                     </div>
 
                                     <div class="mt-2">
-
-                                            href="${pageContext.request.contextPath}/booking?action=history"
-                                            class="btn btn-success btn-sm">
+                                        <a href="${pageContext.request.contextPath}/booking?action=history"
+                                           class="btn btn-success btn-sm">
                                             <i class="fa-solid fa-clock-rotate-left me-1"></i>
                                             Xem lịch sử đặt phòng
                                         </a>
@@ -496,11 +495,10 @@
 
                         <div class="d-flex justify-content-between mt-4">
 
-
-                                href="${pageContext.request.contextPath}/room?action=detail&id=${room.roomID}"
-                                class="btn btn-secondary">
+                            <a href="${pageContext.request.contextPath}/home"
+                               class="btn btn-secondary">
                                 <i class="fa-solid fa-arrow-left me-1"></i>
-                                Quay lại
+                                Quay lại trang chủ
                             </a>
 
                             <button type="submit" id="submitButton" class="btn btn-success px-4 fw-bold">
