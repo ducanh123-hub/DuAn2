@@ -484,24 +484,27 @@ font-size: 22px;
             </div>
 
 
-            <!-- SỐ ĐIỆN THOẠI -->
+                        <!-- SỐ ĐIỆN THOẠI -->
 
-            <div class="mb-3">
+                        <div class="mb-3">
 
-                <label class="form-label">
-                    Số điện thoại <span class="required">*</span>
-                </label>
+                            <label class="form-label">
+                                Số điện thoại <span class="required">*</span>
+                            </label>
 
-                <input
-                        type="text"
-                        class="form-control"
-                        id="phone"
-                        name="phone"
-                        placeholder="Số điện thoại...">
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="phone"
+                                    name="phone"
+                                    placeholder="Số điện thoại..."
+                                    inputmode="numeric"
+                                    maxlength="11"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')">
 
-                <div class="validation-error invalid-feedback" id="phoneError"></div>
+                            <div class="validation-error invalid-feedback" id="phoneError"></div>
 
-            </div>
+                        </div>
 
 
             <!-- MẬT KHẨU -->
