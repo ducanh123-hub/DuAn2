@@ -71,8 +71,8 @@
                                     <tbody>
                                         <c:forEach var="p" items="${list}">
                                             <tr>
-                                                <td class="ps-3 text-muted">#${p.paymentID}</td>
-                                                <td class="fw-bold">Booking #${p.bookingID}</td>
+                                                <td class="ps-3 text-muted">${p.paymentID}</td>
+                                                <td class="fw-bold">${p.bookingCode}</td>
                                                 <td>${p.paymentMethod}</td>
                                                 <td class="text-end fw-bold text-success">
                                                     <fmt:formatNumber value="${p.amount}" type="number"/>đ

@@ -41,6 +41,7 @@ public class BookingController extends HttpServlet {
 
         switch (action) {
             case "history"       -> bookingHistory(request, response);
+            case "cancel"        -> cancelBooking(request, response);
             case "manage"        -> bookingManage(request, response);
             case "admin-detail"  -> bookingAdminDetail(request, response);
             case "update-status" -> bookingUpdateStatus(request, response);
@@ -352,10 +353,10 @@ public class BookingController extends HttpServlet {
         booking.setCheckInDate(checkIn);
         booking.setCheckOutDate(checkOut);
         booking.setGuestCount(adults + children);
-        booking.setVoucherID(voucherID);           // null nếu không dùng voucher
-        booking.setTotalAmount(totalAmount);        // tổng TRƯỚC giảm giá
-        booking.setDiscountAmount(discountAmount);  // tiền được giảm
-        booking.setFinalAmount(finalAmount);        // tổng SAU giảm giá
+        booking.setVoucherID(voucherID);
+        booking.setTotalAmount(totalAmount);
+        booking.setDiscountAmount(discountAmount);
+        booking.setFinalAmount(finalAmount);
         booking.setStatus("Chờ xác nhận");
         booking.setNote(note);
         booking.setRoomID(roomId);
@@ -365,7 +366,6 @@ public class BookingController extends HttpServlet {
         boolean result = bookingService.addBooking(booking);
 
         if (result) {
-            // Tăng usedCount của voucher (chỉ sau khi booking thành công)
             if (voucherID != null) {
                 voucherService.increaseUsedCount(voucherID);
             }
@@ -395,6 +395,70 @@ public class BookingController extends HttpServlet {
         request.setAttribute("bookingList", list);
         request.getRequestDispatcher("/views/booking/history.jsp")
                 .forward(request, response);
+    }
+
+    // ================================================================
+    // HỦY ĐẶT PHÒNG (Customer tự hủy)
+    // ================================================================
+    private void cancelBooking(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+
+        User user = getLoginUser(request);
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
+        String idStr        = request.getParameter("id");
+        String cancelReason = request.getParameter("cancelReason");
+
+        if (idStr == null || idStr.isBlank()) {
+            response.sendRedirect(request.getContextPath() + "/booking?action=history");
+            return;
+        }
+
+        try {
+            int bookingId = Integer.parseInt(idStr.trim());
+            Booking booking = bookingService.getBookingById(bookingId);
+
+            // Kiểm tra booking tồn tại & thuộc về user đang đăng nhập
+            if (booking == null || booking.getUserID() != user.getUserID()) {
+                request.getSession().setAttribute("errorMsg",
+                        "Không tìm thấy đơn đặt phòng!");
+                response.sendRedirect(request.getContextPath() + "/booking?action=history");
+                return;
+            }
+
+            // Chỉ cho hủy khi đang "Chờ xác nhận"
+            if (!"Chờ xác nhận".equals(booking.getStatus())) {
+                request.getSession().setAttribute("errorMsg",
+                        "Chỉ có thể hủy đơn đang ở trạng thái 'Chờ xác nhận'!");
+                response.sendRedirect(request.getContextPath() + "/booking?action=history");
+                return;
+            }
+
+            booking.setStatus("Đã hủy");
+            booking.setCancelReason(
+                    (cancelReason != null && !cancelReason.isBlank())
+                            ? cancelReason.trim()
+                            : "Khách hàng tự hủy");
+            booking.setCancelDate(new java.sql.Timestamp(System.currentTimeMillis()));
+
+            boolean result = bookingService.updateBooking(booking);
+
+            if (result) {
+                request.getSession().setAttribute("successMsg",
+                        "Hủy đặt phòng #" + booking.getBookingCode() + " thành công!");
+            } else {
+                request.getSession().setAttribute("errorMsg",
+                        "Hủy đặt phòng thất bại, vui lòng thử lại!");
+            }
+
+        } catch (NumberFormatException e) {
+            request.getSession().setAttribute("errorMsg", "Mã đơn không hợp lệ!");
+        }
+
+        response.sendRedirect(request.getContextPath() + "/booking?action=history");
     }
 
     // ================================================================
@@ -535,7 +599,6 @@ public class BookingController extends HttpServlet {
         String note = request.getParameter("note");
         if (note == null) note = "";
 
-        // Dùng finalAmount đã lưu trong DB, không lấy từ input client
         BigDecimal finalAmount = booking.getFinalAmount() != null
                 ? booking.getFinalAmount() : booking.getTotalAmount();
         if (finalAmount == null) finalAmount = BigDecimal.ZERO;
@@ -585,7 +648,6 @@ public class BookingController extends HttpServlet {
         request.setAttribute("room",     roomDAO.getById(booking.getRoomID()));
         request.setAttribute("customer", userDAO.getById(booking.getUserID()));
 
-        // Tính tổng tiền phòng chưa giảm để hiển thị hóa đơn
         if (booking.getRoomPrice() != null
                 && booking.getCheckInDate() != null
                 && booking.getCheckOutDate() != null) {
@@ -701,14 +763,12 @@ public class BookingController extends HttpServlet {
     // PRIVATE HELPERS
     // ================================================================
 
-    /** Trả về user đang login, hoặc null nếu chưa đăng nhập */
     private User getLoginUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) return null;
         return (User) session.getAttribute("user");
     }
 
-    /** Kiểm tra quyền Admin (RoleID = 1) */
     private boolean checkAdminRole(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         HttpSession session = request.getSession(false);
@@ -724,10 +784,6 @@ public class BookingController extends HttpServlet {
         return true;
     }
 
-    /**
-     * Gán error và forward về booking.jsp,
-     * giữ lại voucherCode (nếu đã có) để hiển thị lại trên form.
-     */
     private void setErrorAndForward(HttpServletRequest request,
                                     HttpServletResponse response,
                                     Room room,
