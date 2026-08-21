@@ -63,7 +63,6 @@
                                             <th>Mã Đặt Phòng</th>
                                             <th>Phương thức</th>
                                             <th class="text-end">Số tiền</th>
-                                            <th>Mã giao dịch</th>
                                             <th class="text-center">Trạng thái</th>
                                             <th class="text-center">Thao tác</th>
                                         </tr>
@@ -77,7 +76,6 @@
                                                 <td class="text-end fw-bold text-success">
                                                     <fmt:formatNumber value="${p.amount}" type="number"/>đ
                                                 </td>
-                                                <td class="small font-monospace">${p.transactionCode}</td>
                                                 <td class="text-center">
                                                     <c:choose>
                                                         <c:when test="${p.paymentStatus == 'Đã thanh toán'}">

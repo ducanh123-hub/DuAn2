@@ -68,10 +68,12 @@
                                 </c:choose>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <label class="fw-bold text-muted">Mã giao dịch:</label>
-                            <div class="font-monospace">${payment.transactionCode}</div>
-                        </div>
+                        <c:if test="${not empty payment.transactionCode}">
+                            <div class="col-md-6">
+                                <label class="fw-bold text-muted">Mã giao dịch:</label>
+                                <div class="font-monospace">${payment.transactionCode}</div>
+                            </div>
+                        </c:if>
                         <div class="col-md-6">
                             <label class="fw-bold text-muted">Thời gian:</label>
                             <div>${payment.paymentDate}</div>
