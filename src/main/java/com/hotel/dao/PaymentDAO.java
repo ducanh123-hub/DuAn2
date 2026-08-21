@@ -15,7 +15,12 @@ public class PaymentDAO implements BaseDAO<Payment> {
     @Override
     public List<Payment> getAll() {
         List<Payment> list = new ArrayList<>();
-        String sql = "SELECT * FROM Payment ORDER BY PaymentDate DESC";
+        String sql = """
+                SELECT p.*, b.BookingCode
+                FROM Payment p
+                LEFT JOIN Booking b ON p.BookingID = b.BookingID
+                ORDER BY p.PaymentDate DESC
+    """;
         try (
                 Connection con = DBConnect.getConnection();
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -31,6 +36,7 @@ public class PaymentDAO implements BaseDAO<Payment> {
                 payment.setPaymentStatus(rs.getString("Status"));
                 payment.setPaymentDate(rs.getTimestamp("PaymentDate"));
                 payment.setNote(rs.getString("Note"));
+                payment.setBookingCode(rs.getString("BookingCode"));
                 list.add(payment);
             }
         } catch (Exception e) {

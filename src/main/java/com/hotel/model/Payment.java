@@ -18,6 +18,7 @@ public class Payment {
     private boolean approved;            // Approved trong DB (BIT)
     private String refundReason;         // RefundReason trong DB
     private String note;
+    private String bookingCode;
 
     public Payment() {
     }
@@ -25,7 +26,7 @@ public class Payment {
     public Payment(int paymentID, int bookingID, String paymentMethod,
                    BigDecimal amount, String transactionCode,
                    String paymentStatus, Timestamp paymentDate,
-                   String note) {
+                   String note,String bookingCode) {
         this.paymentID = paymentID;
         this.bookingID = bookingID;
         this.paymentMethod = paymentMethod;
@@ -140,6 +141,14 @@ public class Payment {
         this.refundReason = refundReason;
     }
 
+    public String getBookingCode() {
+        return bookingCode;
+    }
+
+    public void setBookingCode(String bookingCode) {
+        this.bookingCode = bookingCode;
+    }
+
     @Override
     public String toString() {
         return "Payment{" +
@@ -150,4 +159,4 @@ public class Payment {
                 ", paymentStatus='" + paymentStatus + '\'' +
                 '}';
     }
-}
+}
