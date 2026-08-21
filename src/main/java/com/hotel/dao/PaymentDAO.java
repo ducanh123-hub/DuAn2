@@ -47,15 +47,23 @@ public class PaymentDAO implements BaseDAO<Payment> {
 
     @Override
     public Payment getById(int id) {
-        String sql = "SELECT * FROM Payment WHERE PaymentID = ?";
+        String sql = """
+            SELECT p.*, b.BookingCode
+            FROM Payment p
+            LEFT JOIN Booking b ON p.BookingID = b.BookingID
+            WHERE p.PaymentID = ?
+            """;
+
         try (
                 Connection con = DBConnect.getConnection();
                 PreparedStatement ps = con.prepareStatement(sql)
         ) {
             ps.setInt(1, id);
+
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     Payment payment = new Payment();
+
                     payment.setPaymentID(rs.getInt("PaymentID"));
                     payment.setBookingID(rs.getInt("BookingID"));
                     payment.setPaymentMethod(rs.getString("Method"));
@@ -64,12 +72,15 @@ public class PaymentDAO implements BaseDAO<Payment> {
                     payment.setPaymentStatus(rs.getString("Status"));
                     payment.setPaymentDate(rs.getTimestamp("PaymentDate"));
                     payment.setNote(rs.getString("Note"));
+                    payment.setBookingCode(rs.getString("BookingCode"));
+
                     return payment;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return null;
     }
 

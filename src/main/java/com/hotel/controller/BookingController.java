@@ -19,6 +19,8 @@ import java.sql.Date;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
+import com.hotel.model.Payment;
+import com.hotel.service.PaymentService;
 
 @WebServlet("/booking")
 public class BookingController extends HttpServlet {
@@ -447,8 +449,15 @@ public class BookingController extends HttpServlet {
             boolean result = bookingService.updateBooking(booking);
 
             if (result) {
+                Room room = roomDAO.getById(booking.getRoomID());
+                if (room != null) {
+                    room.setStatus("Còn trống");
+                    roomDAO.update(room);
+                }
                 request.getSession().setAttribute("successMsg",
                         "Hủy đặt phòng #" + booking.getBookingCode() + " thành công!");
+                response.sendRedirect(request.getContextPath() + "/booking?action=manage");
+                return;
             } else {
                 request.getSession().setAttribute("errorMsg",
                         "Hủy đặt phòng thất bại, vui lòng thử lại!");
@@ -611,6 +620,21 @@ public class BookingController extends HttpServlet {
         boolean result = bookingService.updateBooking(booking);
 
         if (result) {
+            // Create payment record for checkout if not exists
+            PaymentService paymentService = new PaymentService();
+            List<Payment> existing = paymentService.getPaymentsByBookingId(booking.getBookingID());
+            if (existing == null || existing.isEmpty()) {
+                Payment payment = new Payment();
+                payment.setBookingID(booking.getBookingID());
+                payment.setAmount(finalAmount);
+                payment.setPaymentMethod("Cash");
+                payment.setPaymentStatus("Đã thanh toán");
+                payment.setPaymentDate(new java.sql.Timestamp(System.currentTimeMillis()));
+                payment.setTransactionCode(null);
+                payment.setNote(note);
+                paymentService.addPayment(payment);
+            }
+            // Update room status after successful checkout
             Room room = roomDAO.getById(booking.getRoomID());
             if (room != null) {
                 room.setStatus("Còn trống");

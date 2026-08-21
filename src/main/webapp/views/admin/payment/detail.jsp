@@ -40,7 +40,7 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="fw-bold text-muted">Mã Đặt Phòng:</label>
-                            <div class="fs-5 fw-bold">Booking #${payment.bookingID}</div>
+                            <div class="fs-5 fw-bold">${payment.bookingCode}</div>
                         </div>
                         <div class="col-md-6">
                             <label class="fw-bold text-muted">Phương thức thanh toán:</label>
